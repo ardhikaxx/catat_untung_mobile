@@ -9,6 +9,7 @@ import '../features/history/detail_rekap_screen.dart';
 import '../features/export/export_screen.dart';
 import '../features/backup/backup_screen.dart';
 import '../features/settings/settings_screen.dart';
+import '../features/calculator/hpp_calculator_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -58,6 +59,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/settings',
         builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: '/calculator',
+        builder: (context, state) => const HppCalculatorScreen(),
       ),
     ],
   );

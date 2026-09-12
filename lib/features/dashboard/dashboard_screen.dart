@@ -189,6 +189,25 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             label: const Text('Rekap Penjualan Hari Ini'),
           ),
         ),
+        const SizedBox(height: 10),
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: () => context.push('/calculator'),
+            icon: const Icon(Iconsax.calculator, color: AppColors.primaryGreen),
+            label: const Text(
+              'Kalkulator HPP',
+              style: TextStyle(color: AppColors.primaryGreen),
+            ),
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: AppColors.primaryGreen),
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
