@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/utils/currency_formatter.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/product_provider.dart';
 import '../../database/app_database.dart';
-import '../../shared/widgets/empty_state.dart';
 import '../../data/repositories/daily_record_repository.dart';
+import 'widgets/rekap_date_selector.dart';
+import 'widgets/rekap_live_summary_card.dart';
+import 'widgets/rekap_item_tile.dart';
+import 'widgets/rekap_product_selector_modal.dart';
+import 'widgets/rekap_bottom_action_panel.dart';
+import 'widgets/rekap_saved_view.dart';
 
 class RekapItem {
   int? productId;
@@ -46,6 +49,8 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
   DateTime _selectedDate = DateTime.now();
   bool _isLoading = false;
   bool _isEditing = false;
+  DailyRecord? _existingRecord;
+  List<DailyRecordItem> _existingItems = [];
 
   @override
   void initState() {
@@ -53,20 +58,63 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
     _loadExistingRecord();
   }
 
+  bool get _isToday {
+    final now = DateTime.now();
+    return _selectedDate.year == now.year &&
+        _selectedDate.month == now.month &&
+        _selectedDate.day == now.day;
+  }
+
   Future<void> _loadExistingRecord() async {
-    final repo = ref.read(dailyRecordRepositoryProvider);
-    final record = await repo.getRecordByDate(_selectedDate);
-    if (record != null && mounted) {
-      setState(() {
-        _isEditing = false;
-      });
-      ref.read(rekapItemsProvider.notifier).state = [];
-    } else if (mounted) {
-      setState(() {
-        _isEditing = true;
-      });
-      ref.read(rekapItemsProvider.notifier).state = [];
+    setState(() => _isLoading = true);
+    try {
+      final repo = ref.read(dailyRecordRepositoryProvider);
+      final record = await repo.getRecordByDate(_selectedDate);
+      if (record != null) {
+        final items = await repo.getItemsByRecordId(record.id);
+        if (mounted) {
+          setState(() {
+            _existingRecord = record;
+            _existingItems = items;
+            _isEditing = false;
+            _isLoading = false;
+          });
+          ref.read(rekapItemsProvider.notifier).state = [];
+        }
+      } else {
+        if (mounted) {
+          setState(() {
+            _existingRecord = null;
+            _existingItems = [];
+            _isEditing = true;
+            _isLoading = false;
+          });
+          ref.read(rekapItemsProvider.notifier).state = [];
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
+  }
+
+  void _enterEditMode() {
+    // Populate form with existing saved items for quick editing
+    if (_existingItems.isNotEmpty) {
+      final rekapItems = _existingItems.map((item) {
+        return RekapItem(
+          productId: item.productId,
+          productName: item.productNameSnapshot,
+          unit: item.unitSnapshot,
+          hpp: item.hppSnapshot,
+          sellingPrice: item.sellingPriceSnapshot,
+          quantity: item.quantity,
+        );
+      }).toList();
+      ref.read(rekapItemsProvider.notifier).state = rekapItems;
+    }
+    setState(() => _isEditing = true);
   }
 
   Future<void> _selectDate() async {
@@ -75,108 +123,77 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
       initialDate: _selectedDate,
       firstDate: DateTime(2020),
       lastDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Color(0xFF6C4AB6),
+              onPrimary: Colors.white,
+              onSurface: AppColors.textPrimary,
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null) {
-      setState(() => _selectedDate = picked);
-      await _loadExistingRecord();
+      await _handleDateChange(picked);
     }
   }
 
-  void _showProductSelector() async {
-    final productsAsync = ref.read(activeProductsProvider);
-    final products = productsAsync.valueOrNull ?? [];
-
-    if (products.isEmpty) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Belum ada produk. Tambahkan produk terlebih dahulu.'),
+  Future<void> _handleDateChange(DateTime newDate) async {
+    final items = ref.read(rekapItemsProvider);
+    if (items.isNotEmpty && _isEditing) {
+      final confirm = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+          title: const Text('Ganti Tanggal?'),
+          content: const Text(
+            'Perubahan rekap yang belum disimpan pada tanggal ini akan hilang jika berpindah tanggal.',
           ),
-        );
-      }
-      return;
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Batal'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Pindah', style: TextStyle(color: AppColors.error)),
+            ),
+          ],
+        ),
+      );
+      if (confirm != true) return;
     }
 
-    showModalBottomSheet(
+    setState(() => _selectedDate = newDate);
+    await _loadExistingRecord();
+  }
+
+  void _showProductSelector() {
+    final productsAsync = ref.read(activeProductsProvider);
+    final products = productsAsync.valueOrNull ?? [];
+    final items = ref.read(rekapItemsProvider);
+    final selectedIds = items.map((i) => i.productId).toSet();
+
+    RekapProductSelectorModal.show(
       context: context,
-      isScrollControlled: true,
-      builder: (context) {
-        return DraggableScrollableSheet(
-          initialChildSize: 0.6,
-          maxChildSize: 0.9,
-          minChildSize: 0.3,
-          expand: false,
-          builder: (context, scrollController) {
-            return Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  child: const Text(
-                    'Pilih Produk',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    controller: scrollController,
-                    itemCount: products.length,
-                    itemBuilder: (context, index) {
-                      final product = products[index];
-                      return ListTile(
-                        leading: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryGreen.withAlpha(25),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(
-                            Iconsax.box,
-                            color: AppColors.primaryGreen,
-                          ),
-                        ),
-                        title: Text(
-                          product.name,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        subtitle: Text(
-                          'HPP: ${CurrencyFormatter.formatRupiah(product.hpp)} • Jual: ${CurrencyFormatter.formatRupiah(product.sellingPrice)}',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                        onTap: () {
-                          Navigator.pop(context);
-                          _addProductItem(product);
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            );
-          },
-        );
-      },
+      products: products,
+      selectedProductIds: selectedIds,
+      onProductSelected: _addProductItem,
     );
   }
 
   void _addProductItem(Product product) {
     final items = ref.read(rekapItemsProvider);
-    
     final existingIndex = items.indexWhere((i) => i.productId == product.id);
     if (existingIndex >= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${product.name} sudah ditambahkan'),
-          action: SnackBarAction(
-            label: 'OK',
-            onPressed: () {},
-          ),
+          content: Text('${product.name} sudah ada dalam rekap'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       );
       return;
@@ -218,7 +235,11 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
     final items = ref.read(rekapItemsProvider);
     if (items.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Tambahkan minimal satu produk')),
+        SnackBar(
+          content: const Text('Tambahkan minimal satu produk'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
       );
       return;
     }
@@ -226,9 +247,11 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
     final hasZeroQty = items.any((item) => item.quantity == 0);
     if (hasZeroQty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Quantity produk tidak boleh 0. Sesuaikan jumlah terlebih dahulu.'),
+        SnackBar(
+          content: const Text('Jumlah terjual tidak boleh 0. Sesuaikan terlebih dahulu.'),
           backgroundColor: AppColors.warning,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       );
       return;
@@ -259,17 +282,33 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Rekap tersimpan')),
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Iconsax.tick_circle, color: Colors.white, size: 20),
+                const SizedBox(width: 10),
+                Text(
+                  'Rekap ${DateFormat('d MMM yyyy', 'id_ID').format(_selectedDate)} berhasil disimpan!',
+                ),
+              ],
+            ),
+            backgroundColor: const Color(0xFF16A34A),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
         );
         ref.read(rekapItemsProvider.notifier).state = [];
-        setState(() {
-          _isEditing = false;
-        });
+        await _loadExistingRecord();
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal menyimpan: $e')),
+          SnackBar(
+            content: Text('Gagal menyimpan rekap: $e'),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
         );
       }
     } finally {
@@ -277,17 +316,27 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
     }
   }
 
-  int get _totalRevenue => ref.read(rekapItemsProvider).fold<int>(
-      0, (sum, item) => sum + item.subtotalRevenue);
+  int get _totalRevenue => ref.watch(rekapItemsProvider).fold<int>(
+        0,
+        (sum, item) => sum + item.subtotalRevenue,
+      );
 
-  int get _totalCost => ref.read(rekapItemsProvider).fold<int>(
-      0, (sum, item) => sum + item.subtotalCost);
+  int get _totalCost => ref.watch(rekapItemsProvider).fold<int>(
+        0,
+        (sum, item) => sum + item.subtotalCost,
+      );
 
   int get _totalProfit => _totalRevenue - _totalCost;
+
+  int get _totalQuantity => ref.watch(rekapItemsProvider).fold<int>(
+        0,
+        (sum, item) => sum + item.quantity,
+      );
 
   @override
   Widget build(BuildContext context) {
     final items = ref.watch(rekapItemsProvider);
+    final canPop = Navigator.canPop(context);
 
     return PopScope(
       canPop: false,
@@ -297,8 +346,13 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+              ),
               title: const Text('Perubahan belum disimpan'),
-              content: const Text('Apakah kamu yakin ingin keluar? Perubahan yang belum disimpan akan hilang.'),
+              content: const Text(
+                'Apakah kamu yakin ingin keluar? Perubahan yang belum disimpan akan hilang.',
+              ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
@@ -320,92 +374,112 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
         }
       },
       child: Scaffold(
+        backgroundColor: AppColors.background,
         appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Iconsax.arrow_left, size: 20),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: const Text('Rekap Penjualan'),
-          actions: [
-            TextButton(
-              onPressed: _selectDate,
-              child: Row(
-                children: [
-                  const Icon(Iconsax.calendar, size: 16),
-                  const SizedBox(width: 4),
-                  Text(
-                    DateFormat('d MMM yyyy', 'id_ID').format(_selectedDate),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
+          backgroundColor: AppColors.background,
+          elevation: 0,
+          leading: canPop
+              ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Material(
+                    color: Colors.white,
+                    shape: const CircleBorder(),
+                    elevation: 0.5,
+                    child: InkWell(
+                      customBorder: const CircleBorder(),
+                      onTap: () => Navigator.maybePop(context),
+                      child: const Center(
+                        child: Icon(
+                          Iconsax.arrow_left_2,
+                          size: 18,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
                     ),
                   ),
-                ],
-              ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF3E8FF),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(
+                      Iconsax.note_1,
+                      size: 20,
+                      color: Color(0xFF6C4AB6),
+                    ),
+                  ),
+                ),
+          title: const Text(
+            'Rekap Penjualan',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w800,
+              color: AppColors.textPrimary,
+              letterSpacing: -0.3,
             ),
+          ),
+          actions: [
+            if (!_isToday)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+                child: TextButton.icon(
+                  onPressed: () => _handleDateChange(DateTime.now()),
+                  icon: const Icon(Iconsax.calendar_tick, size: 16),
+                  label: const Text(
+                    'Hari Ini',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    foregroundColor: const Color(0xFF6C4AB6),
+                    backgroundColor: const Color(0xFFF3E8FF),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                ),
+              ),
+            IconButton(
+              icon: const Icon(Iconsax.calendar, size: 20),
+              color: AppColors.textPrimary,
+              tooltip: 'Pilih Tanggal',
+              onPressed: _selectDate,
+            ),
+            const SizedBox(width: 8),
           ],
         ),
-        body: _isEditing
-            ? _buildFormView(items)
-            : _buildSavedView(),
-      ),
-    );
-  }
-
-  Widget _buildSavedView() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        body: Column(
           children: [
-            Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                color: AppColors.profit.withAlpha(25),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Iconsax.tick_circle,
-                size: 40,
-                color: AppColors.profit,
-              ),
+            // Date Selector Bar
+            RekapDateSelector(
+              selectedDate: _selectedDate,
+              onSelectDate: _selectDate,
+              onDateChanged: _handleDateChange,
             ),
-            const SizedBox(height: 20),
-            const Text(
-              'Rekap Sudah Tersimpan',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Rekap penjualan ${DateFormat('d MMM yyyy', 'id_ID').format(_selectedDate)} sudah tersimpan.',
-              style: const TextStyle(
-                fontSize: 14,
-                color: AppColors.textSecondary,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () => setState(() => _isEditing = true),
-                icon: const Icon(Iconsax.add),
-                label: const Text('Tambah Produk Lagi'),
-              ),
-            ),
-            const SizedBox(height: 8),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: () => context.push('/history'),
-                icon: const Icon(Iconsax.calendar),
-                label: const Text('Lihat di Riwayat'),
-              ),
+
+            // Main Body Content
+            Expanded(
+              child: _isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF6C4AB6),
+                      ),
+                    )
+                  : (!_isEditing && _existingRecord != null)
+                      ? RekapSavedView(
+                          record: _existingRecord!,
+                          items: _existingItems,
+                          selectedDate: _selectedDate,
+                          onEditRekap: _enterEditMode,
+                          onViewHistory: () => context.push('/history'),
+                        )
+                      : _buildFormView(items, canPop),
             ),
           ],
         ),
@@ -413,312 +487,165 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
     );
   }
 
-  Widget _buildFormView(List<RekapItem> items) {
+  Widget _buildFormView(List<RekapItem> items, bool canPop) {
     return Column(
       children: [
         Expanded(
           child: items.isEmpty
-              ? EmptyState(
-                  icon: Iconsax.edit_2,
-                  title: 'Belum Ada Item',
-                  subtitle: 'Tambahkan produk yang terjual hari ini',
-                  actionLabel: 'Tambah Produk',
-                  onAction: _showProductSelector,
-                )
-              : ListView.builder(
-                  padding: const EdgeInsets.only(bottom: 200),
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    final item = items[index];
-                    return _RekapItemCard(
-                      item: item,
-                      index: index,
-                      onQuantityChanged: (qty) => _updateQuantity(index, qty),
-                      onPriceChanged: (price) => _updateSellingPrice(index, price),
-                      onRemove: () => _removeItem(index),
-                    );
-                  },
+              ? _buildEmptyState()
+              : ListView(
+                  padding: const EdgeInsets.only(bottom: 24),
+                  children: [
+                    // Real-time Summary Hero Card
+                    RekapLiveSummaryCard(
+                      totalRevenue: _totalRevenue,
+                      totalCost: _totalCost,
+                      totalProfit: _totalProfit,
+                      itemCount: items.length,
+                      totalQuantity: _totalQuantity,
+                    ),
+
+                    // Section Header
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Item Terjual',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF1F5F9),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              '${items.length} Menu',
+                              style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF64748B),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // List of Item Tiles
+                    ...items.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final item = entry.value;
+                      return RekapItemTile(
+                        key: ValueKey('item_${item.productId}_$index'),
+                        item: item,
+                        index: index,
+                        onQuantityChanged: (qty) => _updateQuantity(index, qty),
+                        onPriceChanged: (price) => _updateSellingPrice(index, price),
+                        onRemove: () => _removeItem(index),
+                      );
+                    }),
+                  ],
                 ),
         ),
-        _BottomPanel(
+
+        // Bottom Sticky Action Panel
+        RekapBottomActionPanel(
           totalRevenue: _totalRevenue,
           totalCost: _totalCost,
           totalProfit: _totalProfit,
           itemCount: items.length,
+          totalQuantity: _totalQuantity,
           isLoading: _isLoading,
           onSave: _saveRekap,
           onAddProduct: _showProductSelector,
         ),
+
+        // If inside Home tab (canPop == false), add spacing for floating bottom navigation bar
+        if (!canPop) const SizedBox(height: 84),
       ],
     );
   }
-}
 
-class _RekapItemCard extends StatelessWidget {
-  final RekapItem item;
-  final int index;
-  final Function(int) onQuantityChanged;
-  final Function(int) onPriceChanged;
-  final VoidCallback onRemove;
-
-  const _RekapItemCard({
-    required this.item,
-    required this.index,
-    required this.onQuantityChanged,
-    required this.onPriceChanged,
-    required this.onRemove,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item.productName,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 15,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        'HPP: ${CurrencyFormatter.formatRupiah(item.hpp)}/${item.unit}',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Iconsax.close_circle, size: 18),
-                  color: AppColors.textHint,
-                  onPressed: onRemove,
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Qty',
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      TextFormField(
-                        initialValue: item.quantity.toString(),
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        style: const TextStyle(fontSize: 14),
-                        decoration: const InputDecoration(
-                          isDense: true,
-                          contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                        ),
-                        onChanged: (val) {
-                          final qty = int.tryParse(val) ?? 0;
-                          onQuantityChanged(qty);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Harga Jual',
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      TextFormField(
-                        initialValue: item.sellingPrice.toString(),
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        style: const TextStyle(fontSize: 14),
-                        decoration: const InputDecoration(
-                          isDense: true,
-                          prefixText: 'Rp ',
-                          contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                        ),
-                        onChanged: (val) {
-                          final price = int.tryParse(val) ?? 0;
-                          onPriceChanged(price);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: item.subtotalProfit >= 0
-                    ? AppColors.profit.withAlpha(25)
-                    : AppColors.loss.withAlpha(25),
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Omzet: ${CurrencyFormatter.formatRupiah(item.subtotalRevenue)}',
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                  Text(
-                    'Laba: ${CurrencyFormatter.formatRupiah(item.subtotalProfit)}',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: item.subtotalProfit >= 0
-                          ? AppColors.profit
-                          : AppColors.loss,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _BottomPanel extends StatelessWidget {
-  final int totalRevenue;
-  final int totalCost;
-  final int totalProfit;
-  final int itemCount;
-  final bool isLoading;
-  final VoidCallback onSave;
-  final VoidCallback onAddProduct;
-
-  const _BottomPanel({
-    required this.totalRevenue,
-    required this.totalCost,
-    required this.totalProfit,
-    required this.itemCount,
-    required this.isLoading,
-    required this.onSave,
-    required this.onAddProduct,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
-        color: AppColors.surface,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 8,
-            offset: Offset(0, -2),
-          ),
-        ],
-      ),
-      child: SafeArea(
+  Widget _buildEmptyState() {
+    return Center(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Total Omzet', style: TextStyle(fontSize: 11, color: AppColors.textSecondary)),
-                      Text(
-                        CurrencyFormatter.formatRupiah(totalRevenue),
-                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                      ),
-                    ],
+            Container(
+              width: 90,
+              height: 90,
+              decoration: BoxDecoration(
+                color: const Color(0xFFF3E8FF),
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF6C4AB6).withAlpha(30),
+                    blurRadius: 20,
+                    offset: const Offset(0, 6),
                   ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Total Modal', style: TextStyle(fontSize: 11, color: AppColors.textSecondary)),
-                      Text(
-                        CurrencyFormatter.formatRupiah(totalCost),
-                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const Text('Laba', style: TextStyle(fontSize: 11, color: AppColors.textSecondary)),
-                      Text(
-                        CurrencyFormatter.formatRupiah(totalProfit),
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: totalProfit > 0
-                              ? AppColors.profit
-                              : totalProfit < 0
-                                  ? AppColors.loss
-                                  : AppColors.breakEven,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
+              child: const Icon(
+                Iconsax.bag_2,
+                size: 44,
+                color: Color(0xFF6C4AB6),
+              ),
             ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: onAddProduct,
-                    icon: const Icon(Iconsax.add),
-                    label: const Text('Tambah'),
+            const SizedBox(height: 20),
+            const Text(
+              'Belum Ada Item Terjual',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                color: AppColors.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Pilih produk dari menu katalog Anda dan masukkan jumlah yang terjual hari ini untuk menghitung laba bersih otomatis.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 13,
+                color: AppColors.textSecondary,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 28),
+            SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: ElevatedButton.icon(
+                onPressed: _showProductSelector,
+                icon: const Icon(Iconsax.add_circle, size: 20),
+                label: const Text(
+                  'Tambah Produk Terjual',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: (itemCount == 0 || isLoading) ? null : onSave,
-                    child: isLoading
-                        ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : const Text('Simpan Rekap'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF6C4AB6),
+                  foregroundColor: Colors.white,
+                  elevation: 2,
+                  shadowColor: const Color(0xFF6C4AB6).withAlpha(100),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
                   ),
                 ),
-              ],
+              ),
             ),
           ],
         ),
