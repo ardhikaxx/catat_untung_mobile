@@ -58,7 +58,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ],
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(_items.length, (index) {
               final item = _items[index];
               final isActive = _currentIndex == index;
@@ -72,9 +72,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 250),
                   curve: Curves.easeInOut,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: isActive ? 14 : 12,
-                    vertical: 8,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 10,
                   ),
                   decoration: BoxDecoration(
                     color: isActive
@@ -87,17 +87,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     children: [
                       Icon(
                         isActive ? item.activeIcon : item.icon,
-                        size: 20,
+                        size: 22,
                         color: isActive
                             ? AppColors.primaryGreen
                             : AppColors.textSecondary,
                       ),
                       if (isActive) ...[
-                        const SizedBox(width: 6),
+                        const SizedBox(width: 8),
                         Text(
                           item.label,
                           style: const TextStyle(
-                            fontSize: 12,
+                            fontSize: 13,
                             fontWeight: FontWeight.w600,
                             color: AppColors.primaryGreen,
                           ),
