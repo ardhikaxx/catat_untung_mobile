@@ -70,7 +70,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '${DateFormatter.greeting()} 👋',
+          DateFormatter.greeting(),
           style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w700,
