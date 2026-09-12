@@ -228,6 +228,17 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
       return;
     }
 
+    final hasZeroQty = items.any((item) => item.quantity == 0);
+    if (hasZeroQty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Quantity produk tidak boleh 0. Sesuaikan jumlah terlebih dahulu.'),
+          backgroundColor: AppColors.warning,
+        ),
+      );
+      return;
+    }
+
     setState(() => _isLoading = true);
 
     try {
