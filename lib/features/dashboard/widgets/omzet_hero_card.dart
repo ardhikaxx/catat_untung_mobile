@@ -19,19 +19,31 @@ class OmzetHeroCard extends StatelessWidget {
     required this.onRekapTap,
   });
 
+  // Dimensi kartu & tombol agar lekukan konsentris sempurna
+  static const double cardHeight = 222.0;
+  static const double btnW = 150.0;
+  static const double btnH = 46.0;
+  static const double btnRight = 4.0;
+  static const double btnBottom = 4.0;
+  static const double gap = 9.0;
+  static const double cornerR = 24.0;
+  static const double rTopRight = 20.0;
+  static const double rBottom = 22.0;
+
   @override
   Widget build(BuildContext context) {
-    const cardHeight = 222.0;
-    const cutoutW = 144.0;
-    const cutoutH = 52.0;
-    const filletR = 18.0;
-    const cornerR = 24.0;
+    const btnR = btnH / 2; // 23.0
 
-    final clipper = _NotchedCardClipper(
-      cutoutWidth: cutoutW,
-      cutoutHeight: cutoutH,
-      cornerRadius: cornerR,
-      filletRadius: filletR,
+    final clipper = _ConcentricNotchedCardClipper(
+      btnW: btnW,
+      btnH: btnH,
+      btnRight: btnRight,
+      btnBottom: btnBottom,
+      btnR: btnR,
+      gap: gap,
+      cornerR: cornerR,
+      rTopRight: rTopRight,
+      rBottom: rBottom,
     );
 
     final displayDate = date ?? DateTime.now();
@@ -41,7 +53,7 @@ class OmzetHeroCard extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // 1. Foreground Purple Card Shadow
+          // 1. Bayangan Kartu Ungu Mengikuti Lekukan
           Positioned.fill(
             child: CustomPaint(
               painter: _NotchedCardShadowPainter(
@@ -52,7 +64,7 @@ class OmzetHeroCard extends StatelessWidget {
             ),
           ),
 
-          // 2. Foreground Purple Card (Clipped)
+          // 2. Kartu Ungu (Dipotong dengan Clipper Konsentris)
           Positioned.fill(
             child: ClipPath(
               clipper: clipper,
@@ -71,7 +83,7 @@ class OmzetHeroCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Top Row: App Brand & Date Badge
+                    // Baris Atas: Brand & Badge Tanggal
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -125,12 +137,12 @@ class OmzetHeroCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 14),
 
-                    // Middle Row: Total Omzet & Laba Bersih
+                    // Baris Tengah: Total Omzet & Laba Bersih
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Left: Total Omzet
+                        // Kiri: Total Omzet
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -155,7 +167,7 @@ class OmzetHeroCard extends StatelessWidget {
                           ],
                         ),
 
-                        // Right: Laba Bersih (above notch)
+                        // Kanan: Laba Bersih (di atas lekukan)
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
@@ -185,7 +197,7 @@ class OmzetHeroCard extends StatelessWidget {
 
                     const Spacer(),
 
-                    // Bottom Row: Total Terjual (left side of the notch)
+                    // Baris Bawah: Total Terjual (sisi kiri lekukan)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
@@ -217,52 +229,57 @@ class OmzetHeroCard extends StatelessWidget {
             ),
           ),
 
-          // 3. Black Pill Button "+ Rekap" nested inside the cutout
+          // 3. Tombol Pill Hitam "+ Rekap Baru" Konsentris di Sudut Lekukan
           Positioned(
-            bottom: 3,
-            right: 3,
+            bottom: btnBottom,
+            right: btnRight,
             child: Material(
               color: Colors.transparent,
               child: InkWell(
                 onTap: onRekapTap,
-                borderRadius: BorderRadius.circular(26),
+                borderRadius: BorderRadius.circular(btnR),
                 child: Container(
-                  height: 46,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  width: btnW,
+                  height: btnH,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                     color: const Color(0xFF111111),
-                    borderRadius: BorderRadius.circular(26),
+                    borderRadius: BorderRadius.circular(btnR),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withAlpha(60),
+                        color: Colors.black.withAlpha(70),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
                     ],
                   ),
                   child: Row(
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        width: 24,
-                        height: 24,
+                        width: 22,
+                        height: 22,
                         decoration: const BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
                           Icons.add,
-                          size: 16,
+                          size: 15,
                           color: Colors.black,
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'Rekap Baru',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w700,
+                      const SizedBox(width: 6),
+                      const Flexible(
+                        child: Text(
+                          'Rekap Baru',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
@@ -277,89 +294,124 @@ class OmzetHeroCard extends StatelessWidget {
   }
 }
 
-class _NotchedCardClipper extends CustomClipper<Path> {
-  final double cutoutWidth;
-  final double cutoutHeight;
-  final double cornerRadius;
-  final double filletRadius;
+class _ConcentricNotchedCardClipper extends CustomClipper<Path> {
+  final double btnW;
+  final double btnH;
+  final double btnRight;
+  final double btnBottom;
+  final double btnR;
+  final double gap;
+  final double cornerR;
+  final double rTopRight;
+  final double rBottom;
 
-  _NotchedCardClipper({
-    required this.cutoutWidth,
-    required this.cutoutHeight,
-    required this.cornerRadius,
-    required this.filletRadius,
+  _ConcentricNotchedCardClipper({
+    required this.btnW,
+    required this.btnH,
+    required this.btnRight,
+    required this.btnBottom,
+    required this.btnR,
+    required this.gap,
+    required this.cornerR,
+    required this.rTopRight,
+    required this.rBottom,
   });
 
   @override
   Path getClip(Size size) {
     final w = size.width;
     final h = size.height;
-    final r = cornerRadius;
-    final f = filletRadius;
-    final cw = cutoutWidth;
-    final ch = cutoutHeight;
+
+    // Posisi tombol
+    final btnX = w - btnRight - btnW;
+    final btnY = h - btnBottom - btnH;
+    final btnCenterX = btnX + btnR;
+    final btnCenterY = btnY + btnR;
+
+    // Garis batas cutout
+    final cutoutTop = btnY - gap;
+    final cutoutLeft = btnX - gap;
+
+    // Radius lengkungan konsentris = radius tombol + celah (gap)
+    final filletR = btnR + gap;
+
+    // Titik awal lekukan di atas tombol (12 o'clock relatif terhadap pusat lingkaran tombol)
+    final arcStartX = btnCenterX;
+    final arcStartY = cutoutTop;
+
+    // Titik akhir lekukan di samping tombol (9 o'clock relatif terhadap pusat lingkaran tombol)
+    final arcEndX = cutoutLeft;
+    final arcEndY = btnCenterY;
 
     final path = Path();
-    // 1. Top-left corner
-    path.moveTo(r, 0);
 
-    // 2. Top edge to top-right
-    path.lineTo(w - r, 0);
-    path.arcToPoint(Offset(w, r), radius: Radius.circular(r));
+    // 1. Sudut kiri atas kartu
+    path.moveTo(cornerR, 0);
 
-    // 3. Right edge down to notch start
-    path.lineTo(w, h - ch - f);
+    // 2. Sisi atas ke sudut kanan atas
+    path.lineTo(w - cornerR, 0);
+    path.arcToPoint(Offset(w, cornerR), radius: Radius.circular(cornerR));
 
-    // 4. Notch turn left (convex from card perspective)
+    // 3. Sisi kanan turun menuju awal lekukan atas
+    path.lineTo(w, cutoutTop - rTopRight);
+
+    // 4. Belokan halus ke dalam (ke kiri) menuju atas tombol
     path.arcToPoint(
-      Offset(w - f, h - ch),
-      radius: Radius.circular(f),
+      Offset(w - rTopRight, cutoutTop),
+      radius: Radius.circular(rTopRight),
       clockwise: true,
     );
 
-    // 5. Horizontal line along top of cutout
-    path.lineTo(w - cw + f, h - ch);
+    // 5. Garis horizontal tepat di atas tombol hingga titik 12 o'clock tombol
+    path.lineTo(arcStartX, arcStartY);
 
-    // 6. Notch scoop downwards (concave from card perspective, convex for cutout)
+    // 6. Lengkungan KONSENTRIS mengikuti setengah lingkaran tombol (12 o'clock ke 9 o'clock)
     path.arcToPoint(
-      Offset(w - cw, h - ch + f),
-      radius: Radius.circular(f),
+      Offset(arcEndX, arcEndY),
+      radius: Radius.circular(filletR),
       clockwise: false,
     );
 
-    // 7. Vertical edge of cutout going down
-    path.lineTo(w - cw, h - f);
+    // 7. Garis vertikal pendek sebelum belokan ke sisi bawah
+    if (arcEndY < h - rBottom) {
+      path.lineTo(cutoutLeft, h - rBottom);
+    }
 
-    // 8. Notch turn left to bottom edge (convex from card perspective)
+    // 8. Belokan cembung keluar menuju sisi bawah kartu
     path.arcToPoint(
-      Offset(w - cw - f, h),
-      radius: Radius.circular(f),
+      Offset(cutoutLeft - rBottom, h),
+      radius: Radius.circular(rBottom),
       clockwise: true,
     );
 
-    // 9. Bottom edge to bottom-left corner
-    path.lineTo(r, h);
-    path.arcToPoint(Offset(0, h - r), radius: Radius.circular(r));
+    // 9. Sisi bawah ke sudut kiri bawah
+    path.lineTo(cornerR, h);
+    path.arcToPoint(Offset(0, h - cornerR), radius: Radius.circular(cornerR));
 
-    // 10. Left edge up to top-left corner
-    path.lineTo(0, r);
-    path.arcToPoint(Offset(r, 0), radius: Radius.circular(r));
+    // 10. Sisi kiri naik ke sudut kiri atas
+    path.lineTo(0, cornerR);
+    path.arcToPoint(Offset(cornerR, 0), radius: Radius.circular(cornerR));
 
     path.close();
     return path;
   }
 
   @override
-  bool shouldReclip(covariant _NotchedCardClipper oldClipper) {
-    return oldClipper.cutoutWidth != cutoutWidth ||
-        oldClipper.cutoutHeight != cutoutHeight ||
-        oldClipper.cornerRadius != cornerRadius ||
-        oldClipper.filletRadius != filletRadius;
+  bool shouldReclip(covariant _ConcentricNotchedCardClipper oldClipper) {
+    return oldClipper.btnW != btnW ||
+        oldClipper.btnH != btnH ||
+        oldClipper.btnRight != btnRight ||
+        oldClipper.btnBottom != btnBottom ||
+        oldClipper.btnR != btnR ||
+        oldClipper.gap != gap ||
+        oldClipper.cornerR != cornerR ||
+        oldClipper.rTopRight != rTopRight ||
+        oldClipper.rBottom != rBottom;
   }
 }
 
 class _NotchedCardShadowPainter extends CustomPainter {
-  final _NotchedCardClipper clipper;
+  final _ConcentricNotchedCardClipper clipper;
   final Color shadowColor;
   final double elevation;
 
