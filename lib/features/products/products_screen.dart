@@ -49,20 +49,11 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
         title: const Text('Master Produk'),
         actions: [
           if (hasProducts)
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  'Nonaktif',
-                  style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
-                ),
-                Switch(
-                  value: showInactive,
-                  onChanged: (val) {
-                    ref.read(showInactiveProvider.notifier).state = val;
-                  },
-                ),
-              ],
+            Switch(
+              value: showInactive,
+              onChanged: (val) {
+                ref.read(showInactiveProvider.notifier).state = val;
+              },
             ),
         ],
       ),
