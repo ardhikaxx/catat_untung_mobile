@@ -3,6 +3,7 @@ class AppConstants {
 
   static const String appName = 'Catat Untung';
   static const String appTagline = 'Rekap Penjualan Harian Tanpa Internet';
+  static const String appVersion = '1.0.0';
   static const String dbName = 'catat_untung.db';
   static const int dbVersion = 1;
 
