@@ -33,7 +33,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _NavItem(icon: Iconsax.note_1, activeIcon: Iconsax.note_21, label: 'Rekap'),
     _NavItem(icon: Iconsax.calendar, activeIcon: Iconsax.calendar5, label: 'Riwayat'),
     _NavItem(icon: Iconsax.chart, activeIcon: Iconsax.chart_3, label: 'Laporan'),
-    _NavItem(icon: Iconsax.setting, activeIcon: Iconsax.setting_5, label: 'Setelan'),
+    _NavItem(icon: Iconsax.setting, activeIcon: Iconsax.setting, label: 'Setelan'),
   ];
 
   @override
