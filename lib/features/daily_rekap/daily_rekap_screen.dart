@@ -207,10 +207,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
   }
 
   void _updateQuantity(int index, int quantity) {
-    if (quantity <= 0) {
-      _removeItem(index);
-      return;
-    }
+    if (quantity < 0) return;
     final items = List<RekapItem>.from(ref.read(rekapItemsProvider));
     items[index].quantity = quantity;
     ref.read(rekapItemsProvider.notifier).state = items;
