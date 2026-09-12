@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
+import '../../core/theme/app_colors.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../daily_rekap/daily_rekap_screen.dart';
 import '../history/history_screen.dart';
@@ -25,39 +26,99 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ReportsScreen(),
   ];
 
+  final _items = const [
+    _NavItem(icon: Iconsax.home_2, activeIcon: Iconsax.home_25, label: 'Beranda'),
+    _NavItem(icon: Iconsax.edit, activeIcon: Iconsax.edit_25, label: 'Rekap'),
+    _NavItem(icon: Iconsax.calendar, activeIcon: Iconsax.calendar5, label: 'Riwayat'),
+    _NavItem(icon: Iconsax.chart_21, activeIcon: Iconsax.chart_25, label: 'Laporan'),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _screens[_currentIndex],
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
-        onDestinationSelected: (index) {
-          setState(() => _currentIndex = index);
-          ref.read(currentTabProvider.notifier).state = index;
-        },
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Iconsax.home_2),
-            selectedIcon: Icon(Iconsax.home_25),
-            label: 'Beranda',
+      extendBody: true,
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+        child: Container(
+          height: 60,
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(20),
+                blurRadius: 16,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-          NavigationDestination(
-            icon: Icon(Iconsax.edit),
-            selectedIcon: Icon(Iconsax.edit_25),
-            label: 'Rekap',
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: List.generate(_items.length, (index) {
+              final item = _items[index];
+              final isActive = _currentIndex == index;
+
+              return GestureDetector(
+                onTap: () {
+                  setState(() => _currentIndex = index);
+                  ref.read(currentTabProvider.notifier).state = index;
+                },
+                behavior: HitTestBehavior.opaque,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.easeInOut,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isActive ? 16 : 12,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: isActive
+                        ? AppColors.primaryGreen.withAlpha(25)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        isActive ? item.activeIcon : item.icon,
+                        size: 22,
+                        color: isActive
+                            ? AppColors.primaryGreen
+                            : AppColors.textSecondary,
+                      ),
+                      if (isActive) ...[
+                        const SizedBox(width: 8),
+                        Text(
+                          item.label,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primaryGreen,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              );
+            }),
           ),
-          NavigationDestination(
-            icon: Icon(Iconsax.calendar),
-            selectedIcon: Icon(Iconsax.calendar5),
-            label: 'Riwayat',
-          ),
-          NavigationDestination(
-            icon: Icon(Iconsax.chart_21),
-            selectedIcon: Icon(Iconsax.chart_25),
-            label: 'Laporan',
-          ),
-        ],
+        ),
       ),
     );
   }
+}
+
+class _NavItem {
+  final IconData icon;
+  final IconData activeIcon;
+  final String label;
+
+  const _NavItem({
+    required this.icon,
+    required this.activeIcon,
+    required this.label,
+  });
 }
