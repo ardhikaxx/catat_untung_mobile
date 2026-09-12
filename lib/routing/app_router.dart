@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../features/onboarding/onboarding_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/products/products_screen.dart';
 import '../features/products/product_form_screen.dart';
@@ -16,10 +15,6 @@ final goRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: '/',
   routes: [
-    GoRoute(
-      path: '/onboarding',
-      builder: (context, state) => const OnboardingScreen(),
-    ),
     GoRoute(
       path: '/',
       builder: (context, state) => const HomeScreen(),
