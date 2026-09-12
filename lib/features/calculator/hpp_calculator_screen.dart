@@ -263,7 +263,6 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
             controller: controller,
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            onChanged: (_) => _hitungHpp(),
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: const TextStyle(
