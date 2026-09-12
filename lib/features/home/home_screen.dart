@@ -6,6 +6,7 @@ import '../dashboard/dashboard_screen.dart';
 import '../daily_rekap/daily_rekap_screen.dart';
 import '../history/history_screen.dart';
 import '../reports/reports_screen.dart';
+import '../settings/settings_screen.dart';
 
 final currentTabProvider = StateProvider<int>((ref) => 0);
 
@@ -24,6 +25,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     DailyRekapScreen(),
     HistoryScreen(),
     ReportsScreen(),
+    SettingsScreen(),
   ];
 
   final _items = const [
@@ -31,6 +33,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _NavItem(icon: Iconsax.edit, activeIcon: Iconsax.edit_25, label: 'Rekap'),
     _NavItem(icon: Iconsax.calendar, activeIcon: Iconsax.calendar5, label: 'Riwayat'),
     _NavItem(icon: Iconsax.chart_21, activeIcon: Iconsax.chart_25, label: 'Laporan'),
+    _NavItem(icon: Iconsax.setting_2, activeIcon: Iconsax.setting_25, label: 'Pengaturan'),
   ];
 
   @override
@@ -69,7 +72,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   duration: const Duration(milliseconds: 250),
                   curve: Curves.easeInOut,
                   padding: EdgeInsets.symmetric(
-                    horizontal: isActive ? 16 : 12,
+                    horizontal: isActive ? 12 : 10,
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
@@ -83,17 +86,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     children: [
                       Icon(
                         isActive ? item.activeIcon : item.icon,
-                        size: 22,
+                        size: 20,
                         color: isActive
                             ? AppColors.primaryGreen
                             : AppColors.textSecondary,
                       ),
                       if (isActive) ...[
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 6),
                         Text(
                           item.label,
                           style: const TextStyle(
-                            fontSize: 13,
+                            fontSize: 12,
                             fontWeight: FontWeight.w600,
                             color: AppColors.primaryGreen,
                           ),

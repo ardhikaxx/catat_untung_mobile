@@ -36,11 +36,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             tooltip: 'Master Produk',
             onPressed: () => context.push('/products'),
           ),
-          IconButton(
-            icon: const Icon(Iconsax.setting_2),
-            tooltip: 'Pengaturan',
-            onPressed: () => context.push('/settings'),
-          ),
         ],
       ),
       body: RefreshIndicator(
