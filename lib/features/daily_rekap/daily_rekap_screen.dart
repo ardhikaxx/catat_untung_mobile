@@ -608,7 +608,7 @@ class _BottomPanel extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      const Text('Laba/Rugi', style: TextStyle(fontSize: 11, color: AppColors.textSecondary)),
+                      const Text('Laba', style: TextStyle(fontSize: 11, color: AppColors.textSecondary)),
                       Text(
                         CurrencyFormatter.formatRupiah(totalProfit),
                         style: TextStyle(

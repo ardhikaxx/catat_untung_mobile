@@ -137,7 +137,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               children: [
                 Expanded(
                   child: SummaryCard(
-                    title: 'Laba/Rugi Bersih',
+                    title: 'Laba Bersih',
                     value: CurrencyFormatter.formatRupiah(totalProfit),
                     valueColor: totalProfit > 0
                         ? AppColors.profit
