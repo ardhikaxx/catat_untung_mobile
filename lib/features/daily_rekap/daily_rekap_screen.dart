@@ -45,6 +45,7 @@ class DailyRekapScreen extends ConsumerStatefulWidget {
 class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
   DateTime _selectedDate = DateTime.now();
   bool _isLoading = false;
+  bool _isEditing = false;
 
   @override
   void initState() {
@@ -56,20 +57,14 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
     final repo = ref.read(dailyRecordRepositoryProvider);
     final record = await repo.getRecordByDate(_selectedDate);
     if (record != null && mounted) {
-      final items = await repo.getItemsByRecordId(record.id);
       setState(() {
-        ref.read(rekapItemsProvider.notifier).state = items.map((item) {
-          return RekapItem(
-            productId: item.productId,
-            productName: item.productNameSnapshot,
-            unit: item.unitSnapshot,
-            hpp: item.hppSnapshot,
-            sellingPrice: item.sellingPriceSnapshot,
-            quantity: item.quantity,
-          );
-        }).toList();
+        _isEditing = false;
       });
+      ref.read(rekapItemsProvider.notifier).state = [];
     } else if (mounted) {
+      setState(() {
+        _isEditing = true;
+      });
       ref.read(rekapItemsProvider.notifier).state = [];
     }
   }
@@ -267,7 +262,9 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
           const SnackBar(content: Text('Rekap tersimpan')),
         );
         ref.read(rekapItemsProvider.notifier).state = [];
-        context.pop();
+        setState(() {
+          _isEditing = false;
+        });
       }
     } catch (e) {
       if (mounted) {
@@ -343,44 +340,112 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
             ),
           ],
         ),
-        body: Column(
+        body: _isEditing
+            ? _buildFormView(items)
+            : _buildSavedView(),
+      ),
+    );
+  }
+
+  Widget _buildSavedView() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              child: items.isEmpty
-                  ? EmptyState(
-                      icon: Iconsax.edit_2,
-                      title: 'Belum Ada Item',
-                      subtitle: 'Tambahkan produk yang terjual hari ini',
-                      actionLabel: 'Tambah Produk',
-                      onAction: _showProductSelector,
-                    )
-                  : ListView.builder(
-                      padding: const EdgeInsets.only(bottom: 200),
-                      itemCount: items.length,
-                      itemBuilder: (context, index) {
-                        final item = items[index];
-                        return _RekapItemCard(
-                          item: item,
-                          index: index,
-                          onQuantityChanged: (qty) => _updateQuantity(index, qty),
-                          onPriceChanged: (price) => _updateSellingPrice(index, price),
-                          onRemove: () => _removeItem(index),
-                        );
-                      },
-                    ),
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                color: AppColors.profit.withAlpha(25),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Iconsax.tick_circle,
+                size: 40,
+                color: AppColors.profit,
+              ),
             ),
-            _BottomPanel(
-              totalRevenue: _totalRevenue,
-              totalCost: _totalCost,
-              totalProfit: _totalProfit,
-              itemCount: items.length,
-              isLoading: _isLoading,
-              onSave: _saveRekap,
-              onAddProduct: _showProductSelector,
+            const SizedBox(height: 20),
+            const Text(
+              'Rekap Sudah Tersimpan',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Rekap penjualan ${DateFormat('d MMM yyyy', 'id_ID').format(_selectedDate)} sudah tersimpan.',
+              style: const TextStyle(
+                fontSize: 14,
+                color: AppColors.textSecondary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () => setState(() => _isEditing = true),
+                icon: const Icon(Iconsax.add),
+                label: const Text('Tambah Produk Lagi'),
+              ),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () => context.push('/history'),
+                icon: const Icon(Iconsax.calendar),
+                label: const Text('Lihat di Riwayat'),
+              ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildFormView(List<RekapItem> items) {
+    return Column(
+      children: [
+        Expanded(
+          child: items.isEmpty
+              ? EmptyState(
+                  icon: Iconsax.edit_2,
+                  title: 'Belum Ada Item',
+                  subtitle: 'Tambahkan produk yang terjual hari ini',
+                  actionLabel: 'Tambah Produk',
+                  onAction: _showProductSelector,
+                )
+              : ListView.builder(
+                  padding: const EdgeInsets.only(bottom: 200),
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    final item = items[index];
+                    return _RekapItemCard(
+                      item: item,
+                      index: index,
+                      onQuantityChanged: (qty) => _updateQuantity(index, qty),
+                      onPriceChanged: (price) => _updateSellingPrice(index, price),
+                      onRemove: () => _removeItem(index),
+                    );
+                  },
+                ),
+        ),
+        _BottomPanel(
+          totalRevenue: _totalRevenue,
+          totalCost: _totalCost,
+          totalProfit: _totalProfit,
+          itemCount: items.length,
+          isLoading: _isLoading,
+          onSave: _saveRekap,
+          onAddProduct: _showProductSelector,
+        ),
+      ],
     );
   }
 }
