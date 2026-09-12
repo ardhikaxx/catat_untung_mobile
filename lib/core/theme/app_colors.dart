@@ -14,7 +14,7 @@ class AppColors {
   static const Color breakEven = Color(0xFF757575);
 
   // Neutral
-  static const Color background = Color(0xFFF5F5F5);
+  static const Color background = Color(0xFFF8F9FD);
   static const Color surface = Colors.white;
   static const Color surfaceVariant = Color(0xFFFAFAFA);
   static const Color textPrimary = Color(0xFF212121);

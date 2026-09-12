@@ -6,10 +6,14 @@ import 'package:iconsax/iconsax.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/date_formatter.dart';
+import '../../database/app_database.dart';
 import '../../providers/daily_record_provider.dart';
-import '../../providers/product_provider.dart';
-import '../../shared/widgets/summary_card.dart';
 import '../../shared/widgets/loading_state.dart';
+import '../home/home_screen.dart';
+import 'widgets/dashboard_header.dart';
+import 'widgets/omzet_hero_card.dart';
+import 'widgets/dashboard_action_bar.dart';
+import 'widgets/performance_list_section.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
@@ -21,196 +25,103 @@ class DashboardScreen extends ConsumerStatefulWidget {
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
-    final today = DateTime.now();
     final todayRecord = ref.watch(todayRecordProvider);
-    final productCount = ref.watch(productCountProvider);
+    final todayItems = ref.watch(todayItemsProvider);
     final allRecords = ref.watch(allRecordsProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Catat Untung'),
-        actions: [
-          IconButton(
-            icon: const Icon(Iconsax.box),
-            tooltip: 'Master Produk',
-            onPressed: () => context.push('/products'),
-          ),
-        ],
+      backgroundColor: AppColors.background,
+      appBar: DashboardHeader(
+        onMenuTap: () => _showQuickMenu(context),
       ),
       body: RefreshIndicator(
         onRefresh: () async {
           ref.invalidate(todayRecordProvider);
+          ref.invalidate(todayItemsProvider);
           ref.invalidate(allRecordsProvider);
         },
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
           children: [
-            _buildGreeting(today),
-            const SizedBox(height: 16),
-            _buildTodaySummary(todayRecord, productCount),
-            const SizedBox(height: 16),
-            _buildQuickActions(),
-            const SizedBox(height: 16),
-            _buildRecentChart(allRecords),
-            const SizedBox(height: 80),
-          ],
-        ),
-      ),
-    );
-  }
+            // 1. Hero Total Omzet Card (Notched Card from reference UI)
+              todayRecord.when(
+                loading: () => const SizedBox(
+                  height: 222,
+                  child: LoadingState(),
+                ),
+                error: (e, s) => Container(
+                  height: 200,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: const Text('Gagal memuat data omzet hari ini'),
+                ),
+                data: (record) {
+                  final totalRevenue = record?.totalRevenue ?? 0;
+                  final totalProfit = record?.totalProfit ?? 0;
+                  final totalQty = record?.totalQuantity ?? 0;
 
-  Widget _buildGreeting(DateTime today) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          DateFormatter.greeting(),
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w700,
-            color: AppColors.textPrimary,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          DateFormatter.formatFull(today),
-          style: const TextStyle(
-            fontSize: 14,
-            color: AppColors.textSecondary,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTodaySummary(AsyncValue recordAsync, AsyncValue countAsync) {
-    return recordAsync.when(
-      loading: () => const LoadingState(),
-      error: (e, s) => const Center(child: Text('Gagal memuat data')),
-      data: (record) {
-        final totalRevenue = record?.totalRevenue ?? 0;
-        final totalCost = record?.totalCost ?? 0;
-        final totalProfit = record?.totalProfit ?? 0;
-        final totalQty = record?.totalQuantity ?? 0;
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Performa Hari Ini',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
+                  return OmzetHeroCard(
+                    totalRevenue: totalRevenue,
+                    totalProfit: totalProfit,
+                    totalQuantity: totalQty,
+                    date: record?.date ?? DateTime.now(),
+                    onRekapTap: () => context.push('/daily-rekap'),
+                  );
+                },
               ),
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: SummaryCard(
-                    title: 'Total Omzet',
-                    value: CurrencyFormatter.formatRupiah(totalRevenue),
-                    icon: Iconsax.wallet_3,
-                    iconColor: AppColors.primaryGreen,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: SummaryCard(
-                    title: 'Total Modal',
-                    value: CurrencyFormatter.formatRupiah(totalCost),
-                    icon: Iconsax.bag,
-                    iconColor: AppColors.warning,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Expanded(
-                  child: SummaryCard(
-                    title: 'Laba Bersih',
-                    value: CurrencyFormatter.formatRupiah(totalProfit),
-                    valueColor: totalProfit > 0
-                        ? AppColors.profit
-                        : totalProfit < 0
-                            ? AppColors.loss
-                            : AppColors.breakEven,
-                    icon: totalProfit >= 0
-                        ? Iconsax.arrow_up_3
-                        : Iconsax.arrow_down3,
-                    iconColor: totalProfit > 0
-                        ? AppColors.profit
-                        : totalProfit < 0
-                            ? AppColors.loss
-                            : AppColors.breakEven,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: SummaryCard(
-                    title: 'Unit Terjual',
-                    value: '$totalQty',
-                    icon: Iconsax.box,
-                    iconColor: AppColors.info,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-          ],
-        );
-      },
-    );
-  }
+              const SizedBox(height: 18),
 
-  Widget _buildQuickActions() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Aksi Cepat',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
-          ),
-        ),
-        const SizedBox(height: 12),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: () => context.push('/daily-rekap'),
-            icon: const Icon(Iconsax.edit_2),
-            label: const Text('Rekap Penjualan Hari Ini'),
-          ),
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: () => context.push('/calculator'),
-            icon: const Icon(Iconsax.calculator, color: AppColors.primaryGreen),
-            label: const Text(
-              'Kalkulator HPP',
-              style: TextStyle(color: AppColors.primaryGreen),
-            ),
-            style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: AppColors.primaryGreen),
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+              // 3. Quick Action Buttons Container (Rekap, Riwayat, Produk, HPP)
+              DashboardActionBar(
+                onRekap: () => context.push('/daily-rekap'),
+                onRiwayat: () {
+                  ref.read(currentTabProvider.notifier).state = 2;
+                },
+                onProduk: () => context.push('/products'),
+                onKalkulator: () => context.push('/calculator'),
               ),
-            ),
+              const SizedBox(height: 24),
+
+              // 4. Performance Breakdown List ("Manage Expenses" style)
+              todayRecord.when(
+                loading: () => const SizedBox.shrink(),
+                error: (e, s) => const SizedBox.shrink(),
+                data: (record) {
+                  final totalRevenue = record?.totalRevenue ?? 0;
+                  final totalCost = record?.totalCost ?? 0;
+                  final totalProfit = record?.totalProfit ?? 0;
+                  final totalQty = record?.totalQuantity ?? 0;
+                  final items = todayItems.valueOrNull ?? [];
+
+                  return PerformanceListSection(
+                    totalRevenue: totalRevenue,
+                    totalCost: totalCost,
+                    totalProfit: totalProfit,
+                    totalQuantity: totalQty,
+                    todayItems: items,
+                    onViewAll: () {
+                      ref.read(currentTabProvider.notifier).state = 2;
+                    },
+                  );
+                },
+              ),
+              const SizedBox(height: 24),
+
+              // 5. 7-Day Profit Trend Chart
+              _buildRecentChart(allRecords),
+
+              // Spacing at the bottom for floating bottom navigation bar
+              const SizedBox(height: 100),
+            ],
           ),
         ),
-      ],
-    );
+      );
   }
 
-  Widget _buildRecentChart(AsyncValue recordsAsync) {
+  Widget _buildRecentChart(AsyncValue<List<DailyRecord>> recordsAsync) {
     return recordsAsync.when(
       loading: () => const SizedBox.shrink(),
       error: (e, s) => const SizedBox.shrink(),
@@ -228,92 +139,103 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             const Text(
               'Tren Laba 7 Hari Terakhir',
               style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
               ),
             ),
             const SizedBox(height: 12),
-            SizedBox(
-              height: 200,
-              child: Card(
-                margin: EdgeInsets.zero,
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: BarChart(
-                    BarChartData(
-                      alignment: BarChartAlignment.spaceAround,
-                      maxY: _getMaxY(chartData),
-                      minY: _getMinY(chartData),
-                      barGroups: List.generate(chartData.length, (index) {
-                        final record = chartData[index];
-                        final profit = record.totalProfit.toDouble();
-                        return BarChartGroupData(
-                          x: index,
-                          barRods: [
-                            BarChartRodData(
-                              toY: profit,
-                              color: profit >= 0
-                                  ? AppColors.chartGreen
-                                  : AppColors.chartRed,
-                              width: 20,
-                              borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(4),
-                              ),
-                            ),
-                          ],
-                        );
-                      }),
-                      titlesData: FlTitlesData(
-                        show: true,
-                        topTitles: const AxisTitles(
-                          sideTitles: SideTitles(showTitles: false),
+            Container(
+              height: 220,
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(10),
+                    blurRadius: 16,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: BarChart(
+                BarChartData(
+                  alignment: BarChartAlignment.spaceAround,
+                  maxY: _getMaxY(chartData),
+                  minY: _getMinY(chartData),
+                  barGroups: List.generate(chartData.length, (index) {
+                    final record = chartData[index];
+                    final profit = record.totalProfit.toDouble();
+                    return BarChartGroupData(
+                      x: index,
+                      barRods: [
+                        BarChartRodData(
+                          toY: profit,
+                          color: profit >= 0
+                              ? const Color(0xFF10B981)
+                              : const Color(0xFFEF4444),
+                          width: 18,
+                          borderRadius: BorderRadius.circular(6),
                         ),
-                        rightTitles: const AxisTitles(
-                          sideTitles: SideTitles(showTitles: false),
-                        ),
-                        bottomTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                            showTitles: true,
-                            getTitlesWidget: (value, meta) {
-                              final idx = value.toInt();
-                              if (idx >= 0 && idx < chartData.length) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(top: 4),
-                                  child: Text(
-                                    DateFormatter.formatDayMonth(
-                                        chartData[idx].date),
-                                    style: const TextStyle(
-                                      fontSize: 10,
-                                      color: AppColors.textSecondary,
-                                    ),
-                                  ),
-                                );
-                              }
-                              return const Text('');
-                            },
-                          ),
-                        ),
-                        leftTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                            showTitles: true,
-                            reservedSize: 50,
-                            getTitlesWidget: (value, meta) {
-                              return Text(
-                                CurrencyFormatter.formatRupiahCompact(
-                                    value.toInt()),
+                      ],
+                    );
+                  }),
+                  titlesData: FlTitlesData(
+                    show: true,
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) {
+                          final idx = value.toInt();
+                          if (idx >= 0 && idx < chartData.length) {
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 6),
+                              child: Text(
+                                DateFormatter.formatDayMonth(
+                                  chartData[idx].date,
+                                ),
                                 style: const TextStyle(
                                   fontSize: 10,
+                                  fontWeight: FontWeight.w500,
                                   color: AppColors.textSecondary,
                                 ),
-                              );
-                            },
-                          ),
-                        ),
+                              ),
+                            );
+                          }
+                          return const Text('');
+                        },
                       ),
-                      borderData: FlBorderData(show: false),
-                      gridData: const FlGridData(show: false),
                     ),
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 52,
+                        getTitlesWidget: (value, meta) {
+                          return Text(
+                            CurrencyFormatter.formatRupiahCompact(
+                              value.toInt(),
+                            ),
+                            style: const TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.textSecondary,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  borderData: FlBorderData(show: false),
+                  gridData: const FlGridData(
+                    show: true,
+                    drawVerticalLine: false,
                   ),
                 ),
               ),
@@ -324,7 +246,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     );
   }
 
-  double _getMaxY(List records) {
+  double _getMaxY(List<DailyRecord> records) {
     if (records.isEmpty) return 100;
     final maxProfit = records
         .map<double>((r) => r.totalProfit.toDouble())
@@ -332,11 +254,114 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     return maxProfit > 0 ? maxProfit * 1.2 : 100;
   }
 
-  double _getMinY(List records) {
+  double _getMinY(List<DailyRecord> records) {
     if (records.isEmpty) return 0;
     final minProfit = records
         .map<double>((r) => r.totalProfit.toDouble())
         .fold<double>(0, (a, b) => a < b ? a : b);
     return minProfit < 0 ? minProfit * 1.2 : 0;
+  }
+
+  void _showQuickMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Menu Cepat',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 14),
+                ListTile(
+                  leading: const Icon(Iconsax.box, color: Color(0xFF2563EB)),
+                  title: const Text('Master Produk'),
+                  subtitle: const Text('Kelola daftar barang dagangan & HPP'),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  onTap: () {
+                    Navigator.pop(ctx);
+                    context.push('/products');
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Iconsax.edit_2, color: Color(0xFF16A34A)),
+                  title: const Text('Rekap Penjualan'),
+                  subtitle: const Text('Catat penjualan harian toko'),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  onTap: () {
+                    Navigator.pop(ctx);
+                    context.push('/daily-rekap');
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Iconsax.calculator, color: Color(0xFFF59E0B)),
+                  title: const Text('Kalkulator HPP'),
+                  subtitle: const Text('Hitung harga pokok & margin untung'),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  onTap: () {
+                    Navigator.pop(ctx);
+                    context.push('/calculator');
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Iconsax.document_download, color: Color(0xFF8B36FF)),
+                  title: const Text('Ekspor Laporan'),
+                  subtitle: const Text('Unduh laporan PDF & CSV'),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  onTap: () {
+                    Navigator.pop(ctx);
+                    context.push('/export');
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Iconsax.setting_2, color: Color(0xFF475569)),
+                  title: const Text('Pengaturan'),
+                  subtitle: const Text('Setelan toko & cadangan data'),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  onTap: () {
+                    Navigator.pop(ctx);
+                    context.push('/settings');
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
