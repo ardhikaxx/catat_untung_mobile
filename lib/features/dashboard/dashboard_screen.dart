@@ -161,7 +161,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               ],
             ),
             const SizedBox(height: 8),
-            if (record != null) ProfitIndicator(amount: totalProfit),
           ],
         );
       },
