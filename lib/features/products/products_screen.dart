@@ -47,6 +47,10 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Iconsax.arrow_left, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: const Text('Master Produk'),
         actions: [
           if (hasProducts)

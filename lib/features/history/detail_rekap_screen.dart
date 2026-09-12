@@ -30,7 +30,13 @@ class DetailRekapScreen extends ConsumerWidget {
       data: (record) {
         if (record == null) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Detail Rekap')),
+            appBar: AppBar(
+              leading: IconButton(
+                icon: const Icon(Iconsax.arrow_left, size: 20),
+                onPressed: () => Navigator.pop(context),
+              ),
+              title: const Text('Detail Rekap'),
+            ),
             body: const Center(child: Text('Data tidak ditemukan')),
           );
         }
@@ -39,6 +45,10 @@ class DetailRekapScreen extends ConsumerWidget {
 
         return Scaffold(
           appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Iconsax.arrow_left, size: 20),
+              onPressed: () => Navigator.pop(context),
+            ),
             title: Text(DateFormatter.formatFull(dateOnly)),
             actions: [
               IconButton(

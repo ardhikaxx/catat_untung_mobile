@@ -321,6 +321,10 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Iconsax.arrow_left, size: 20),
+            onPressed: () => Navigator.pop(context),
+          ),
           title: const Text('Rekap Penjualan'),
           actions: [
             TextButton(
