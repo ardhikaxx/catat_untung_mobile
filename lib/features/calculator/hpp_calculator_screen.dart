@@ -58,6 +58,10 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Iconsax.arrow_left, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: const Text('Kalkulator HPP'),
         actions: [
           IconButton(
