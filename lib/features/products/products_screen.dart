@@ -42,21 +42,28 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
   Widget build(BuildContext context) {
     final productsAsync = ref.watch(filteredProductsListProvider);
     final showInactive = ref.watch(showInactiveProvider);
+    final hasProducts = productsAsync.valueOrNull?.isNotEmpty ?? false;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Master Produk'),
         actions: [
-          IconButton(
-            icon: Icon(
-              showInactive ? Icons.visibility : Icons.visibility_off,
-              color: showInactive ? AppColors.primaryGreen : AppColors.textSecondary,
+          if (hasProducts)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Nonaktif',
+                  style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                ),
+                Switch(
+                  value: showInactive,
+                  onChanged: (val) {
+                    ref.read(showInactiveProvider.notifier).state = val;
+                  },
+                ),
+              ],
             ),
-            tooltip: showInactive ? 'Sembunyikan Nonaktif' : 'Tampilkan Nonaktif',
-            onPressed: () {
-              ref.read(showInactiveProvider.notifier).state = !showInactive;
-            },
-          ),
         ],
       ),
       body: Column(
