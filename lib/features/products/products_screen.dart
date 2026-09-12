@@ -188,24 +188,29 @@ class _ProductTile extends ConsumerWidget {
         ),
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 4),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'HPP: ${CurrencyFormatter.formatRupiah(product.hpp)}',
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: AppColors.textSecondary,
-                ),
+              Row(
+                children: [
+                  Text(
+                    'HPP: ${CurrencyFormatter.formatRupiah(product.hpp)}',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'Jual: ${CurrencyFormatter.formatRupiah(product.sellingPrice)}',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 12),
-              Text(
-                'Jual: ${CurrencyFormatter.formatRupiah(product.sellingPrice)}',
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-              const SizedBox(width: 12),
+              const SizedBox(height: 2),
               Text(
                 'Margin: $marginPercent%',
                 style: TextStyle(
