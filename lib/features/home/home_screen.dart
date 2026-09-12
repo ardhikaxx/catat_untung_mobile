@@ -45,6 +45,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
         child: Container(
           height: 60,
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           decoration: BoxDecoration(
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(30),
@@ -72,7 +73,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   duration: const Duration(milliseconds: 250),
                   curve: Curves.easeInOut,
                   padding: EdgeInsets.symmetric(
-                    horizontal: isActive ? 12 : 10,
+                    horizontal: isActive ? 14 : 12,
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
