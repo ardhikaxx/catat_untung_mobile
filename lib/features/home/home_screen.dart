@@ -29,10 +29,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   ];
 
   final _items = const [
-    _NavItem(icon: Iconsax.home_2, activeIcon: Iconsax.home_25, label: 'Beranda'),
-    _NavItem(icon: Iconsax.note_1, activeIcon: Iconsax.note_21, label: 'Rekap'),
-    _NavItem(icon: Iconsax.calendar, activeIcon: Iconsax.calendar5, label: 'Riwayat'),
-    _NavItem(icon: Iconsax.chart, activeIcon: Iconsax.chart_3, label: 'Laporan'),
+    _NavItem(icon: Iconsax.home_2, activeIcon: Iconsax.home_2, label: 'Beranda'),
+    _NavItem(icon: Iconsax.note_1, activeIcon: Iconsax.note_1, label: 'Rekap'),
+    _NavItem(icon: Iconsax.calendar, activeIcon: Iconsax.calendar, label: 'Riwayat'),
+    _NavItem(icon: Iconsax.chart, activeIcon: Iconsax.chart, label: 'Laporan'),
     _NavItem(icon: Iconsax.setting, activeIcon: Iconsax.setting, label: 'Setelan'),
   ];
 
