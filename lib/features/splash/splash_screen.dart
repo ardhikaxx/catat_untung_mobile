@@ -59,16 +59,7 @@ class _SplashScreenState extends State<SplashScreen>
     return Scaffold(
       body: Container(
         width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              AppColors.primaryGreen,
-              AppColors.primaryGreen.withAlpha(180),
-            ],
-          ),
-        ),
+        color: AppColors.primaryGreen,
         child: AnimatedBuilder(
           animation: _controller,
           builder: (context, child) {
