@@ -8,6 +8,8 @@ import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/date_formatter.dart';
 import '../../providers/daily_record_provider.dart';
 import '../../providers/product_provider.dart';
+import '../../shared/widgets/summary_card.dart';
+import '../../shared/widgets/profit_indicator.dart';
 import '../../shared/widgets/loading_state.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
@@ -26,57 +28,32 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     final allRecords = ref.watch(allRecordsProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        title: const Text('Catat Untung'),
+        actions: [
+          IconButton(
+            icon: const Icon(Iconsax.box),
+            tooltip: 'Master Produk',
+            onPressed: () => context.push('/products'),
+          ),
+        ],
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           ref.invalidate(todayRecordProvider);
           ref.invalidate(allRecordsProvider);
         },
-        child: CustomScrollView(
-          slivers: [
-            // iOS-style Large Title AppBar
-            SliverToBoxAdapter(
-              child: SafeArea(
-                bottom: false,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildGreeting(today),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-
-            // Today Summary
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                child: _buildTodaySummary(todayRecord, productCount),
-              ),
-            ),
-
-            // Quick Actions
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
-                child: _buildQuickActions(),
-              ),
-            ),
-
-            // Recent Chart
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
-                child: _buildRecentChart(allRecords),
-              ),
-            ),
-
-            const SliverToBoxAdapter(
-              child: SizedBox(height: 100),
-            ),
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            _buildGreeting(today),
+            const SizedBox(height: 16),
+            _buildTodaySummary(todayRecord, productCount),
+            const SizedBox(height: 16),
+            _buildQuickActions(),
+            const SizedBox(height: 16),
+            _buildRecentChart(allRecords),
+            const SizedBox(height: 80),
           ],
         ),
       ),
@@ -84,52 +61,23 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   Widget _buildGreeting(DateTime today) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              DateFormatter.greeting(),
-              style: const TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.w700,
-                color: AppColors.textPrimary,
-                letterSpacing: -0.5,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              DateFormatter.formatFull(today),
-              style: const TextStyle(
-                fontSize: 15,
-                color: AppColors.textSecondary,
-              ),
-            ),
-          ],
+        Text(
+          DateFormatter.greeting(),
+          style: const TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+          ),
         ),
-        GestureDetector(
-          onTap: () => context.push('/products'),
-          child: Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(10),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: const Icon(
-              Iconsax.box,
-              color: AppColors.primaryGreen,
-              size: 22,
-            ),
+        const SizedBox(height: 4),
+        Text(
+          DateFormatter.formatFull(today),
+          style: const TextStyle(
+            fontSize: 14,
+            color: AppColors.textSecondary,
           ),
         ),
       ],
@@ -149,133 +97,74 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Main Profit Card - iOS Style
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    AppColors.primaryGreen,
-                    AppColors.primaryGreen.withAlpha(200),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primaryGreen.withAlpha(40),
-                    blurRadius: 20,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withAlpha(25),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(
-                          Iconsax.wallet_3,
-                          color: Colors.white,
-                          size: 18,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        'Laba Bersih Hari Ini',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white.withAlpha(200),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    CurrencyFormatter.formatRupiah(totalProfit),
-                    style: const TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                      letterSpacing: -1,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      _buildMiniStat(
-                        'Omzet',
-                        CurrencyFormatter.formatRupiah(totalRevenue),
-                        Iconsax.arrow_up_3,
-                      ),
-                      const SizedBox(width: 16),
-                      _buildMiniStat(
-                        'Modal',
-                        CurrencyFormatter.formatRupiah(totalCost),
-                        Iconsax.arrow_down3,
-                      ),
-                      const SizedBox(width: 16),
-                      _buildMiniStat(
-                        'Unit',
-                        '$totalQty',
-                        Iconsax.box,
-                      ),
-                    ],
-                  ),
-                ],
+            const Text(
+              'Performa Hari Ini',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimary,
               ),
             ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildMiniStat(String label, String value, IconData icon) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        decoration: BoxDecoration(
-          color: Colors.white.withAlpha(20),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+            const SizedBox(height: 12),
             Row(
               children: [
-                Icon(icon, color: Colors.white.withAlpha(180), size: 12),
-                const SizedBox(width: 4),
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Colors.white.withAlpha(180),
+                Expanded(
+                  child: SummaryCard(
+                    title: 'Total Omzet',
+                    value: CurrencyFormatter.formatRupiah(totalRevenue),
+                    icon: Iconsax.wallet_3,
+                    iconColor: AppColors.primaryGreen,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: SummaryCard(
+                    title: 'Total Modal',
+                    value: CurrencyFormatter.formatRupiah(totalCost),
+                    icon: Iconsax.bag,
+                    iconColor: AppColors.warning,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 4),
-            Text(
-              value,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-              overflow: TextOverflow.ellipsis,
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: SummaryCard(
+                    title: 'Laba Bersih',
+                    value: CurrencyFormatter.formatRupiah(totalProfit),
+                    valueColor: totalProfit > 0
+                        ? AppColors.profit
+                        : totalProfit < 0
+                            ? AppColors.loss
+                            : AppColors.breakEven,
+                    icon: totalProfit >= 0
+                        ? Iconsax.arrow_up_3
+                        : Iconsax.arrow_down3,
+                    iconColor: totalProfit > 0
+                        ? AppColors.profit
+                        : totalProfit < 0
+                            ? AppColors.loss
+                            : AppColors.breakEven,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: SummaryCard(
+                    title: 'Unit Terjual',
+                    value: '$totalQty',
+                    icon: Iconsax.box,
+                    iconColor: AppColors.info,
+                  ),
+                ),
+              ],
             ),
+            const SizedBox(height: 8),
+            if (record != null) ProfitIndicator(amount: totalProfit),
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -286,94 +175,40 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         const Text(
           'Aksi Cepat',
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.w600,
             color: AppColors.textPrimary,
-            letterSpacing: -0.3,
           ),
         ),
         const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: _buildActionCard(
-                icon: Iconsax.edit_2,
-                title: 'Rekap',
-                subtitle: 'Hari ini',
-                color: AppColors.primaryGreen,
-                onTap: () => context.push('/daily-rekap'),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            onPressed: () => context.push('/daily-rekap'),
+            icon: const Icon(Iconsax.edit_2),
+            label: const Text('Rekap Penjualan Hari Ini'),
+          ),
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: () => context.push('/calculator'),
+            icon: const Icon(Iconsax.calculator, color: AppColors.primaryGreen),
+            label: const Text(
+              'Kalkulator HPP',
+              style: TextStyle(color: AppColors.primaryGreen),
+            ),
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: AppColors.primaryGreen),
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _buildActionCard(
-                icon: Iconsax.calculator,
-                title: 'Kalkulator',
-                subtitle: 'HPP',
-                color: AppColors.info,
-                onTap: () => context.push('/calculator'),
-              ),
-            ),
-          ],
+          ),
         ),
       ],
-    );
-  }
-
-  Widget _buildActionCard({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withAlpha(8),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: color.withAlpha(20),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(icon, color: color, size: 20),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              subtitle,
-              style: const TextStyle(
-                fontSize: 12,
-                color: AppColors.textSecondary,
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -393,104 +228,94 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Tren Laba 7 Hari',
+              'Tren Laba 7 Hari Terakhir',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,
-                letterSpacing: -0.3,
               ),
             ),
             const SizedBox(height: 12),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(8),
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: SizedBox(
-                height: 180,
-                child: BarChart(
-                  BarChartData(
-                    alignment: BarChartAlignment.spaceAround,
-                    maxY: _getMaxY(chartData),
-                    minY: _getMinY(chartData),
-                    barGroups: List.generate(chartData.length, (index) {
-                      final record = chartData[index];
-                      final profit = record.totalProfit.toDouble();
-                      return BarChartGroupData(
-                        x: index,
-                        barRods: [
-                          BarChartRodData(
-                            toY: profit,
-                            color: profit >= 0
-                                ? AppColors.primaryGreen
-                                : AppColors.loss,
-                            width: 16,
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(6),
+            SizedBox(
+              height: 200,
+              child: Card(
+                margin: EdgeInsets.zero,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: BarChart(
+                    BarChartData(
+                      alignment: BarChartAlignment.spaceAround,
+                      maxY: _getMaxY(chartData),
+                      minY: _getMinY(chartData),
+                      barGroups: List.generate(chartData.length, (index) {
+                        final record = chartData[index];
+                        final profit = record.totalProfit.toDouble();
+                        return BarChartGroupData(
+                          x: index,
+                          barRods: [
+                            BarChartRodData(
+                              toY: profit,
+                              color: profit >= 0
+                                  ? AppColors.chartGreen
+                                  : AppColors.chartRed,
+                              width: 20,
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(4),
+                              ),
                             ),
-                          ),
-                        ],
-                      );
-                    }),
-                    titlesData: FlTitlesData(
-                      show: true,
-                      topTitles: const AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      rightTitles: const AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          getTitlesWidget: (value, meta) {
-                            final idx = value.toInt();
-                            if (idx >= 0 && idx < chartData.length) {
-                              return Padding(
-                                padding: const EdgeInsets.only(top: 8),
-                                child: Text(
-                                  DateFormatter.formatDayMonth(
-                                      chartData[idx].date),
-                                  style: const TextStyle(
-                                    fontSize: 10,
-                                    color: AppColors.textSecondary,
+                          ],
+                        );
+                      }),
+                      titlesData: FlTitlesData(
+                        show: true,
+                        topTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        rightTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            getTitlesWidget: (value, meta) {
+                              final idx = value.toInt();
+                              if (idx >= 0 && idx < chartData.length) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 4),
+                                  child: Text(
+                                    DateFormatter.formatDayMonth(
+                                        chartData[idx].date),
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      color: AppColors.textSecondary,
+                                    ),
                                   ),
+                                );
+                              }
+                              return const Text('');
+                            },
+                          ),
+                        ),
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 50,
+                            getTitlesWidget: (value, meta) {
+                              return Text(
+                                CurrencyFormatter.formatRupiahCompact(
+                                    value.toInt()),
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  color: AppColors.textSecondary,
                                 ),
                               );
-                            }
-                            return const Text('');
-                          },
+                            },
+                          ),
                         ),
                       ),
-                      leftTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          reservedSize: 50,
-                          getTitlesWidget: (value, meta) {
-                            return Text(
-                              CurrencyFormatter.formatRupiahCompact(
-                                  value.toInt()),
-                              style: const TextStyle(
-                                fontSize: 10,
-                                color: AppColors.textSecondary,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                      borderData: FlBorderData(show: false),
+                      gridData: const FlGridData(show: false),
                     ),
-                    borderData: FlBorderData(show: false),
-                    gridData: const FlGridData(show: false),
                   ),
                 ),
               ),
