@@ -47,13 +47,16 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
       appBar: AppBar(
         title: const Text('Master Produk'),
         actions: [
-          Switch(
-            value: showInactive,
-            onChanged: (val) {
-              ref.read(showInactiveProvider.notifier).state = val;
+          IconButton(
+            icon: Icon(
+              showInactive ? Icons.visibility : Icons.visibility_off,
+              color: showInactive ? AppColors.primaryGreen : AppColors.textSecondary,
+            ),
+            tooltip: showInactive ? 'Sembunyikan Nonaktif' : 'Tampilkan Nonaktif',
+            onPressed: () {
+              ref.read(showInactiveProvider.notifier).state = !showInactive;
             },
           ),
-          const SizedBox(width: 8),
         ],
       ),
       body: Column(
