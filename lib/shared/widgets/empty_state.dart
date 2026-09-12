@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import '../../core/theme/app_colors.dart';
 
 class EmptyState extends StatelessWidget {
@@ -55,7 +56,7 @@ class EmptyState extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton.icon(
                 onPressed: onAction,
-                icon: const Icon(Icons.add),
+                icon: const Icon(Iconsax.add),
                 label: Text(actionLabel!),
               ),
             ],

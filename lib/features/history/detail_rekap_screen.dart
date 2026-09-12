@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/date_formatter.dart';
@@ -41,11 +42,11 @@ class DetailRekapScreen extends ConsumerWidget {
             title: Text(DateFormatter.formatFull(dateOnly)),
             actions: [
               IconButton(
-                icon: const Icon(Icons.edit),
+                icon: const Icon(Iconsax.edit_2),
                 onPressed: () => context.push('/daily-rekap'),
               ),
               IconButton(
-                icon: const Icon(Icons.delete_outline),
+                icon: const Icon(Iconsax.trash),
                 onPressed: () => _showDeleteDialog(context, ref, record),
               ),
             ],
@@ -166,10 +167,10 @@ class DetailRekapScreen extends ConsumerWidget {
         children: [
           Icon(
             profit > 0
-                ? Icons.trending_up
+                ? Iconsax.arrow_up_3
                 : profit < 0
-                    ? Icons.trending_down
-                    : Icons.remove,
+                    ? Iconsax.arrow_down3
+                    : Iconsax.minus,
             color: color,
             size: 32,
           ),
@@ -206,7 +207,7 @@ class DetailRekapScreen extends ConsumerWidget {
           child: _SummaryCard(
             title: 'Omzet',
             value: CurrencyFormatter.formatRupiah(record.totalRevenue),
-            icon: Icons.account_balance_wallet_outlined,
+            icon: Iconsax.wallet_3,
           ),
         ),
         const SizedBox(width: 8),
@@ -214,7 +215,7 @@ class DetailRekapScreen extends ConsumerWidget {
           child: _SummaryCard(
             title: 'Modal',
             value: CurrencyFormatter.formatRupiah(record.totalCost),
-            icon: Icons.shopping_cart_outlined,
+            icon: Iconsax.bag,
           ),
         ),
         const SizedBox(width: 8),
@@ -222,7 +223,7 @@ class DetailRekapScreen extends ConsumerWidget {
           child: _SummaryCard(
             title: 'Unit',
             value: '${record.totalQuantity}',
-            icon: Icons.inventory_outlined,
+            icon: Iconsax.box,
           ),
         ),
       ],

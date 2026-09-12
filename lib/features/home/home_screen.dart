@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconsax/iconsax.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../daily_rekap/daily_rekap_screen.dart';
 import '../history/history_screen.dart';
@@ -36,23 +37,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         },
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.dashboard_outlined),
-            selectedIcon: Icon(Icons.dashboard),
+            icon: Icon(Iconsax.home_2),
+            selectedIcon: Icon(Iconsax.home_25),
             label: 'Beranda',
           ),
           NavigationDestination(
-            icon: Icon(Icons.edit_note_outlined),
-            selectedIcon: Icon(Icons.edit_note),
+            icon: Icon(Iconsax.edit),
+            selectedIcon: Icon(Iconsax.edit_25),
             label: 'Rekap',
           ),
           NavigationDestination(
-            icon: Icon(Icons.calendar_month_outlined),
-            selectedIcon: Icon(Icons.calendar_month),
+            icon: Icon(Iconsax.calendar),
+            selectedIcon: Icon(Iconsax.calendar5),
             label: 'Riwayat',
           ),
           NavigationDestination(
-            icon: Icon(Icons.analytics_outlined),
-            selectedIcon: Icon(Icons.analytics),
+            icon: Icon(Iconsax.chart_21),
+            selectedIcon: Icon(Iconsax.chart_25),
             label: 'Laporan',
           ),
         ],

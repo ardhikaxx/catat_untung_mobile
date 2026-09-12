@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:iconsax/iconsax.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/date_formatter.dart';
@@ -154,7 +155,7 @@ class ReportsScreen extends ConsumerWidget {
             data: (data) {
               if (data.records.isEmpty) {
                 return const EmptyState(
-                  icon: Icons.analytics_outlined,
+                  icon: Iconsax.chart_21,
                   title: 'Belum Ada Data',
                   subtitle: 'Belum ada rekap penjualan pada periode ini',
                 );
@@ -234,7 +235,7 @@ class ReportsScreen extends ConsumerWidget {
               child: _SummaryCard(
                 title: 'Total Omzet',
                 value: CurrencyFormatter.formatRupiah(data.totalRevenue),
-                icon: Icons.account_balance_wallet_outlined,
+                icon: Iconsax.wallet_3,
                 color: AppColors.primaryGreen,
               ),
             ),
@@ -243,7 +244,7 @@ class ReportsScreen extends ConsumerWidget {
               child: _SummaryCard(
                 title: 'Total Modal',
                 value: CurrencyFormatter.formatRupiah(data.totalCost),
-                icon: Icons.shopping_cart_outlined,
+                icon: Iconsax.bag,
                 color: AppColors.warning,
               ),
             ),
@@ -256,7 +257,7 @@ class ReportsScreen extends ConsumerWidget {
               child: _SummaryCard(
                 title: 'Laba Bersih',
                 value: CurrencyFormatter.formatRupiah(data.totalProfit),
-                icon: data.totalProfit >= 0 ? Icons.trending_up : Icons.trending_down,
+                icon: data.totalProfit >= 0 ? Iconsax.arrow_up_3 : Iconsax.arrow_down3,
                 color: data.totalProfit > 0
                     ? AppColors.profit
                     : data.totalProfit < 0
@@ -269,7 +270,7 @@ class ReportsScreen extends ConsumerWidget {
               child: _SummaryCard(
                 title: 'Rata-rata/Hari',
                 value: CurrencyFormatter.formatRupiah(data.avgProfit),
-                icon: Icons.today,
+                icon: Iconsax.calendar,
                 color: AppColors.info,
               ),
             ),
@@ -282,7 +283,7 @@ class ReportsScreen extends ConsumerWidget {
               child: _SummaryCard(
                 title: 'Total Unit',
                 value: '${data.totalQuantity}',
-                icon: Icons.inventory_outlined,
+                icon: Iconsax.box,
                 color: AppColors.info,
               ),
             ),
@@ -291,7 +292,7 @@ class ReportsScreen extends ConsumerWidget {
               child: _SummaryCard(
                 title: 'Margin',
                 value: '${data.margin}%',
-                icon: Icons.percent,
+                icon: Iconsax.percentage_circle,
                 color: data.margin > 0 ? AppColors.profit : AppColors.textSecondary,
               ),
             ),

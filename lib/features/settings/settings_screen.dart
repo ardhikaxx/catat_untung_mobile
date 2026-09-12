@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/app_colors.dart';
@@ -23,7 +24,7 @@ class SettingsScreen extends ConsumerWidget {
                 color: AppColors.primaryGreen.withAlpha(25),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(Icons.info_outline, color: AppColors.primaryGreen),
+              child: const Icon(Iconsax.info_circle, color: AppColors.primaryGreen),
             ),
             title: const Text(AppConstants.appName),
             subtitle: const Text(AppConstants.appTagline),
@@ -38,11 +39,11 @@ class SettingsScreen extends ConsumerWidget {
                 color: AppColors.info.withAlpha(25),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(Icons.inventory_2_outlined, color: AppColors.info),
+              child: const Icon(Iconsax.box, color: AppColors.info),
             ),
             title: const Text('Master Produk'),
             subtitle: const Text('Kelola data produk'),
-            trailing: const Icon(Icons.chevron_right),
+            trailing: const Icon(Iconsax.arrow_right_3),
             onTap: () => context.push('/products'),
           ),
           ListTile(
@@ -53,11 +54,11 @@ class SettingsScreen extends ConsumerWidget {
                 color: AppColors.primaryGreen.withAlpha(25),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(Icons.upload_file, color: AppColors.primaryGreen),
+              child: const Icon(Iconsax.document_upload, color: AppColors.primaryGreen),
             ),
             title: const Text('Export Laporan'),
             subtitle: const Text('Ekspor data ke PDF atau CSV'),
-            trailing: const Icon(Icons.chevron_right),
+            trailing: const Icon(Iconsax.arrow_right_3),
             onTap: () => context.push('/export'),
           ),
           ListTile(
@@ -68,17 +69,17 @@ class SettingsScreen extends ConsumerWidget {
                 color: AppColors.warning.withAlpha(25),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(Icons.backup, color: AppColors.warning),
+              child: const Icon(Iconsax.document_download, color: AppColors.warning),
             ),
             title: const Text('Backup & Restore'),
             subtitle: const Text('Cadangkan atau pulihkan data'),
-            trailing: const Icon(Icons.chevron_right),
+            trailing: const Icon(Iconsax.arrow_right_3),
             onTap: () => context.push('/backup'),
           ),
           const Divider(),
           const _SectionHeader(title: 'Bahasa'),
           const ListTile(
-            leading: Icon(Icons.language),
+            leading: Icon(Iconsax.global),
             title: Text('Bahasa Indonesia'),
             subtitle: Text('Bahasa utama aplikasi'),
           ),
@@ -92,7 +93,7 @@ class SettingsScreen extends ConsumerWidget {
                 color: AppColors.error.withAlpha(25),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(Icons.delete_forever, color: AppColors.error),
+              child: const Icon(Iconsax.trash, color: AppColors.error),
             ),
             title: const Text(
               'Hapus Semua Data',

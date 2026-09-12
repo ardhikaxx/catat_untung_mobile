@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:iconsax/iconsax.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/date_formatter.dart';
@@ -31,12 +32,12 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         title: const Text('Catat Untung'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.inventory_2_outlined),
+            icon: const Icon(Iconsax.box),
             tooltip: 'Master Produk',
             onPressed: () => context.push('/products'),
           ),
           IconButton(
-            icon: const Icon(Icons.settings_outlined),
+            icon: const Icon(Iconsax.setting_2),
             tooltip: 'Pengaturan',
             onPressed: () => context.push('/settings'),
           ),
@@ -116,7 +117,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   child: SummaryCard(
                     title: 'Total Omzet',
                     value: CurrencyFormatter.formatRupiah(totalRevenue),
-                    icon: Icons.account_balance_wallet_outlined,
+                    icon: Iconsax.wallet_3,
                     iconColor: AppColors.primaryGreen,
                   ),
                 ),
@@ -125,7 +126,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   child: SummaryCard(
                     title: 'Total Modal',
                     value: CurrencyFormatter.formatRupiah(totalCost),
-                    icon: Icons.shopping_cart_outlined,
+                    icon: Iconsax.bag,
                     iconColor: AppColors.warning,
                   ),
                 ),
@@ -144,8 +145,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                             ? AppColors.loss
                             : AppColors.breakEven,
                     icon: totalProfit >= 0
-                        ? Icons.trending_up
-                        : Icons.trending_down,
+                        ? Iconsax.arrow_up_3
+                        : Iconsax.arrow_down3,
                     iconColor: totalProfit > 0
                         ? AppColors.profit
                         : totalProfit < 0
@@ -158,7 +159,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   child: SummaryCard(
                     title: 'Unit Terjual',
                     value: '$totalQty',
-                    icon: Icons.inventory_outlined,
+                    icon: Iconsax.box,
                     iconColor: AppColors.info,
                   ),
                 ),
@@ -189,7 +190,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           width: double.infinity,
           child: ElevatedButton.icon(
             onPressed: () => context.push('/daily-rekap'),
-            icon: const Icon(Icons.edit_note),
+            icon: const Icon(Iconsax.edit_2),
             label: const Text('Rekap Penjualan Hari Ini'),
           ),
         ),

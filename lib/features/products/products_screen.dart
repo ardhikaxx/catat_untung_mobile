@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../providers/database_provider.dart';
@@ -65,10 +66,10 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Cari produk...',
-                prefixIcon: const Icon(Icons.search),
+                prefixIcon: const Icon(Iconsax.search_normal),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
-                        icon: const Icon(Icons.clear),
+                        icon: const Icon(Iconsax.close_circle),
                         onPressed: () {
                           _searchController.clear();
                           ref.read(searchQueryProvider.notifier).state = '';
@@ -93,7 +94,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                 
                 if (filtered.isEmpty) {
                   return EmptyState(
-                    icon: Icons.inventory_2_outlined,
+                    icon: Iconsax.box,
                     title: 'Belum Ada Produk',
                     subtitle: 'Tambahkan produk yang biasa kamu jual',
                     actionLabel: 'Tambah Produk',
@@ -116,7 +117,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push('/products/add'),
-        icon: const Icon(Icons.add),
+        icon: const Icon(Iconsax.add),
         label: const Text('Tambah Produk'),
       ),
     );
@@ -149,7 +150,7 @@ class _ProductTile extends ConsumerWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(
-            Icons.inventory_2_outlined,
+            Iconsax.box,
             color: product.isActive ? AppColors.primaryGreen : AppColors.textHint,
           ),
         ),
@@ -224,7 +225,7 @@ class _ProductTile extends ConsumerWidget {
             ],
           ),
         ),
-        trailing: const Icon(Icons.chevron_right),
+        trailing: const Icon(Iconsax.arrow_right_3),
         onTap: () => context.push('/products/edit/${product.id}'),
       ),
     );

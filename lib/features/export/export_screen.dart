@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -222,7 +223,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () => _selectDate(isStart: true),
-                  icon: const Icon(Icons.calendar_today, size: 16),
+                  icon: const Icon(Iconsax.calendar, size: 16),
                   label: Text(DateFormatter.formatShort(_startDate)),
                 ),
               ),
@@ -232,7 +233,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () => _selectDate(isStart: false),
-                  icon: const Icon(Icons.calendar_today, size: 16),
+                  icon: const Icon(Iconsax.calendar, size: 16),
                   label: Text(DateFormatter.formatShort(_endDate)),
                 ),
               ),
@@ -246,7 +247,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: _exportPdf,
-                icon: const Icon(Icons.picture_as_pdf),
+                icon: const Icon(Iconsax.document),
                 label: const Text('Ekspor PDF'),
               ),
             ),
@@ -255,7 +256,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
               width: double.infinity,
               child: OutlinedButton.icon(
                 onPressed: _exportCsv,
-                icon: const Icon(Icons.table_chart),
+                icon: const Icon(Iconsax.chart_2),
                 label: const Text('Ekspor CSV'),
               ),
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/currency_formatter.dart';
@@ -130,7 +131,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.event_busy, size: 48, color: AppColors.textHint),
+            const Icon(Iconsax.calendar_remove, size: 48, color: AppColors.textHint),
             const SizedBox(height: 8),
             Text(
               'Tidak ada rekap pada ${DateFormatter.formatShort(day)}',
@@ -200,7 +201,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.calendar_month_outlined, size: 48, color: AppColors.textHint),
+            Icon(Iconsax.calendar, size: 48, color: AppColors.textHint),
             SizedBox(height: 8),
             Text(
               'Belum ada riwayat',

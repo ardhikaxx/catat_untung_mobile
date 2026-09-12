@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/currency_formatter.dart';
 
@@ -31,9 +32,9 @@ class ProfitIndicator extends StatelessWidget {
     };
 
     final icon = switch (status) {
-      ProfitStatus.untung => Icons.trending_up,
-      ProfitStatus.rugi => Icons.trending_down,
-      ProfitStatus.impas => Icons.remove,
+      ProfitStatus.untung => Iconsax.arrow_up_3,
+      ProfitStatus.rugi => Iconsax.arrow_down3,
+      ProfitStatus.impas => Iconsax.minus,
     };
 
     final label = switch (status) {

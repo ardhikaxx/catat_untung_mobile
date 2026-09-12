@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -223,11 +224,11 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
                     color: AppColors.primaryGreen.withAlpha(25),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(Icons.backup, color: AppColors.primaryGreen),
+                  child: const Icon(Iconsax.document_download, color: AppColors.primaryGreen),
                 ),
                 title: const Text('Backup Data'),
                 subtitle: const Text('Simpan semua data ke file backup'),
-                trailing: const Icon(Icons.chevron_right),
+                trailing: const Icon(Iconsax.arrow_right_3),
                 onTap: _backupData,
               ),
             ),
@@ -241,11 +242,11 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
                     color: AppColors.warning.withAlpha(25),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(Icons.restore, color: AppColors.warning),
+                  child: const Icon(Iconsax.document_upload, color: AppColors.warning),
                 ),
                 title: const Text('Restore Data'),
                 subtitle: const Text('Pulihkan data dari file backup'),
-                trailing: const Icon(Icons.chevron_right),
+                trailing: const Icon(Iconsax.arrow_right_3),
                 onTap: _restoreData,
               ),
             ),

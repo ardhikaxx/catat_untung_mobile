@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/currency_formatter.dart';
@@ -138,7 +139,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: const Icon(
-                            Icons.inventory_2_outlined,
+                            Iconsax.box,
                             color: AppColors.primaryGreen,
                           ),
                         ),
@@ -321,7 +322,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
               onPressed: _selectDate,
               child: Row(
                 children: [
-                  const Icon(Icons.calendar_today, size: 16),
+                  const Icon(Iconsax.calendar, size: 16),
                   const SizedBox(width: 4),
                   Text(
                     DateFormat('d MMM yyyy', 'id_ID').format(_selectedDate),
@@ -339,7 +340,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
             Expanded(
               child: items.isEmpty
                   ? EmptyState(
-                      icon: Icons.edit_note,
+                      icon: Iconsax.edit_2,
                       title: 'Belum Ada Item',
                       subtitle: 'Tambahkan produk yang terjual hari ini',
                       actionLabel: 'Tambah Produk',
@@ -425,7 +426,7 @@ class _RekapItemCard extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.close, size: 18),
+                  icon: const Icon(Iconsax.close_circle, size: 18),
                   color: AppColors.textHint,
                   onPressed: onRemove,
                 ),
@@ -623,7 +624,7 @@ class _BottomPanel extends StatelessWidget {
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: onAddProduct,
-                    icon: const Icon(Icons.add),
+                    icon: const Icon(Iconsax.add),
                     label: const Text('Tambah'),
                   ),
                 ),
