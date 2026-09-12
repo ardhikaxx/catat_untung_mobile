@@ -9,7 +9,6 @@ import '../../core/utils/date_formatter.dart';
 import '../../providers/daily_record_provider.dart';
 import '../../providers/product_provider.dart';
 import '../../shared/widgets/summary_card.dart';
-import '../../shared/widgets/profit_indicator.dart';
 import '../../shared/widgets/loading_state.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
