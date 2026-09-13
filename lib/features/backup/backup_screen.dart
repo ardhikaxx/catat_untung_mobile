@@ -12,6 +12,7 @@ import '../../core/theme/app_colors.dart';
 import '../../providers/database_provider.dart';
 import '../../database/app_database.dart';
 import '../../shared/widgets/loading_state.dart';
+import '../../shared/widgets/app_floating_nav_bar.dart';
 
 class BackupScreen extends ConsumerStatefulWidget {
   const BackupScreen({super.key});
@@ -208,6 +209,9 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
+      extendBody: true,
+      bottomNavigationBar: const AppFloatingNavBar(activeIndex: 4),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Iconsax.arrow_left, size: 20),
@@ -256,6 +260,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
                 onTap: _restoreData,
               ),
             ),
+            const SizedBox(height: AppFloatingNavBar.bottomSpacing),
           ],
         ],
       ),

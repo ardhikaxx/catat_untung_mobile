@@ -10,6 +10,7 @@ import '../../providers/daily_record_provider.dart';
 import 'widgets/settings_header_card.dart';
 import 'widgets/settings_section_card.dart';
 import 'widgets/settings_menu_tile.dart';
+import '../../shared/widgets/app_floating_nav_bar.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -17,10 +18,12 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final canPop = Navigator.canPop(context);
-    final bottomSpacing = canPop ? 24.0 : 110.0;
+    const bottomSpacing = AppFloatingNavBar.bottomSpacing;
 
     return Scaffold(
       backgroundColor: AppColors.background,
+      extendBody: true,
+      bottomNavigationBar: canPop ? const AppFloatingNavBar(activeIndex: 4) : null,
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,

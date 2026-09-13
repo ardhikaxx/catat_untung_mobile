@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import '../../core/theme/app_colors.dart';
 import '../../providers/database_provider.dart';
 import '../../database/app_database.dart';
+import '../../shared/widgets/app_floating_nav_bar.dart';
 import 'widgets/product_hero_card.dart';
 import 'widgets/product_search_filter_bar.dart';
 import 'widgets/product_card.dart';
@@ -53,6 +54,8 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
+      extendBody: true,
+      bottomNavigationBar: const AppFloatingNavBar(activeIndex: 0),
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
@@ -258,7 +261,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                 )
               else
                 SliverPadding(
-                  padding: const EdgeInsets.only(bottom: 110),
+                  padding: const EdgeInsets.only(bottom: 130),
                   sliver: SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {

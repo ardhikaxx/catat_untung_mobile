@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../core/theme/app_colors.dart';
+import '../../shared/widgets/app_floating_nav_bar.dart';
 
 class QuickGuideScreen extends StatelessWidget {
   const QuickGuideScreen({super.key});
@@ -10,6 +11,8 @@ class QuickGuideScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+      extendBody: true,
+      bottomNavigationBar: const AppFloatingNavBar(activeIndex: 4),
       appBar: AppBar(
         backgroundColor: AppColors.surface,
         elevation: 0,
@@ -325,7 +328,7 @@ class QuickGuideScreen extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 36),
+          const SizedBox(height: AppFloatingNavBar.bottomSpacing),
         ],
       ),
     );

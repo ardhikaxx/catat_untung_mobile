@@ -68,7 +68,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     totalProfit: totalProfit,
                     totalQuantity: totalQty,
                     badgeLabel: 'Semua Data',
-                    onRekapTap: () => context.push('/daily-rekap'),
+                    onRekapTap: () {
+                      ref.read(currentTabProvider.notifier).state = 1;
+                    },
                   );
                 },
               ),
@@ -76,7 +78,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
               // 3. Quick Action Buttons Container (Rekap, Riwayat, Produk, HPP)
               DashboardActionBar(
-                onRekap: () => context.push('/daily-rekap'),
+                onRekap: () {
+                  ref.read(currentTabProvider.notifier).state = 1;
+                },
                 onRiwayat: () {
                   ref.read(currentTabProvider.notifier).state = 2;
                 },
@@ -114,7 +118,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               _buildRecentChart(allRecords),
 
               // Spacing at the bottom for floating bottom navigation bar
-              const SizedBox(height: 100),
+              const SizedBox(height: 110),
             ],
           ),
         ),
@@ -318,7 +322,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   ),
                   onTap: () {
                     Navigator.pop(ctx);
-                    context.push('/daily-rekap');
+                    ref.read(currentTabProvider.notifier).state = 1;
                   },
                 ),
                 ListTile(

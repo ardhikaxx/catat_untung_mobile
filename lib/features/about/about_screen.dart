@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_colors.dart';
+import '../../shared/widgets/app_floating_nav_bar.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -12,6 +13,8 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+      extendBody: true,
+      bottomNavigationBar: const AppFloatingNavBar(activeIndex: 4),
       appBar: AppBar(
         backgroundColor: AppColors.surface,
         elevation: 0,
@@ -453,7 +456,7 @@ class AboutScreen extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 36),
+          const SizedBox(height: AppFloatingNavBar.bottomSpacing),
         ],
       ),
     );

@@ -8,6 +8,7 @@ import '../features/products/product_form_screen.dart';
 import '../features/daily_rekap/daily_rekap_screen.dart';
 import '../features/history/history_screen.dart';
 import '../features/history/detail_rekap_screen.dart';
+import '../features/reports/reports_screen.dart';
 import '../features/export/export_screen.dart';
 import '../features/backup/backup_screen.dart';
 import '../features/settings/settings_screen.dart';
@@ -65,6 +66,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           final date = state.pathParameters['date']!;
           return DetailRekapScreen(dateStr: date);
         },
+      ),
+      GoRoute(
+        path: '/reports',
+        builder: (context, state) => const ReportsScreen(),
       ),
       GoRoute(
         path: '/export',

@@ -11,6 +11,7 @@ import 'widgets/history_month_hero_card.dart';
 import 'widgets/history_view_toggle.dart';
 import 'widgets/history_calendar_card.dart';
 import 'widgets/history_list_view.dart';
+import '../../shared/widgets/app_floating_nav_bar.dart';
 
 class HistoryScreen extends ConsumerStatefulWidget {
   const HistoryScreen({super.key});
@@ -61,7 +62,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
   Widget build(BuildContext context) {
     final recordsAsync = ref.watch(allRecordsProvider);
     final canPop = Navigator.canPop(context);
-    final bottomSpacing = canPop ? 24.0 : 110.0;
+    const bottomSpacing = AppFloatingNavBar.bottomSpacing;
 
     final now = DateTime.now();
     final isCurrentMonth = _focusedDay.year == now.year && _focusedDay.month == now.month;
@@ -69,6 +70,8 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
+      extendBody: true,
+      bottomNavigationBar: canPop ? const AppFloatingNavBar(activeIndex: 2) : null,
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,

@@ -9,6 +9,7 @@ import '../../core/utils/calculation_utils.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/daily_record_provider.dart';
 import '../../database/app_database.dart';
+import '../../shared/widgets/app_floating_nav_bar.dart';
 
 class DetailRekapScreen extends ConsumerWidget {
   final String dateStr;
@@ -24,6 +25,8 @@ class DetailRekapScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
+      extendBody: true,
+      bottomNavigationBar: const AppFloatingNavBar(activeIndex: 2),
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
@@ -444,6 +447,7 @@ class DetailRekapScreen extends ConsumerWidget {
                   );
                 },
               ),
+              const SizedBox(height: AppFloatingNavBar.bottomSpacing),
             ],
           );
         },

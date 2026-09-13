@@ -14,6 +14,7 @@ import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/date_formatter.dart';
 import '../../providers/database_provider.dart';
 import '../../shared/widgets/loading_state.dart';
+import '../../shared/widgets/app_floating_nav_bar.dart';
 
 class ExportScreen extends ConsumerStatefulWidget {
   const ExportScreen({super.key});
@@ -206,6 +207,9 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
+      extendBody: true,
+      bottomNavigationBar: const AppFloatingNavBar(activeIndex: 3),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Iconsax.arrow_left, size: 20),
@@ -266,6 +270,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
                 label: const Text('Ekspor CSV'),
               ),
             ),
+            const SizedBox(height: AppFloatingNavBar.bottomSpacing),
           ],
         ],
       ),

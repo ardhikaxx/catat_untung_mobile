@@ -7,6 +7,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/utils/currency_formatter.dart';
 import 'widgets/hpp_hero_result_card.dart';
 import 'widgets/hpp_target_margin_card.dart';
+import '../../shared/widgets/app_floating_nav_bar.dart';
 
 class HppCalculatorScreen extends StatefulWidget {
   const HppCalculatorScreen({super.key});
@@ -142,6 +143,8 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: AppColors.background,
+        extendBody: true,
+        bottomNavigationBar: const AppFloatingNavBar(activeIndex: 0),
         appBar: AppBar(
           backgroundColor: AppColors.surface,
           elevation: 0,
@@ -609,7 +612,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
               ),
             ),
 
-            const SizedBox(height: 36),
+            const SizedBox(height: AppFloatingNavBar.bottomSpacing),
           ],
         ),
       ),

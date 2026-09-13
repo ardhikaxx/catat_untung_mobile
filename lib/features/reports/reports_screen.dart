@@ -11,6 +11,7 @@ import 'widgets/report_hero_card.dart';
 import 'widgets/report_trend_chart.dart';
 import 'widgets/report_metrics_grid.dart';
 import 'widgets/report_top_products.dart';
+import '../../shared/widgets/app_floating_nav_bar.dart';
 
 enum ReportPeriod { sevenDays, thisWeek, thisMonth, lastMonth, custom }
 
@@ -142,10 +143,12 @@ class ReportsScreen extends ConsumerWidget {
     final dateRange = ref.watch(reportDateRangeProvider);
     final reportAsync = ref.watch(reportDataProvider);
     final canPop = Navigator.canPop(context);
-    final bottomSpacing = canPop ? 24.0 : 110.0;
+    const bottomSpacing = AppFloatingNavBar.bottomSpacing;
 
     return Scaffold(
       backgroundColor: AppColors.background,
+      extendBody: true,
+      bottomNavigationBar: canPop ? const AppFloatingNavBar(activeIndex: 3) : null,
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,

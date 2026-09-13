@@ -10,6 +10,7 @@ import '../../providers/database_provider.dart';
 import '../../providers/product_provider.dart';
 import '../../database/app_database.dart';
 import 'widgets/product_live_preview_card.dart';
+import '../../shared/widgets/app_floating_nav_bar.dart';
 
 class ProductFormScreen extends ConsumerStatefulWidget {
   final int? productId;
@@ -249,6 +250,8 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
+      extendBody: true,
+      bottomNavigationBar: const AppFloatingNavBar(activeIndex: 0),
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
@@ -649,6 +652,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                 ),
               ),
             ),
+            const SizedBox(height: AppFloatingNavBar.bottomSpacing),
           ],
         ),
       ),

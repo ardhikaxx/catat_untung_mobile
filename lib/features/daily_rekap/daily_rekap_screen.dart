@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import '../../core/theme/app_colors.dart';
+import '../../shared/widgets/app_floating_nav_bar.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/product_provider.dart';
 import '../../database/app_database.dart';
@@ -375,6 +376,8 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
       },
       child: Scaffold(
         backgroundColor: AppColors.background,
+        extendBody: true,
+        bottomNavigationBar: canPop ? const AppFloatingNavBar(activeIndex: 1) : null,
         appBar: AppBar(
           backgroundColor: AppColors.background,
           elevation: 0,
@@ -478,7 +481,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                           selectedDate: _selectedDate,
                           onEditRekap: _enterEditMode,
                           onViewHistory: () => context.push('/history'),
-                          bottomSpacing: canPop ? 24.0 : 104.0,
+                          bottomSpacing: AppFloatingNavBar.bottomSpacing,
                         )
                       : _buildFormView(items, canPop),
             ),
@@ -489,7 +492,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
   }
 
   Widget _buildFormView(List<RekapItem> items, bool canPop) {
-    final bottomSpacing = canPop ? 20.0 : 100.0;
+    const bottomSpacing = AppFloatingNavBar.bottomSpacing;
 
     if (items.isEmpty) {
       return _buildEmptyState(bottomSpacing);
