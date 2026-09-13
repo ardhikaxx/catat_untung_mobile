@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/constants/app_assets.dart';
 import '../../core/theme/app_colors.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
 
@@ -77,8 +78,8 @@ class AboutScreen extends StatelessWidget {
               children: [
                 // App Logo Badge
                 Container(
-                  width: 72,
-                  height: 72,
+                  width: 76,
+                  height: 76,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
@@ -90,11 +91,11 @@ class AboutScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: const Center(
-                    child: Icon(
-                      Iconsax.wallet_money,
-                      size: 38,
-                      color: AppColors.primaryGreen,
+                  padding: const EdgeInsets.all(10),
+                  child: Center(
+                    child: Image.asset(
+                      AppGifs.buy,
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),
@@ -363,6 +364,20 @@ class AboutScreen extends StatelessWidget {
             ),
             child: Column(
               children: [
+                Container(
+                  width: 58,
+                  height: 58,
+                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.all(6),
+                  decoration: const BoxDecoration(
+                    color: AppColors.greenTint,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Image.asset(
+                    AppGifs.customerService,
+                    fit: BoxFit.contain,
+                  ),
+                ),
                 const Text(
                   '🇮🇩 Bangga Buatan Indonesia',
                   style: TextStyle(

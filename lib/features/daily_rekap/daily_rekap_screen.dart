@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import '../../core/constants/app_assets.dart';
 import '../../core/theme/app_colors.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
 import '../../providers/database_provider.dart';
@@ -615,8 +616,8 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Container(
-                            width: 76,
-                            height: 76,
+                            width: 84,
+                            height: 84,
                             decoration: BoxDecoration(
                               color: const Color(0xFFE8F8EA),
                               shape: BoxShape.circle,
@@ -628,10 +629,10 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                                 ),
                               ],
                             ),
-                            child: const Icon(
-                              Iconsax.bag_2,
-                              size: 36,
-                              color: Color(0xFF00AA13),
+                            padding: const EdgeInsets.all(12),
+                            child: Image.asset(
+                              AppGifs.shoppingBag,
+                              fit: BoxFit.contain,
                             ),
                           ),
                           const SizedBox(height: 18),

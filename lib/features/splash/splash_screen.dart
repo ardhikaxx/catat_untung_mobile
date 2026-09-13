@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/constants/app_assets.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -71,16 +71,26 @@ class _SplashScreenState extends State<SplashScreen>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 100,
-                      height: 100,
+                      width: 110,
+                      height: 110,
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.white.withAlpha(25),
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: const Icon(
-                        Iconsax.money_recive,
                         color: Colors.white,
-                        size: 48,
+                        borderRadius: BorderRadius.circular(28),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withAlpha(40),
+                            blurRadius: 20,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(18),
+                        child: Image.asset(
+                          AppGifs.buy,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 24),

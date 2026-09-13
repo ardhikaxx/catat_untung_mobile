@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import '../../../core/constants/app_assets.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/calculation_utils.dart';
@@ -53,10 +54,11 @@ class RekapSavedView extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        const Icon(
-                          Iconsax.tick_circle5,
-                          size: 20,
-                          color: Color(0xFF16A34A),
+                        Image.asset(
+                          AppGifs.task,
+                          width: 26,
+                          height: 26,
+                          fit: BoxFit.contain,
                         ),
                         const SizedBox(width: 10),
                         Expanded(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import '../../../core/constants/app_assets.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../reports_screen.dart';
@@ -116,24 +117,49 @@ class ReportHeroCard extends StatelessWidget {
           const SizedBox(height: 16),
 
           // Net Profit Main KPI
-          Text(
-            'TOTAL LABA BERSIH',
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.8,
-              color: Colors.white.withAlpha(190),
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '${isProfit ? '+' : ''}${CurrencyFormatter.formatRupiah(data.totalProfit)}',
-            style: const TextStyle(
-              fontSize: 26,
-              fontWeight: FontWeight.w800,
-              color: Colors.white,
-              letterSpacing: -0.5,
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'TOTAL LABA BERSIH',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.8,
+                        color: Colors.white.withAlpha(190),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${isProfit ? '+' : ''}${CurrencyFormatter.formatRupiah(data.totalProfit)}',
+                      style: const TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                        letterSpacing: -0.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: 48,
+                height: 48,
+                padding: const EdgeInsets.all(7),
+                decoration: BoxDecoration(
+                  color: Colors.white.withAlpha(35),
+                  shape: BoxShape.circle,
+                ),
+                child: Image.asset(
+                  AppGifs.profits,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ],
           ),
 
           const SizedBox(height: 16),

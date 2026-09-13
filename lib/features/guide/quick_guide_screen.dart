@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
+import '../../core/constants/app_assets.dart';
 import '../../core/theme/app_colors.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
 
@@ -74,41 +75,74 @@ class QuickGuideScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withAlpha(30),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Icon(Iconsax.book_1, size: 14, color: Colors.white),
-                      SizedBox(width: 6),
-                      Text(
-                        'PANDUAN LENGKAP UMKM',
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                          letterSpacing: 0.5,
-                        ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withAlpha(30),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: const [
+                                Icon(Iconsax.book_1, size: 14, color: Colors.white),
+                                SizedBox(width: 6),
+                                Text(
+                                  'PANDUAN LENGKAP UMKM',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          const Text(
+                            'Kuasai Pembukuan Toko\nDalam 4 Langkah Mudah',
+                            style: TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.white,
+                              height: 1.25,
+                              letterSpacing: -0.3,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(width: 12),
+                    Container(
+                      width: 64,
+                      height: 64,
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(18),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withAlpha(20),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Image.asset(
+                        AppGifs.customerService,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 14),
-                const Text(
-                  'Kuasai Pembukuan Toko\nDalam 4 Langkah Mudah',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.white,
-                    height: 1.25,
-                    letterSpacing: -0.3,
-                  ),
-                ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 10),
                 Text(
                   'Catat Untung dirancang agar Anda bisa merekap penjualan hanya dalam 1 menit setiap hari tanpa perlu ribet pakai buku kertas.',
                   style: TextStyle(

@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import '../../core/theme/app_colors.dart';
 import '../../providers/database_provider.dart';
 import '../../database/app_database.dart';
+import '../../core/constants/app_assets.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
 import 'widgets/product_hero_card.dart';
 import 'widgets/product_search_filter_bar.dart';
@@ -310,16 +311,16 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 80,
-              height: 80,
-              decoration: const BoxDecoration(
+              width: 105,
+              height: 105,
+              decoration: BoxDecoration(
                 color: AppColors.greenTint,
-                shape: BoxShape.circle,
+                borderRadius: BorderRadius.circular(28),
               ),
-              child: const Icon(
-                Iconsax.box_add,
-                size: 38,
-                color: AppColors.primaryGreen,
+              padding: const EdgeInsets.all(10),
+              child: Image.asset(
+                AppGifs.groceryBasket,
+                fit: BoxFit.contain,
               ),
             ),
             const SizedBox(height: 20),

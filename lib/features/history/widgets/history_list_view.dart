@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import '../../../core/constants/app_assets.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../database/app_database.dart';
 import 'history_record_card.dart';
@@ -139,16 +140,16 @@ class _HistoryListViewState extends State<HistoryListView> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 64,
-              height: 64,
+              width: 80,
+              height: 80,
               decoration: const BoxDecoration(
                 color: AppColors.greenTint,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
-                Iconsax.receipt_2_1,
-                size: 30,
-                color: AppColors.primaryGreen,
+              padding: const EdgeInsets.all(12),
+              child: Image.asset(
+                AppGifs.calendar,
+                fit: BoxFit.contain,
               ),
             ),
             const SizedBox(height: 16),
