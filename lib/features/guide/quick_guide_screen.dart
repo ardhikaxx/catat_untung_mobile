@@ -135,9 +135,12 @@ class QuickGuideScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: Image.asset(
-                        AppGifs.customerService,
-                        fit: BoxFit.contain,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(14),
+                        child: Image.asset(
+                          AppGifs.customerService,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                   ],

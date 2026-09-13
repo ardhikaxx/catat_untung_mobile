@@ -93,9 +93,12 @@ class AboutScreen extends StatelessWidget {
                   ),
                   padding: const EdgeInsets.all(10),
                   child: Center(
-                    child: Image.asset(
-                      AppGifs.buy,
-                      fit: BoxFit.contain,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(14),
+                      child: Image.asset(
+                        AppGifs.buy,
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),
@@ -369,13 +372,16 @@ class AboutScreen extends StatelessWidget {
                   height: 58,
                   margin: const EdgeInsets.only(bottom: 12),
                   padding: const EdgeInsets.all(6),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: AppColors.greenTint,
-                    shape: BoxShape.circle,
+                    borderRadius: BorderRadius.circular(18),
                   ),
-                  child: Image.asset(
-                    AppGifs.customerService,
-                    fit: BoxFit.contain,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(14),
+                    child: Image.asset(
+                      AppGifs.customerService,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
                 const Text(

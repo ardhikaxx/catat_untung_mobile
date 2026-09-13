@@ -318,9 +318,12 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                 borderRadius: BorderRadius.circular(28),
               ),
               padding: const EdgeInsets.all(10),
-              child: Image.asset(
-                AppGifs.groceryBasket,
-                fit: BoxFit.contain,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.asset(
+                  AppGifs.groceryBasket,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
             const SizedBox(height: 20),

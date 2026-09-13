@@ -152,11 +152,14 @@ class ReportHeroCard extends StatelessWidget {
                 padding: const EdgeInsets.all(7),
                 decoration: BoxDecoration(
                   color: Colors.white.withAlpha(35),
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                child: Image.asset(
-                  AppGifs.profits,
-                  fit: BoxFit.contain,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    AppGifs.profits,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             ],

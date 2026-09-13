@@ -142,14 +142,17 @@ class _HistoryListViewState extends State<HistoryListView> {
             Container(
               width: 80,
               height: 80,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: AppColors.greenTint,
-                shape: BoxShape.circle,
+                borderRadius: BorderRadius.circular(22),
               ),
               padding: const EdgeInsets.all(12),
-              child: Image.asset(
-                AppGifs.calendar,
-                fit: BoxFit.contain,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset(
+                  AppGifs.calendar,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
             const SizedBox(height: 16),

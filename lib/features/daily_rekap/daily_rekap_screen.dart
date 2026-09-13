@@ -620,7 +620,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                             height: 84,
                             decoration: BoxDecoration(
                               color: const Color(0xFFE8F8EA),
-                              shape: BoxShape.circle,
+                              borderRadius: BorderRadius.circular(24),
                               boxShadow: [
                                 BoxShadow(
                                   color: const Color(0xFF00AA13).withAlpha(25),
@@ -630,9 +630,12 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                               ],
                             ),
                             padding: const EdgeInsets.all(12),
-                            child: Image.asset(
-                              AppGifs.shoppingBag,
-                              fit: BoxFit.contain,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Image.asset(
+                                AppGifs.shoppingBag,
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 18),

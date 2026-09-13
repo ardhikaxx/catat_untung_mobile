@@ -54,11 +54,14 @@ class RekapSavedView extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        Image.asset(
-                          AppGifs.task,
-                          width: 26,
-                          height: 26,
-                          fit: BoxFit.contain,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.asset(
+                            AppGifs.task,
+                            width: 26,
+                            height: 26,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
