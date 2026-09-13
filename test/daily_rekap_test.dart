@@ -6,6 +6,8 @@ import 'package:catat_untung/features/daily_rekap/widgets/rekap_date_selector.da
 import 'package:catat_untung/features/daily_rekap/widgets/rekap_live_summary_card.dart';
 import 'package:catat_untung/features/daily_rekap/widgets/rekap_item_tile.dart';
 import 'package:catat_untung/features/daily_rekap/widgets/rekap_bottom_action_panel.dart';
+import 'package:catat_untung/features/daily_rekap/widgets/rekap_saved_view.dart';
+import 'package:catat_untung/database/app_database.dart';
 
 void main() {
   setUpAll(() async {
@@ -145,6 +147,68 @@ void main() {
       await tester.tap(find.text('Simpan Rekap'));
       await tester.pump();
       expect(saveTapped, isTrue);
+    });
+
+    testWidgets('RekapSavedView renders KPI, items, and docked action buttons', (tester) async {
+      bool editTapped = false;
+      bool historyTapped = false;
+
+      final record = DailyRecord(
+        id: 1,
+        date: DateTime(2026, 9, 12),
+        totalRevenue: 500000,
+        totalCost: 300000,
+        totalProfit: 200000,
+        totalQuantity: 10,
+        createdAt: DateTime(2026, 9, 12, 10, 0),
+        updatedAt: DateTime(2026, 9, 12, 18, 30),
+      );
+
+      final items = [
+        DailyRecordItem(
+          id: 1,
+          dailyRecordId: 1,
+          productId: 101,
+          productNameSnapshot: 'Kopi Susu Gula Aren',
+          unitSnapshot: 'cup',
+          hppSnapshot: 8000,
+          sellingPriceSnapshot: 15000,
+          quantity: 10,
+          subtotalRevenue: 150000,
+          subtotalCost: 80000,
+          subtotalProfit: 70000,
+          createdAt: DateTime(2026, 9, 12),
+        ),
+      ];
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: RekapSavedView(
+              record: record,
+              items: items,
+              selectedDate: DateTime(2026, 9, 12),
+              onEditRekap: () => editTapped = true,
+              onViewHistory: () => historyTapped = true,
+              bottomPadding: 88.0,
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Rekap Sudah Tersimpan'), findsOneWidget);
+      expect(find.text('Rp 500.000'), findsOneWidget);
+      expect(find.text('Kopi Susu Gula Aren'), findsOneWidget);
+      expect(find.text('Ubah / Tambah Rekap Ini'), findsOneWidget);
+      expect(find.text('Buka Riwayat Penjualan'), findsOneWidget);
+
+      await tester.tap(find.text('Ubah / Tambah Rekap Ini'));
+      await tester.pump();
+      expect(editTapped, isTrue);
+
+      await tester.tap(find.text('Buka Riwayat Penjualan'));
+      await tester.pump();
+      expect(historyTapped, isTrue);
     });
   });
 }

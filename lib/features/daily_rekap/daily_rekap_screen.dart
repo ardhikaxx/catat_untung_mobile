@@ -478,6 +478,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                           selectedDate: _selectedDate,
                           onEditRekap: _enterEditMode,
                           onViewHistory: () => context.push('/history'),
+                          bottomPadding: canPop ? 16.0 : 88.0,
                         )
                       : _buildFormView(items, canPop),
             ),
@@ -488,74 +489,78 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
   }
 
   Widget _buildFormView(List<RekapItem> items, bool canPop) {
+    final bottomSpacing = canPop ? 16.0 : 88.0;
+
+    if (items.isEmpty) {
+      return _buildEmptyState(bottomSpacing);
+    }
+
     return Column(
       children: [
         Expanded(
-          child: items.isEmpty
-              ? _buildEmptyState()
-              : ListView(
-                  padding: const EdgeInsets.only(bottom: 24),
-                  children: [
-                    // Real-time Summary Hero Card
-                    RekapLiveSummaryCard(
-                      totalRevenue: _totalRevenue,
-                      totalCost: _totalCost,
-                      totalProfit: _totalProfit,
-                      itemCount: items.length,
-                      totalQuantity: _totalQuantity,
-                    ),
+          child: ListView(
+            padding: const EdgeInsets.only(bottom: 20),
+            children: [
+              // Real-time Summary Hero Card
+              RekapLiveSummaryCard(
+                totalRevenue: _totalRevenue,
+                totalCost: _totalCost,
+                totalProfit: _totalProfit,
+                itemCount: items.length,
+                totalQuantity: _totalQuantity,
+              ),
 
-                    // Section Header
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Item Terjual',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textPrimary,
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF1F5F9),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text(
-                              '${items.length} Menu',
-                              style: const TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF64748B),
-                              ),
-                            ),
-                          ),
-                        ],
+              // Section Header
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Item Terjual',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
                       ),
                     ),
-
-                    // List of Item Tiles
-                    ...items.asMap().entries.map((entry) {
-                      final index = entry.key;
-                      final item = entry.value;
-                      return RekapItemTile(
-                        key: ValueKey('item_${item.productId}_$index'),
-                        item: item,
-                        index: index,
-                        onQuantityChanged: (qty) => _updateQuantity(index, qty),
-                        onPriceChanged: (price) => _updateSellingPrice(index, price),
-                        onRemove: () => _removeItem(index),
-                      );
-                    }),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF1F5F9),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        '${items.length} Menu',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF64748B),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
+              ),
+
+              // List of Item Tiles
+              ...items.asMap().entries.map((entry) {
+                final index = entry.key;
+                final item = entry.value;
+                return RekapItemTile(
+                  key: ValueKey('item_${item.productId}_$index'),
+                  item: item,
+                  index: index,
+                  onQuantityChanged: (qty) => _updateQuantity(index, qty),
+                  onPriceChanged: (price) => _updateSellingPrice(index, price),
+                  onRemove: () => _removeItem(index),
+                );
+              }),
+            ],
+          ),
         ),
 
         // Bottom Sticky Action Panel
@@ -568,88 +573,107 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
           isLoading: _isLoading,
           onSave: _saveRekap,
           onAddProduct: _showProductSelector,
+          bottomPadding: bottomSpacing,
         ),
-
-        // If inside Home tab (canPop == false), add spacing for floating bottom navigation bar
-        if (!canPop) const SizedBox(height: 84),
       ],
     );
   }
 
-  Widget _buildEmptyState() {
-    return Center(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 90,
-              height: 90,
-              decoration: BoxDecoration(
-                color: const Color(0xFFF3E8FF),
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF6C4AB6).withAlpha(30),
-                    blurRadius: 20,
-                    offset: const Offset(0, 6),
+  Widget _buildEmptyState(double bottomSpacing) {
+    return Column(
+      children: [
+        Expanded(
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 84,
+                    height: 84,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF3E8FF),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF6C4AB6).withAlpha(30),
+                          blurRadius: 18,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Iconsax.bag_2,
+                      size: 40,
+                      color: Color(0xFF6C4AB6),
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  const Text(
+                    'Belum Ada Item Terjual',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Pilih produk dari menu katalog Anda dan masukkan jumlah yang terjual hari ini untuk menghitung laba bersih otomatis.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: AppColors.textSecondary,
+                      height: 1.5,
+                    ),
                   ),
                 ],
               ),
-              child: const Icon(
-                Iconsax.bag_2,
-                size: 44,
-                color: Color(0xFF6C4AB6),
-              ),
             ),
-            const SizedBox(height: 20),
-            const Text(
-              'Belum Ada Item Terjual',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Pilih produk dari menu katalog Anda dan masukkan jumlah yang terjual hari ini untuk menghitung laba bersih otomatis.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 13,
-                color: AppColors.textSecondary,
-                height: 1.5,
-              ),
-            ),
-            const SizedBox(height: 28),
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: ElevatedButton.icon(
-                onPressed: _showProductSelector,
-                icon: const Icon(Iconsax.add_circle, size: 20),
-                label: const Text(
-                  'Tambah Produk Terjual',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF6C4AB6),
-                  foregroundColor: Colors.white,
-                  elevation: 2,
-                  shadowColor: const Color(0xFF6C4AB6).withAlpha(100),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+
+        // Bagian untuk menambah rekapan (Docked neatly right above navbottom!)
+        Container(
+          padding: EdgeInsets.fromLTRB(16, 12, 16, bottomSpacing),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(8),
+                blurRadius: 14,
+                offset: const Offset(0, -3),
+              ),
+            ],
+          ),
+          child: SizedBox(
+            width: double.infinity,
+            height: 48,
+            child: ElevatedButton.icon(
+              onPressed: _showProductSelector,
+              icon: const Icon(Iconsax.add_circle, size: 20),
+              label: const Text(
+                'Tambah Produk Terjual',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF6C4AB6),
+                foregroundColor: Colors.white,
+                elevation: 2,
+                shadowColor: const Color(0xFF6C4AB6).withAlpha(100),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

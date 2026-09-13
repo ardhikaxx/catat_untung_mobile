@@ -12,6 +12,7 @@ class RekapBottomActionPanel extends StatelessWidget {
   final bool isLoading;
   final VoidCallback onSave;
   final VoidCallback onAddProduct;
+  final double bottomPadding;
 
   const RekapBottomActionPanel({
     super.key,
@@ -23,6 +24,7 @@ class RekapBottomActionPanel extends StatelessWidget {
     required this.isLoading,
     required this.onSave,
     required this.onAddProduct,
+    this.bottomPadding = 16.0,
   });
 
   @override
@@ -43,12 +45,10 @@ class RekapBottomActionPanel extends StatelessWidget {
           ),
         ],
       ),
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
-      child: SafeArea(
-        top: false,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
+      padding: EdgeInsets.fromLTRB(16, 12, 16, bottomPadding),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
             // Quick Mini-Summary Bar
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
@@ -189,7 +189,6 @@ class RekapBottomActionPanel extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }
