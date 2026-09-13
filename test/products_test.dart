@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:catat_untung/features/products/widgets/product_hero_card.dart';
 import 'package:catat_untung/features/products/widgets/product_card.dart';
 import 'package:catat_untung/features/products/widgets/product_search_filter_bar.dart';
