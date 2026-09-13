@@ -12,6 +12,8 @@ import '../features/export/export_screen.dart';
 import '../features/backup/backup_screen.dart';
 import '../features/settings/settings_screen.dart';
 import '../features/calculator/hpp_calculator_screen.dart';
+import '../features/guide/quick_guide_screen.dart';
+import '../features/about/about_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -34,7 +36,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/products/add',
-        builder: (context, state) => const ProductFormScreen(),
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          return ProductFormScreen(
+            initialHpp: extra?['initialHpp'] as double?,
+            initialSellingPrice: extra?['initialSellingPrice'] as double?,
+          );
+        },
       ),
       GoRoute(
         path: '/products/edit/:id',
@@ -73,6 +81,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/calculator',
         builder: (context, state) => const HppCalculatorScreen(),
+      ),
+      GoRoute(
+        path: '/guide',
+        builder: (context, state) => const QuickGuideScreen(),
+      ),
+      GoRoute(
+        path: '/about',
+        builder: (context, state) => const AboutScreen(),
       ),
     ],
   );

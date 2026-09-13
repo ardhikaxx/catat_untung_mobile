@@ -13,8 +13,15 @@ import 'widgets/product_live_preview_card.dart';
 
 class ProductFormScreen extends ConsumerStatefulWidget {
   final int? productId;
+  final double? initialHpp;
+  final double? initialSellingPrice;
 
-  const ProductFormScreen({super.key, this.productId});
+  const ProductFormScreen({
+    super.key,
+    this.productId,
+    this.initialHpp,
+    this.initialSellingPrice,
+  });
 
   @override
   ConsumerState<ProductFormScreen> createState() => _ProductFormScreenState();
@@ -49,6 +56,13 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
     _isEdit = widget.productId != null;
     if (_isEdit) {
       _loadProduct();
+    } else {
+      if (widget.initialHpp != null && widget.initialHpp! > 0) {
+        _hppController.text = widget.initialHpp!.round().toString();
+      }
+      if (widget.initialSellingPrice != null && widget.initialSellingPrice! > 0) {
+        _sellingPriceController.text = widget.initialSellingPrice!.round().toString();
+      }
     }
   }
 

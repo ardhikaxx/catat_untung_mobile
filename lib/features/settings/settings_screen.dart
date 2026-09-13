@@ -205,7 +205,7 @@ class SettingsScreen extends ConsumerWidget {
                 iconBg: const Color(0xFFF1F5F9),
                 title: 'Tentang Aplikasi',
                 subtitle: 'Informasi dan filosofi Catat Untung',
-                onTap: () => _showAboutModal(context),
+                onTap: () => context.push('/about'),
               ),
               SettingsMenuTile(
                 icon: Iconsax.book_1,
@@ -214,7 +214,7 @@ class SettingsScreen extends ConsumerWidget {
                 title: 'Panduan Singkat',
                 subtitle: 'Tips praktis mencatat rekap penjualan harian',
                 showDivider: false,
-                onTap: () => _showGuideModal(context),
+                onTap: () => context.push('/guide'),
               ),
             ],
           ),
@@ -269,198 +269,6 @@ class SettingsScreen extends ConsumerWidget {
           SizedBox(height: bottomSpacing),
         ],
       ),
-    );
-  }
-
-  void _showAboutModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFCBD5E1),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: AppColors.greenTint,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(
-                    Iconsax.wallet_money,
-                    color: AppColors.primaryGreen,
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: 14),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Catat Untung',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                    Text(
-                      'Versi 1.0.0 • 100% Offline First',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Catat Untung dirancang khusus untuk pelaku UMKM, pedagang warung, dan pengusaha kuliner agar dapat mengetahui omzet, modal, dan laba bersih harian secara akurat tanpa memerlukan koneksi internet.',
-              style: TextStyle(
-                fontSize: 13,
-                color: Color(0xFF475569),
-                height: 1.5,
-              ),
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              height: 44,
-              child: ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryGreen,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Text('Tutup'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showGuideModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFCBD5E1),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Cara Mudah Rekap Penjualan',
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w800,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            const SizedBox(height: 14),
-            _buildGuideStep('1', 'Tambah produk dan tentukan HPP (modal) serta harga jual pada menu Katalog Produk.'),
-            const SizedBox(height: 10),
-            _buildGuideStep('2', 'Buka menu Rekap setiap hari, pilih produk yang terjual dan masukkan jumlah unitnya.'),
-            const SizedBox(height: 10),
-            _buildGuideStep('3', 'Simpan rekap dan pantau laba bersih secara real-time di Beranda serta Laporan & Tren.'),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              height: 44,
-              child: ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryGreen,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Text('Mengerti'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildGuideStep(String number, String text) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 24,
-          height: 24,
-          decoration: const BoxDecoration(
-            color: AppColors.greenTint,
-            shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: Text(
-              number,
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                color: AppColors.primaryGreen,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            text,
-            style: const TextStyle(
-              fontSize: 13,
-              color: Color(0xFF334155),
-              height: 1.4,
-            ),
-          ),
-        ),
-      ],
     );
   }
 
