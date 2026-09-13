@@ -69,13 +69,13 @@ class DetailRekapScreen extends ConsumerWidget {
                         icon: Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFF3E8FF),
+                            color: AppColors.greenTint,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: const Icon(
                             Iconsax.edit_2,
                             size: 16,
-                            color: Color(0xFF6C4AB6),
+                            color: AppColors.primaryGreen,
                           ),
                         ),
                         onPressed: () {
@@ -110,7 +110,7 @@ class DetailRekapScreen extends ConsumerWidget {
       ),
       body: recordAsync.when(
         loading: () => const Center(
-          child: CircularProgressIndicator(color: Color(0xFF6C4AB6)),
+          child: CircularProgressIndicator(color: AppColors.primaryGreen),
         ),
         error: (e, s) => Center(
           child: Text('Gagal memuat data: $e'),
@@ -141,15 +141,22 @@ class DetailRekapScreen extends ConsumerWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: isProfit
-                        ? [const Color(0xFF1E293B), const Color(0xFF0F172A)]
-                        : [const Color(0xFF991B1B), const Color(0xFF7F1D1D)],
+                        ? const [
+                            AppColors.primaryGreen,
+                            AppColors.primaryGreenDark,
+                          ]
+                        : const [
+                            Color(0xFF991B1B),
+                            Color(0xFF7F1D1D),
+                          ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   borderRadius: BorderRadius.circular(22),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withAlpha(35),
+                      color: (isProfit ? AppColors.primaryGreen : AppColors.loss)
+                          .withAlpha(50),
                       blurRadius: 16,
                       offset: const Offset(0, 6),
                     ),
@@ -177,7 +184,7 @@ class DetailRekapScreen extends ConsumerWidget {
                           ),
                           decoration: BoxDecoration(
                             color: isProfit
-                                ? const Color(0xFFDCFCE7)
+                                ? AppColors.greenTint
                                 : const Color(0xFFFEE2E2),
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -187,8 +194,8 @@ class DetailRekapScreen extends ConsumerWidget {
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
                               color: isProfit
-                                  ? const Color(0xFF16A34A)
-                                  : const Color(0xFFDC2626),
+                                  ? AppColors.primaryGreen
+                                  : AppColors.loss,
                             ),
                           ),
                         ),
@@ -284,7 +291,7 @@ class DetailRekapScreen extends ConsumerWidget {
                 loading: () => const Center(
                   child: Padding(
                     padding: EdgeInsets.all(24),
-                    child: CircularProgressIndicator(color: Color(0xFF6C4AB6)),
+                    child: CircularProgressIndicator(color: AppColors.primaryGreen),
                   ),
                 ),
                 error: (e, s) => Text('Gagal memuat item: $e'),
@@ -313,7 +320,7 @@ class DetailRekapScreen extends ConsumerWidget {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: const Color(0xFFE2E8F0)),
+                          border: Border.all(color: AppColors.greyBorder),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withAlpha(5),
@@ -331,13 +338,13 @@ class DetailRekapScreen extends ConsumerWidget {
                                   width: 38,
                                   height: 38,
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFF3E8FF),
+                                    color: AppColors.greenTint,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: const Icon(
                                     Iconsax.box,
                                     size: 18,
-                                    color: Color(0xFF6C4AB6),
+                                    color: AppColors.primaryGreen,
                                   ),
                                 ),
                                 const SizedBox(width: 12),

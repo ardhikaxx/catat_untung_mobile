@@ -68,9 +68,10 @@ class PerformanceListSection extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: AppColors.greyBorder),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withAlpha(10),
+                color: Colors.black.withAlpha(8),
                 blurRadius: 16,
                 offset: const Offset(0, 4),
               ),
@@ -88,17 +89,17 @@ class PerformanceListSection extends StatelessWidget {
                 amount: CurrencyFormatter.formatRupiah(totalCost),
                 amountColor: AppColors.textPrimary,
               ),
-              const Divider(height: 1, color: Color(0xFFF1F5F9)),
+              const Divider(height: 1, color: AppColors.divider),
 
               // 2. Laba Bersih
               _PerformanceTile(
                 icon: totalProfit >= 0 ? Iconsax.arrow_up_3 : Iconsax.arrow_down3,
                 iconBgColor: totalProfit >= 0
-                    ? const Color(0xFFDCFCE7)
+                    ? AppColors.greenTint
                     : const Color(0xFFFEE2E2),
                 iconColor: totalProfit >= 0
-                    ? const Color(0xFF16A34A)
-                    : const Color(0xFFDC2626),
+                    ? AppColors.profit
+                    : AppColors.loss,
                 title: 'Laba Bersih',
                 subtitle: totalProfit >= 0
                     ? 'Keuntungan bersih • $formattedTimeDate'
@@ -107,10 +108,10 @@ class PerformanceListSection extends StatelessWidget {
                     ? '+${CurrencyFormatter.formatRupiah(totalProfit)}'
                     : CurrencyFormatter.formatRupiah(totalProfit),
                 amountColor: totalProfit >= 0
-                    ? const Color(0xFF16A34A)
-                    : const Color(0xFFDC2626),
+                    ? AppColors.profit
+                    : AppColors.loss,
               ),
-              const Divider(height: 1, color: Color(0xFFF1F5F9)),
+              const Divider(height: 1, color: AppColors.divider),
 
               // 3. Unit Terjual
               _PerformanceTile(
@@ -125,14 +126,14 @@ class PerformanceListSection extends StatelessWidget {
 
               // If there are sold product items today, show up to 3 of them
               if (todayItems.isNotEmpty) ...[
-                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                const Divider(height: 1, color: AppColors.divider),
                 ...todayItems.take(3).map((item) {
                   return Column(
                     children: [
                       _PerformanceTile(
                         icon: Iconsax.receipt_item,
-                        iconBgColor: const Color(0xFFF3E8FF),
-                        iconColor: const Color(0xFF7C3AED),
+                        iconBgColor: AppColors.greenTint,
+                        iconColor: AppColors.primaryGreen,
                         title: item.productNameSnapshot,
                         subtitle:
                             '${item.quantity} ${item.unitSnapshot} x ${CurrencyFormatter.formatRupiahCompact(item.sellingPriceSnapshot)}',
@@ -142,7 +143,7 @@ class PerformanceListSection extends StatelessWidget {
                         amountColor: AppColors.textPrimary,
                       ),
                       if (item != todayItems.take(3).last)
-                        const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                        const Divider(height: 1, color: AppColors.divider),
                     ],
                   );
                 }),

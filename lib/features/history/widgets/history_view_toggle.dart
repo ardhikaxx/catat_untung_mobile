@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import '../../../core/theme/app_colors.dart';
 import 'history_view_mode.dart';
 
 class HistoryViewToggle extends StatelessWidget {
@@ -18,7 +19,7 @@ class HistoryViewToggle extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: const Color(0xFFF1F5F9),
+        color: AppColors.greyBg,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -77,8 +78,8 @@ class HistoryViewToggle extends StatelessWidget {
               icon,
               size: 16,
               color: isSelected
-                  ? const Color(0xFF6C4AB6)
-                  : const Color(0xFF64748B),
+                  ? AppColors.primaryGreen
+                  : AppColors.grey,
             ),
             const SizedBox(width: 6),
             Text(
@@ -87,8 +88,8 @@ class HistoryViewToggle extends StatelessWidget {
                 fontSize: 13,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                 color: isSelected
-                    ? const Color(0xFF1E293B)
-                    : const Color(0xFF64748B),
+                    ? AppColors.textPrimary
+                    : AppColors.grey,
               ),
             ),
           ],

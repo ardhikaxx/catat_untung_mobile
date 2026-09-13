@@ -36,14 +36,14 @@ class RekapLiveSummaryCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Color(0xFF5B2E91),
-            Color(0xFF7B3FB9),
+            Color(0xFF00AA13),
+            Color(0xFF00880F),
           ],
         ),
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF6C4AB6).withAlpha(70),
+            color: const Color(0xFF00AA13).withAlpha(55),
             blurRadius: 18,
             offset: const Offset(0, 8),
           ),

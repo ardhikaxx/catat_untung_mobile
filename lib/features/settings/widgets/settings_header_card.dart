@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../providers/product_provider.dart';
 import '../../../providers/daily_record_provider.dart';
 
@@ -19,8 +20,8 @@ class SettingsHeaderCard extends ConsumerWidget {
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [
-            Color(0xFF6C4AB6),
-            Color(0xFF50309B),
+            AppColors.primaryGreen,
+            AppColors.primaryGreenDark,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -28,7 +29,7 @@ class SettingsHeaderCard extends ConsumerWidget {
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF6C4AB6).withAlpha(50),
+            color: AppColors.primaryGreen.withAlpha(50),
             blurRadius: 18,
             offset: const Offset(0, 8),
           ),

@@ -92,16 +92,16 @@ class HistoryCalendarCard extends StatelessWidget {
                 color: AppColors.textPrimary,
               ),
               todayDecoration: BoxDecoration(
-                color: Color(0xFFF3E8FF),
+                color: AppColors.greenTint,
                 shape: BoxShape.circle,
               ),
               todayTextStyle: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF6C4AB6),
+                color: AppColors.primaryGreen,
               ),
               selectedDecoration: BoxDecoration(
-                color: Color(0xFF6C4AB6),
+                color: AppColors.primaryGreen,
                 shape: BoxShape.circle,
               ),
               selectedTextStyle: TextStyle(
@@ -124,10 +124,10 @@ class HistoryCalendarCard extends StatelessWidget {
                       height: 6,
                       decoration: BoxDecoration(
                         color: isProfit
-                            ? const Color(0xFF16A34A)
-                            : isLoss
-                                ? const Color(0xFFDC2626)
-                                : const Color(0xFF94A3B8),
+                          ? AppColors.profit
+                          : isLoss
+                              ? AppColors.loss
+                              : AppColors.breakEven,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -145,11 +145,11 @@ class HistoryCalendarCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildLegend(const Color(0xFF16A34A), 'Ada Rekap Untung'),
+              _buildLegend(AppColors.profit, 'Ada Rekap Untung'),
               const SizedBox(width: 16),
-              _buildLegend(const Color(0xFFDC2626), 'Ada Rekap Rugi'),
+              _buildLegend(AppColors.loss, 'Ada Rekap Rugi'),
               const SizedBox(width: 16),
-              _buildLegend(const Color(0xFF6C4AB6), 'Hari Ini / Terpilih'),
+              _buildLegend(AppColors.primaryGreen, 'Hari Ini / Terpilih'),
             ],
           ),
         ),
@@ -269,8 +269,8 @@ class HistoryCalendarCard extends StatelessWidget {
                     ),
                   ),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xFF6C4AB6),
-                    side: const BorderSide(color: Color(0xFF6C4AB6)),
+                    foregroundColor: AppColors.primaryGreen,
+                    side: const BorderSide(color: AppColors.primaryGreen),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -417,7 +417,7 @@ class HistoryCalendarCard extends StatelessWidget {
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF6C4AB6),
+                backgroundColor: AppColors.primaryGreen,
                 foregroundColor: Colors.white,
                 elevation: 0,
                 shape: RoundedRectangleBorder(

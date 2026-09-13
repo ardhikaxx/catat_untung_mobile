@@ -65,13 +65,13 @@ class RekapDateSelector extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(6),
                       decoration: const BoxDecoration(
-                        color: Color(0xFFEFF6FF),
+                        color: Color(0xFFE8F8EA),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
                         Iconsax.calendar_1,
                         size: 16,
-                        color: Color(0xFF2563EB),
+                        color: Color(0xFF00AA13),
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -91,7 +91,7 @@ class RekapDateSelector extends StatelessWidget {
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFDCFCE7),
+                          color: const Color(0xFFE8F8EA),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: const Text(
@@ -99,7 +99,7 @@ class RekapDateSelector extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xFF16A34A),
+                            color: Color(0xFF00AA13),
                           ),
                         ),
                       ),

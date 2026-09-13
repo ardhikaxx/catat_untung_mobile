@@ -97,13 +97,13 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                 padding: const EdgeInsets.all(10.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF3E8FF),
+                    color: const Color(0xFFE8F8EA),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(
                     Iconsax.calendar,
                     size: 20,
-                    color: Color(0xFF6C4AB6),
+                    color: Color(0xFF00AA13),
                   ),
                 ),
               ),
@@ -131,8 +131,8 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                   ),
                 ),
                 style: TextButton.styleFrom(
-                  foregroundColor: const Color(0xFF6C4AB6),
-                  backgroundColor: const Color(0xFFF3E8FF),
+                  foregroundColor: const Color(0xFF00AA13),
+                  backgroundColor: const Color(0xFFE8F8EA),
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -145,7 +145,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
       ),
       body: recordsAsync.when(
         loading: () => const Center(
-          child: CircularProgressIndicator(color: Color(0xFF6C4AB6)),
+          child: CircularProgressIndicator(color: Color(0xFF00AA13)),
         ),
         error: (e, s) => Center(
           child: Column(
@@ -184,7 +184,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
           }).toList();
 
           return RefreshIndicator(
-            color: const Color(0xFF6C4AB6),
+            color: const Color(0xFF00AA13),
             onRefresh: () async {
               ref.invalidate(allRecordsProvider);
             },

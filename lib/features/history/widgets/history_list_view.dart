@@ -54,19 +54,19 @@ class _HistoryListViewState extends State<HistoryListView> {
               _buildFilterChip(
                 label: 'Semua (${widget.records.length})',
                 filter: RecordFilter.all,
-                color: const Color(0xFF6C4AB6),
+                color: AppColors.primaryGreen,
               ),
               const SizedBox(width: 8),
               _buildFilterChip(
                 label: 'Untung ($profitCount)',
                 filter: RecordFilter.profit,
-                color: const Color(0xFF16A34A),
+                color: AppColors.profit,
               ),
               const SizedBox(width: 8),
               _buildFilterChip(
                 label: 'Rugi ($lossCount)',
                 filter: RecordFilter.loss,
-                color: const Color(0xFFDC2626),
+                color: AppColors.loss,
               ),
             ],
           ),
@@ -78,7 +78,8 @@ class _HistoryListViewState extends State<HistoryListView> {
         if (filteredRecords.isEmpty)
           _buildEmptyState()
         else
-          ...filteredRecords.map((record) {
+          ...List.generate(filteredRecords.length, (index) {
+            final record = filteredRecords[index];
             return HistoryRecordCard(
               record: record,
               onTap: () => widget.onOpenDetail(record.date),
@@ -102,7 +103,7 @@ class _HistoryListViewState extends State<HistoryListView> {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
         decoration: BoxDecoration(
-          color: isSelected ? color : const Color(0xFFF1F5F9),
+          color: isSelected ? color : AppColors.greyBg,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Text(
@@ -110,7 +111,7 @@ class _HistoryListViewState extends State<HistoryListView> {
           style: TextStyle(
             fontSize: 12,
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-            color: isSelected ? Colors.white : const Color(0xFF64748B),
+            color: isSelected ? Colors.white : AppColors.grey,
           ),
         ),
       ),
@@ -124,7 +125,7 @@ class _HistoryListViewState extends State<HistoryListView> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: AppColors.greyBorder),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha(5),
@@ -141,13 +142,13 @@ class _HistoryListViewState extends State<HistoryListView> {
               width: 64,
               height: 64,
               decoration: const BoxDecoration(
-                color: Color(0xFFF3E8FF),
+                color: AppColors.greenTint,
                 shape: BoxShape.circle,
               ),
               child: const Icon(
                 Iconsax.receipt_2_1,
                 size: 30,
-                color: Color(0xFF6C4AB6),
+                color: AppColors.primaryGreen,
               ),
             ),
             const SizedBox(height: 16),
@@ -178,7 +179,7 @@ class _HistoryListViewState extends State<HistoryListView> {
                 icon: const Icon(Iconsax.add, size: 16),
                 label: const Text('Buat Rekap Sekarang'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF6C4AB6),
+                  backgroundColor: AppColors.primaryGreen,
                   foregroundColor: Colors.white,
                   elevation: 0,
                   shape: RoundedRectangleBorder(

@@ -183,7 +183,7 @@ class _RekapProductSelectorModalState
                 child: isLoading
                     ? const Center(
                         child: CircularProgressIndicator(
-                          color: Color(0xFF6C4AB6),
+                          color: Color(0xFF00AA13),
                         ),
                       )
                     : products.isEmpty
@@ -228,7 +228,7 @@ class _RekapProductSelectorModalState
                                         decoration: BoxDecoration(
                                           color: isSelected
                                               ? const Color(0xFFE2E8F0)
-                                              : const Color(0xFFF3E8FF),
+                                              : const Color(0xFFE8F8EA),
                                           borderRadius: BorderRadius.circular(12),
                                         ),
                                         child: Icon(
@@ -236,7 +236,7 @@ class _RekapProductSelectorModalState
                                           size: 20,
                                           color: isSelected
                                               ? const Color(0xFF94A3B8)
-                                              : const Color(0xFF6C4AB6),
+                                              : const Color(0xFF00AA13),
                                         ),
                                       ),
                                       title: Text(
@@ -341,13 +341,13 @@ class _RekapProductSelectorModalState
               width: 64,
               height: 64,
               decoration: const BoxDecoration(
-                color: Color(0xFFF3E8FF),
+                color: Color(0xFFE8F8EA),
                 shape: BoxShape.circle,
               ),
               child: const Icon(
                 Iconsax.box_add,
                 size: 30,
-                color: Color(0xFF6C4AB6),
+                color: Color(0xFF00AA13),
               ),
             ),
             const SizedBox(height: 16),
@@ -377,7 +377,7 @@ class _RekapProductSelectorModalState
               icon: const Icon(Iconsax.add, size: 18),
               label: const Text('Buat Produk Sekarang'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF6C4AB6),
+                backgroundColor: const Color(0xFF00AA13),
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),

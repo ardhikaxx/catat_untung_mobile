@@ -127,7 +127,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: Color(0xFF6C4AB6),
+              primary: AppColors.gojekGreen,
               onPrimary: Colors.white,
               onSurface: AppColors.textPrimary,
             ),
@@ -402,13 +402,13 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                   padding: const EdgeInsets.all(10.0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF3E8FF),
+                      color: const Color(0xFFE8F8EA),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Icon(
                       Iconsax.note_1,
                       size: 20,
-                      color: Color(0xFF6C4AB6),
+                      color: Color(0xFF00AA13),
                     ),
                   ),
                 ),
@@ -436,8 +436,8 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                     ),
                   ),
                   style: TextButton.styleFrom(
-                    foregroundColor: const Color(0xFF6C4AB6),
-                    backgroundColor: const Color(0xFFF3E8FF),
+                    foregroundColor: const Color(0xFF00AA13),
+                    backgroundColor: const Color(0xFFE8F8EA),
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
@@ -468,7 +468,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
               child: _isLoading
                   ? const Center(
                       child: CircularProgressIndicator(
-                        color: Color(0xFF6C4AB6),
+                        color: Color(0xFF00AA13),
                       ),
                     )
                   : (!_isEditing && _existingRecord != null)
@@ -615,11 +615,11 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                             width: 76,
                             height: 76,
                             decoration: BoxDecoration(
-                              color: const Color(0xFFF3E8FF),
+                              color: const Color(0xFFE8F8EA),
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color(0xFF6C4AB6).withAlpha(25),
+                                  color: const Color(0xFF00AA13).withAlpha(25),
                                   blurRadius: 14,
                                   offset: const Offset(0, 4),
                                 ),
@@ -628,7 +628,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                             child: const Icon(
                               Iconsax.bag_2,
                               size: 36,
-                              color: Color(0xFF6C4AB6),
+                              color: Color(0xFF00AA13),
                             ),
                           ),
                           const SizedBox(height: 18),
@@ -665,10 +665,10 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                                 ),
                               ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF6C4AB6),
+                                backgroundColor: const Color(0xFF00AA13),
                                 foregroundColor: Colors.white,
                                 elevation: 2,
-                                shadowColor: const Color(0xFF6C4AB6).withAlpha(100),
+                                shadowColor: const Color(0xFF00AA13).withAlpha(100),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(14),
                                 ),

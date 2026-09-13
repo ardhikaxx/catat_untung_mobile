@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/date_formatter.dart';
 import '../../../core/utils/calculation_utils.dart';
@@ -44,8 +45,8 @@ class HistoryMonthHeroCard extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [
-            Color(0xFF6C4AB6),
-            Color(0xFF55359E),
+            AppColors.primaryGreen,
+            AppColors.primaryGreenDark,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -53,7 +54,7 @@ class HistoryMonthHeroCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF6C4AB6).withAlpha(50),
+            color: AppColors.primaryGreen.withAlpha(50),
             blurRadius: 18,
             offset: const Offset(0, 8),
           ),

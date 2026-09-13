@@ -174,13 +174,13 @@ class ReportsScreen extends ConsumerWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF3E8FF),
+                    color: AppColors.greenTint,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(
                     Iconsax.chart_21,
                     size: 20,
-                    color: Color(0xFF6C4AB6),
+                    color: AppColors.primaryGreen,
                   ),
                 ),
               ),
@@ -199,13 +199,13 @@ class ReportsScreen extends ConsumerWidget {
             icon: Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: const Color(0xFFF1F5F9),
+                color: AppColors.greyBg,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Icon(
                 Iconsax.export_3,
                 size: 18,
-                color: Color(0xFF6C4AB6),
+                color: AppColors.primaryGreen,
               ),
             ),
             onPressed: () => context.push('/export'),
@@ -214,7 +214,7 @@ class ReportsScreen extends ConsumerWidget {
         ],
       ),
       body: RefreshIndicator(
-        color: const Color(0xFF6C4AB6),
+        color: AppColors.primaryGreen,
         onRefresh: () async {
           ref.invalidate(reportDataProvider);
         },
@@ -262,7 +262,7 @@ class ReportsScreen extends ConsumerWidget {
                     ElevatedButton(
                       onPressed: () => ref.invalidate(reportDataProvider),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF6C4AB6),
+                        backgroundColor: AppColors.primaryGreen,
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -281,7 +281,7 @@ class ReportsScreen extends ConsumerWidget {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(22),
-                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                      border: Border.all(color: AppColors.greyBorder),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withAlpha(5),
@@ -297,13 +297,13 @@ class ReportsScreen extends ConsumerWidget {
                           width: 72,
                           height: 72,
                           decoration: const BoxDecoration(
-                            color: Color(0xFFF3E8FF),
+                            color: AppColors.greenTint,
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
                             Iconsax.chart_21,
                             size: 34,
-                            color: Color(0xFF6C4AB6),
+                            color: AppColors.primaryGreen,
                           ),
                         ),
                         const SizedBox(height: 18),
@@ -339,7 +339,7 @@ class ReportsScreen extends ConsumerWidget {
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF6C4AB6),
+                              backgroundColor: AppColors.primaryGreen,
                               foregroundColor: Colors.white,
                               elevation: 0,
                               shape: RoundedRectangleBorder(

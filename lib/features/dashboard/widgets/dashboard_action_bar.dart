@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import '../../../core/theme/app_colors.dart';
 
 class DashboardActionBar extends StatelessWidget {
   final VoidCallback onRekap;
@@ -22,9 +23,10 @@ class DashboardActionBar extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: AppColors.greyBorder),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(10),
+            color: Colors.black.withAlpha(8),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),
@@ -84,12 +86,12 @@ class _ActionButton extends StatelessWidget {
               width: 52,
               height: 52,
               decoration: const BoxDecoration(
-                color: Color(0xFFF3F4F8),
+                color: AppColors.greyBg,
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 icon,
-                color: const Color(0xFF1E293B),
+                color: AppColors.textPrimary,
                 size: 22,
               ),
             ),
@@ -99,7 +101,7 @@ class _ActionButton extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF475569),
+                color: AppColors.textSecondary,
               ),
             ),
           ],

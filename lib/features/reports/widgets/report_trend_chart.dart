@@ -36,7 +36,7 @@ class ReportTrendChart extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: AppColors.greyBorder),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha(6),
@@ -75,9 +75,9 @@ class ReportTrendChart extends StatelessWidget {
               ),
               Row(
                 children: [
-                  _buildLegendDot(const Color(0xFF16A34A), 'Untung'),
+                  _buildLegendDot(AppColors.profit, 'Untung'),
                   const SizedBox(width: 10),
-                  _buildLegendDot(const Color(0xFFDC2626), 'Rugi'),
+                  _buildLegendDot(AppColors.loss, 'Rugi'),
                 ],
               ),
             ],
@@ -194,8 +194,8 @@ class ReportTrendChart extends StatelessWidget {
                       BarChartRodData(
                         toY: profit,
                         color: isProfit
-                            ? const Color(0xFF16A34A)
-                            : const Color(0xFFDC2626),
+                            ? AppColors.profit
+                            : AppColors.loss,
                         width: chartData.length > 14
                             ? 8
                             : chartData.length > 7

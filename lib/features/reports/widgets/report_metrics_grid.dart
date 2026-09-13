@@ -43,12 +43,12 @@ class ReportMetricsGrid extends StatelessWidget {
               Expanded(
                 child: _buildMetricTile(
                   icon: Iconsax.box,
-                  iconColor: const Color(0xFF6C4AB6),
-                  iconBg: const Color(0xFFF3E8FF),
+                  iconColor: AppColors.primaryGreen,
+                  iconBg: AppColors.greenTint,
                   label: 'Total Terjual',
                   value: '${data.totalQuantity} Unit',
                   subtitle: '${data.topProducts.length} Variasi Produk',
-                  subtitleColor: const Color(0xFF64748B),
+                  subtitleColor: AppColors.textSecondary,
                 ),
               ),
             ],
@@ -102,7 +102,7 @@ class ReportMetricsGrid extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: AppColors.greyBorder),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha(5),

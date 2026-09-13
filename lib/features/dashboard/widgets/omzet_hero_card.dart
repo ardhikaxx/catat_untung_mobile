@@ -8,6 +8,7 @@ class OmzetHeroCard extends StatelessWidget {
   final int totalProfit;
   final int totalQuantity;
   final DateTime? date;
+  final String? badgeLabel;
   final VoidCallback onRekapTap;
 
   const OmzetHeroCard({
@@ -16,6 +17,7 @@ class OmzetHeroCard extends StatelessWidget {
     required this.totalProfit,
     this.totalQuantity = 0,
     this.date,
+    this.badgeLabel,
     required this.onRekapTap,
   });
 
@@ -47,24 +49,25 @@ class OmzetHeroCard extends StatelessWidget {
     );
 
     final displayDate = date ?? DateTime.now();
+    final displayBadge = badgeLabel ?? DateFormatter.formatShort(displayDate);
 
     return SizedBox(
       height: cardHeight,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // 1. Bayangan Kartu Ungu Mengikuti Lekukan
+          // 1. Bayangan Kartu Hijau Gojek Mengikuti Lekukan
           Positioned.fill(
             child: CustomPaint(
               painter: _NotchedCardShadowPainter(
                 clipper: clipper,
-                shadowColor: const Color(0xFF8B36FF).withAlpha(80),
+                shadowColor: const Color(0xFF00AA13).withAlpha(70),
                 elevation: 12,
               ),
             ),
           ),
 
-          // 2. Kartu Ungu (Dipotong dengan Clipper Konsentris)
+          // 2. Kartu Hijau Gojek (Dipotong dengan Clipper Konsentris)
           Positioned.fill(
             child: ClipPath(
               clipper: clipper,
@@ -72,8 +75,8 @@ class OmzetHeroCard extends StatelessWidget {
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Color(0xFF8F3BFF),
-                      Color(0xFF721FE3),
+                      Color(0xFF00AA13),
+                      Color(0xFF00880F),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -125,7 +128,7 @@ class OmzetHeroCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: Text(
-                            DateFormatter.formatShort(displayDate),
+                            displayBadge,
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,

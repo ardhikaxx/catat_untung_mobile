@@ -70,7 +70,7 @@ class HomeScreen extends ConsumerWidget {
                     vertical: 10,
                   ),
                   decoration: BoxDecoration(
-                    color: isActive ? Colors.white : Colors.transparent,
+                    color: isActive ? const Color(0xFF00AA13) : Colors.transparent,
                     borderRadius: BorderRadius.circular(24),
                   ),
                   child: Row(
@@ -80,8 +80,8 @@ class HomeScreen extends ConsumerWidget {
                         isActive ? item.activeIcon : item.icon,
                         size: 20,
                         color: isActive
-                            ? const Color(0xFF141414)
-                            : Colors.white.withAlpha(150),
+                            ? Colors.white
+                            : const Color(0xFF808080),
                       ),
                       if (isActive) ...[
                         const SizedBox(width: 6),
@@ -90,7 +90,7 @@ class HomeScreen extends ConsumerWidget {
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xFF141414),
+                            color: Colors.white,
                           ),
                         ),
                       ],

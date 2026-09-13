@@ -49,13 +49,13 @@ class SettingsScreen extends ConsumerWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF3E8FF),
+                    color: AppColors.greenTint,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(
                     Iconsax.setting_2,
                     size: 20,
-                    color: Color(0xFF6C4AB6),
+                    color: AppColors.primaryGreen,
                   ),
                 ),
               ),
@@ -83,8 +83,8 @@ class SettingsScreen extends ConsumerWidget {
             children: [
               SettingsMenuTile(
                 icon: Iconsax.box,
-                iconColor: const Color(0xFF6C4AB6),
-                iconBg: const Color(0xFFF3E8FF),
+                iconColor: AppColors.primaryGreen,
+                iconBg: AppColors.greenTint,
                 title: 'Katalog Produk',
                 subtitle: 'Kelola daftar harga jual, HPP, & stok produk',
                 onTap: () => context.push('/products'),
@@ -125,8 +125,8 @@ class SettingsScreen extends ConsumerWidget {
             children: [
               SettingsMenuTile(
                 icon: Iconsax.coin,
-                iconColor: const Color(0xFF6C4AB6),
-                iconBg: const Color(0xFFF3E8FF),
+                iconColor: AppColors.primaryGreen,
+                iconBg: AppColors.greenTint,
                 title: 'Format Mata Uang',
                 subtitle: 'Rupiah Indonesia (IDR)',
                 trailing: Container(
@@ -303,12 +303,12 @@ class SettingsScreen extends ConsumerWidget {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF3E8FF),
+                    color: AppColors.greenTint,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Icon(
                     Iconsax.wallet_money,
-                    color: Color(0xFF6C4AB6),
+                    color: AppColors.primaryGreen,
                     size: 24,
                   ),
                 ),
@@ -351,7 +351,7 @@ class SettingsScreen extends ConsumerWidget {
               child: ElevatedButton(
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF6C4AB6),
+                  backgroundColor: AppColors.primaryGreen,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -412,7 +412,7 @@ class SettingsScreen extends ConsumerWidget {
               child: ElevatedButton(
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF6C4AB6),
+                  backgroundColor: AppColors.primaryGreen,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -435,7 +435,7 @@ class SettingsScreen extends ConsumerWidget {
           width: 24,
           height: 24,
           decoration: const BoxDecoration(
-            color: Color(0xFFF3E8FF),
+            color: AppColors.greenTint,
             shape: BoxShape.circle,
           ),
           child: Center(
@@ -444,7 +444,7 @@ class SettingsScreen extends ConsumerWidget {
               style: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF6C4AB6),
+                color: AppColors.primaryGreen,
               ),
             ),
           ),

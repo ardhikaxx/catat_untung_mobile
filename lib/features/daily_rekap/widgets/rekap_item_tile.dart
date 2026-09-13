@@ -107,13 +107,13 @@ class _RekapItemTileState extends State<RekapItemTile> {
                   width: 38,
                   height: 38,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF3E8FF),
+                    color: const Color(0xFFE8F8EA),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(
                     Iconsax.box_1,
                     size: 20,
-                    color: Color(0xFF6C4AB6),
+                    color: Color(0xFF00AA13),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -269,7 +269,7 @@ class _RekapItemTileState extends State<RekapItemTile> {
                                   child: const Icon(
                                     Iconsax.add,
                                     size: 16,
-                                    color: Color(0xFF6C4AB6),
+                                    color: Color(0xFF00AA13),
                                   ),
                                 ),
                               ),

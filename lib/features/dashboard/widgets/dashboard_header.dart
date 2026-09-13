@@ -93,7 +93,7 @@ class _CircleIconButton extends StatelessWidget {
           child: Icon(
             icon,
             size: 20,
-            color: const Color(0xFF1E293B),
+            color: AppColors.textPrimary,
           ),
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import '../../../core/theme/app_colors.dart';
 import '../reports_screen.dart';
 
 class ReportPeriodSelector extends ConsumerWidget {
@@ -20,10 +21,10 @@ class ReportPeriodSelector extends ConsumerWidget {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: Color(0xFF6C4AB6),
+              primary: AppColors.primaryGreen,
               onPrimary: Colors.white,
               surface: Colors.white,
-              onSurface: Color(0xFF1E293B),
+              onSurface: AppColors.textPrimary,
             ),
           ),
           child: child!,
@@ -78,13 +79,13 @@ class ReportPeriodSelector extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? const Color(0xFF6C4AB6)
-                      : const Color(0xFFF1F5F9),
+                      ? AppColors.primaryGreen
+                      : AppColors.greyBg,
                   borderRadius: BorderRadius.circular(14),
                   boxShadow: isSelected
                       ? [
                           BoxShadow(
-                            color: const Color(0xFF6C4AB6).withAlpha(50),
+                            color: AppColors.primaryGreen.withAlpha(50),
                             blurRadius: 8,
                             offset: const Offset(0, 3),
                           ),
@@ -97,7 +98,7 @@ class ReportPeriodSelector extends ConsumerWidget {
                     Icon(
                       opt.icon,
                       size: 14,
-                      color: isSelected ? Colors.white : const Color(0xFF64748B),
+                      color: isSelected ? Colors.white : AppColors.grey,
                     ),
                     const SizedBox(width: 6),
                     Text(
@@ -105,7 +106,7 @@ class ReportPeriodSelector extends ConsumerWidget {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                        color: isSelected ? Colors.white : const Color(0xFF475569),
+                        color: isSelected ? Colors.white : AppColors.textSecondary,
                       ),
                     ),
                   ],

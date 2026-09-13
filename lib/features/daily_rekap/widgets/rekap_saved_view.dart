@@ -94,14 +94,14 @@ class RekapSavedView extends StatelessWidget {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          Color(0xFF5B2E91),
-                          Color(0xFF7B3FB9),
+                          Color(0xFF00AA13),
+                          Color(0xFF00880F),
                         ],
                       ),
                       borderRadius: BorderRadius.circular(22),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFF6C4AB6).withAlpha(70),
+                          color: const Color(0xFF00AA13).withAlpha(55),
                           blurRadius: 18,
                           offset: const Offset(0, 8),
                         ),
@@ -377,13 +377,13 @@ class RekapSavedView extends StatelessWidget {
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                              color: const Color(0xFFF3E8FF),
+                              color: const Color(0xFFE8F8EA),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Icon(
                               Iconsax.box_1,
                               size: 20,
-                              color: Color(0xFF6C4AB6),
+                              color: Color(0xFF00AA13),
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -429,7 +429,7 @@ class RekapSavedView extends StatelessWidget {
                                   fontSize: 11,
                                   fontWeight: FontWeight.w600,
                                   color: isItemProfitPositive
-                                      ? const Color(0xFF16A34A)
+                                      ? const Color(0xFF00AA13)
                                       : const Color(0xFFDC2626),
                                 ),
                               ),
@@ -464,11 +464,11 @@ class RekapSavedView extends StatelessWidget {
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF6C4AB6),
+                              backgroundColor: const Color(0xFF00AA13),
                               foregroundColor: Colors.white,
                               elevation: 2,
                               shadowColor:
-                                  const Color(0xFF6C4AB6).withAlpha(100),
+                                  const Color(0xFF00AA13).withAlpha(100),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(14),
                               ),

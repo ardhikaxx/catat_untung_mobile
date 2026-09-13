@@ -34,7 +34,7 @@ class HistoryRecordCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: AppColors.greyBorder),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha(6),
@@ -58,10 +58,10 @@ class HistoryRecordCard extends StatelessWidget {
                   width: 52,
                   height: 56,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF3E8FF),
+                    color: AppColors.greenTint,
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
-                      color: const Color(0xFF6C4AB6).withAlpha(30),
+                      color: AppColors.primaryGreen.withAlpha(40),
                     ),
                   ),
                   child: Column(
@@ -72,7 +72,7 @@ class HistoryRecordCard extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w800,
-                          color: Color(0xFF6C4AB6),
+                          color: AppColors.primaryGreen,
                           height: 1.1,
                         ),
                       ),
@@ -81,7 +81,7 @@ class HistoryRecordCard extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF8D72E1),
+                          color: AppColors.primaryGreenDark,
                           letterSpacing: 0.5,
                         ),
                       ),

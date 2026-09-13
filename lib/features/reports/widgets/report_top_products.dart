@@ -26,7 +26,7 @@ class ReportTopProducts extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: AppColors.greyBorder),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha(6),
@@ -198,7 +198,7 @@ class ReportTopProducts extends StatelessWidget {
                         rank == 1
                             ? const Color(0xFFD97706)
                             : rank == 2
-                                ? const Color(0xFF6C4AB6)
+                                ? AppColors.primaryGreen
                                 : const Color(0xFF16A34A),
                       ),
                     ),

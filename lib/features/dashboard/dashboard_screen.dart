@@ -43,8 +43,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
           children: [
-            // 1. Hero Total Omzet Card (Notched Card from reference UI)
-              todayRecord.when(
+            // 1. Hero Total Omzet Card (Semua Data)
+              allRecords.when(
                 loading: () => const SizedBox(
                   height: 222,
                   child: LoadingState(),
@@ -56,18 +56,18 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(24),
                   ),
-                  child: const Text('Gagal memuat data omzet hari ini'),
+                  child: const Text('Gagal memuat data omzet'),
                 ),
-                data: (record) {
-                  final totalRevenue = record?.totalRevenue ?? 0;
-                  final totalProfit = record?.totalProfit ?? 0;
-                  final totalQty = record?.totalQuantity ?? 0;
+                data: (records) {
+                  final totalRevenue = records.fold<int>(0, (sum, r) => sum + r.totalRevenue);
+                  final totalProfit = records.fold<int>(0, (sum, r) => sum + r.totalProfit);
+                  final totalQty = records.fold<int>(0, (sum, r) => sum + r.totalQuantity);
 
                   return OmzetHeroCard(
                     totalRevenue: totalRevenue,
                     totalProfit: totalProfit,
                     totalQuantity: totalQty,
-                    date: record?.date ?? DateTime.now(),
+                    badgeLabel: 'Semua Data',
                     onRekapTap: () => context.push('/daily-rekap'),
                   );
                 },
@@ -173,8 +173,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         BarChartRodData(
                           toY: profit,
                           color: profit >= 0
-                              ? const Color(0xFF10B981)
-                              : const Color(0xFFEF4444),
+                              ? AppColors.profit
+                              : AppColors.loss,
                           width: 18,
                           borderRadius: BorderRadius.circular(6),
                         ),
@@ -334,7 +334,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Iconsax.document_download, color: Color(0xFF8B36FF)),
+                  leading: const Icon(Iconsax.document_download, color: AppColors.primaryGreen),
                   title: const Text('Ekspor Laporan'),
                   subtitle: const Text('Unduh laporan PDF & CSV'),
                   shape: RoundedRectangleBorder(

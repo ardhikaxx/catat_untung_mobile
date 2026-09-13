@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../reports_screen.dart';
 
@@ -29,7 +30,7 @@ class ReportHeroCard extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: isProfit
-              ? const [Color(0xFF6C4AB6), Color(0xFF50309B)]
+              ? const [AppColors.primaryGreen, AppColors.primaryGreenDark]
               : const [Color(0xFFB91C1C), Color(0xFF881337)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -37,7 +38,7 @@ class ReportHeroCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
-            color: (isProfit ? const Color(0xFF6C4AB6) : const Color(0xFFB91C1C))
+            color: (isProfit ? AppColors.primaryGreen : const Color(0xFFB91C1C))
                 .withAlpha(55),
             blurRadius: 18,
             offset: const Offset(0, 8),

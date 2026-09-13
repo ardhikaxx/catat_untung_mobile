@@ -131,10 +131,10 @@ class RekapBottomActionPanel extends StatelessWidget {
                         ),
                       ),
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: const Color(0xFF6C4AB6),
-                        backgroundColor: const Color(0xFFF3E8FF),
+                        foregroundColor: const Color(0xFF00AA13),
+                        backgroundColor: const Color(0xFFE8F8EA),
                         side: const BorderSide(
-                          color: Color(0xFFE9D5FF),
+                          color: Color(0xFFB9F0C2),
                           width: 1.2,
                         ),
                         shape: RoundedRectangleBorder(
@@ -172,12 +172,12 @@ class RekapBottomActionPanel extends StatelessWidget {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF6C4AB6),
+                        backgroundColor: const Color(0xFF00AA13),
                         foregroundColor: Colors.white,
-                        disabledBackgroundColor: const Color(0xFFCBD5E1),
+                        disabledBackgroundColor: const Color(0xFFE5E5E5),
                         disabledForegroundColor: Colors.white70,
                         elevation: canSave ? 2 : 0,
-                        shadowColor: const Color(0xFF6C4AB6).withAlpha(100),
+                        shadowColor: const Color(0xFF00AA13).withAlpha(100),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),
