@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/constants/app_constants.dart';
-import '../../core/constants/app_assets.dart';
-import '../../shared/widgets/app_gif_image.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -74,7 +73,6 @@ class _SplashScreenState extends State<SplashScreen>
                     Container(
                       width: 110,
                       height: 110,
-                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(28),
@@ -86,12 +84,11 @@ class _SplashScreenState extends State<SplashScreen>
                           ),
                         ],
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(18),
-                        child: AppGifImage(
-                          asset: AppGifs.buy,
-                          fit: BoxFit.contain,
-                          duration: const Duration(milliseconds: 1400),
+                      child: const Center(
+                        child: Icon(
+                          Iconsax.wallet_3,
+                          size: 54,
+                          color: AppColors.primaryGreen,
                         ),
                       ),
                     ),

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
-import '../../core/constants/app_assets.dart';
-import '../../shared/widgets/app_gif_image.dart';
 import '../../core/theme/app_colors.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
 
@@ -122,9 +120,8 @@ class QuickGuideScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 12),
                     Container(
-                      width: 64,
-                      height: 64,
-                      padding: const EdgeInsets.all(6),
+                      width: 56,
+                      height: 56,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(18),
@@ -136,12 +133,11 @@ class QuickGuideScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(14),
-                        child: AppGifImage(
-                          asset: AppGifs.customerService,
-                          fit: BoxFit.contain,
-                          duration: const Duration(milliseconds: 1400),
+                      child: const Center(
+                        child: Icon(
+                          Iconsax.lamp_on,
+                          size: 28,
+                          color: AppColors.primaryGreen,
                         ),
                       ),
                     ),

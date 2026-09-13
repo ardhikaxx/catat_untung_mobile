@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
-import '../../core/constants/app_assets.dart';
-import '../../shared/widgets/app_gif_image.dart';
 import '../../core/theme/app_colors.dart';
 import '../../database/app_database.dart';
 import '../../providers/database_provider.dart';
@@ -299,19 +297,17 @@ class ReportsScreen extends ConsumerWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
-                          width: 80,
-                          height: 80,
+                          width: 76,
+                          height: 76,
                           decoration: BoxDecoration(
                             color: AppColors.greenTint,
                             borderRadius: BorderRadius.circular(22),
                           ),
-                          padding: const EdgeInsets.all(12),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: AppGifImage(
-                              asset: AppGifs.profits,
-                              fit: BoxFit.contain,
-                              duration: const Duration(milliseconds: 1400),
+                          child: const Center(
+                            child: Icon(
+                              Iconsax.chart_21,
+                              size: 38,
+                              color: AppColors.primaryGreen,
                             ),
                           ),
                         ),
