@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../database/app_database.dart';
+import '../../../providers/product_provider.dart';
 
-class RekapProductSelectorModal extends StatefulWidget {
-  final List<Product> products;
+class RekapProductSelectorModal extends ConsumerStatefulWidget {
+  final List<Product>? products;
   final Set<int?> selectedProductIds;
   final ValueChanged<Product> onProductSelected;
 
   const RekapProductSelectorModal({
     super.key,
-    required this.products,
+    this.products,
     required this.selectedProductIds,
     required this.onProductSelected,
   });
 
   static Future<void> show({
     required BuildContext context,
-    required List<Product> products,
+    List<Product>? products,
     required Set<int?> selectedProductIds,
     required ValueChanged<Product> onProductSelected,
   }) {
@@ -36,10 +38,12 @@ class RekapProductSelectorModal extends StatefulWidget {
   }
 
   @override
-  State<RekapProductSelectorModal> createState() => _RekapProductSelectorModalState();
+  ConsumerState<RekapProductSelectorModal> createState() =>
+      _RekapProductSelectorModalState();
 }
 
-class _RekapProductSelectorModalState extends State<RekapProductSelectorModal> {
+class _RekapProductSelectorModalState
+    extends ConsumerState<RekapProductSelectorModal> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
 
@@ -61,7 +65,12 @@ class _RekapProductSelectorModalState extends State<RekapProductSelectorModal> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredProducts = widget.products.where((p) {
+    // Watch active products in real-time to avoid any sync race conditions
+    final productsAsync = ref.watch(activeProductsProvider);
+    final products = productsAsync.valueOrNull ?? widget.products ?? [];
+    final isLoading = productsAsync.isLoading && products.isEmpty;
+
+    final filteredProducts = products.where((p) {
       if (_searchQuery.isEmpty) return true;
       return p.name.toLowerCase().contains(_searchQuery);
     }).toList();
@@ -111,7 +120,9 @@ class _RekapProductSelectorModalState extends State<RekapProductSelectorModal> {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          '${widget.products.length} produk tersedia di katalog',
+                          isLoading
+                              ? 'Memuat produk...'
+                              : '${products.length} produk tersedia di katalog',
                           style: const TextStyle(
                             fontSize: 12,
                             color: AppColors.textSecondary,
@@ -169,142 +180,148 @@ class _RekapProductSelectorModalState extends State<RekapProductSelectorModal> {
 
               // Product List
               Expanded(
-                child: widget.products.isEmpty
-                    ? _buildEmptyCatalog(context)
-                    : filteredProducts.isEmpty
-                        ? _buildNoSearchResults()
-                        : ListView.builder(
-                            controller: scrollController,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            itemCount: filteredProducts.length,
-                            itemBuilder: (context, index) {
-                              final product = filteredProducts[index];
-                              final isSelected = widget.selectedProductIds
-                                  .contains(product.id);
-                              final profitPerUnit =
-                                  product.sellingPrice - product.hpp;
-
-                              return Container(
-                                margin: const EdgeInsets.symmetric(vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? const Color(0xFFF8FAFC)
-                                      : Colors.white,
-                                  borderRadius: BorderRadius.circular(14),
-                                  border: Border.all(
-                                    color: isSelected
-                                        ? const Color(0xFFE2E8F0)
-                                        : const Color(0xFFF1F5F9),
-                                  ),
+                child: isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xFF6C4AB6),
+                        ),
+                      )
+                    : products.isEmpty
+                        ? _buildEmptyCatalog(context)
+                        : filteredProducts.isEmpty
+                            ? _buildNoSearchResults()
+                            : ListView.builder(
+                                controller: scrollController,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
                                 ),
-                                child: ListTile(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 14,
-                                    vertical: 4,
-                                  ),
-                                  leading: Container(
-                                    width: 42,
-                                    height: 42,
+                                itemCount: filteredProducts.length,
+                                itemBuilder: (context, index) {
+                                  final product = filteredProducts[index];
+                                  final isSelected = widget.selectedProductIds
+                                      .contains(product.id);
+                                  final profitPerUnit =
+                                      product.sellingPrice - product.hpp;
+
+                                  return Container(
+                                    margin: const EdgeInsets.symmetric(vertical: 4),
                                     decoration: BoxDecoration(
                                       color: isSelected
-                                          ? const Color(0xFFE2E8F0)
-                                          : const Color(0xFFF3E8FF),
-                                      borderRadius: BorderRadius.circular(12),
+                                          ? const Color(0xFFF8FAFC)
+                                          : Colors.white,
+                                      borderRadius: BorderRadius.circular(14),
+                                      border: Border.all(
+                                        color: isSelected
+                                            ? const Color(0xFFE2E8F0)
+                                            : const Color(0xFFF1F5F9),
+                                      ),
                                     ),
-                                    child: Icon(
-                                      Iconsax.box,
-                                      size: 20,
-                                      color: isSelected
-                                          ? const Color(0xFF94A3B8)
-                                          : const Color(0xFF6C4AB6),
-                                    ),
-                                  ),
-                                  title: Text(
-                                    product.name,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: isSelected
-                                          ? const Color(0xFF94A3B8)
-                                          : AppColors.textPrimary,
-                                    ),
-                                  ),
-                                  subtitle: Row(
-                                    children: [
-                                      Text(
-                                        'HPP: ${CurrencyFormatter.formatRupiah(product.hpp)}',
-                                        style: const TextStyle(
-                                          fontSize: 11,
-                                          color: AppColors.textSecondary,
+                                    child: ListTile(
+                                      contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 14,
+                                        vertical: 4,
+                                      ),
+                                      leading: Container(
+                                        width: 42,
+                                        height: 42,
+                                        decoration: BoxDecoration(
+                                          color: isSelected
+                                              ? const Color(0xFFE2E8F0)
+                                              : const Color(0xFFF3E8FF),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        child: Icon(
+                                          Iconsax.box,
+                                          size: 20,
+                                          color: isSelected
+                                              ? const Color(0xFF94A3B8)
+                                              : const Color(0xFF6C4AB6),
                                         ),
                                       ),
-                                      const SizedBox(width: 6),
-                                      const Text('•',
-                                          style: TextStyle(
-                                              color: Color(0xFFCBD5E1))),
-                                      const SizedBox(width: 6),
-                                      Text(
-                                        'Jual: ${CurrencyFormatter.formatRupiah(product.sellingPrice)}',
-                                        style: const TextStyle(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.textPrimary,
+                                      title: Text(
+                                        product.name,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w700,
+                                          color: isSelected
+                                              ? const Color(0xFF94A3B8)
+                                              : AppColors.textPrimary,
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                  trailing: isSelected
-                                      ? Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 10,
-                                            vertical: 4,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xFFE2E8F0),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                          child: const Text(
-                                            'Sudah Ada',
-                                            style: TextStyle(
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w600,
-                                              color: Color(0xFF64748B),
-                                            ),
-                                          ),
-                                        )
-                                      : Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 10,
-                                            vertical: 6,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xFFDCFCE7),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                          child: Text(
-                                            '+${CurrencyFormatter.formatRupiah(profitPerUnit)}',
+                                      subtitle: Row(
+                                        children: [
+                                          Text(
+                                            'HPP: ${CurrencyFormatter.formatRupiah(product.hpp)}',
                                             style: const TextStyle(
                                               fontSize: 11,
-                                              fontWeight: FontWeight.w700,
-                                              color: Color(0xFF16A34A),
+                                              color: AppColors.textSecondary,
                                             ),
                                           ),
-                                        ),
-                                  onTap: isSelected
-                                      ? null
-                                      : () {
-                                          Navigator.pop(context);
-                                          widget.onProductSelected(product);
-                                        },
-                                ),
-                              );
-                            },
-                          ),
+                                          const SizedBox(width: 6),
+                                          const Text('•',
+                                              style: TextStyle(
+                                                  color: Color(0xFFCBD5E1))),
+                                          const SizedBox(width: 6),
+                                          Text(
+                                            'Jual: ${CurrencyFormatter.formatRupiah(product.sellingPrice)}',
+                                            style: const TextStyle(
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w600,
+                                              color: AppColors.textPrimary,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      trailing: isSelected
+                                          ? Container(
+                                              padding: const EdgeInsets.symmetric(
+                                                horizontal: 10,
+                                                vertical: 4,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFFE2E8F0),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              child: const Text(
+                                                'Sudah Ada',
+                                                style: TextStyle(
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Color(0xFF64748B),
+                                                ),
+                                              ),
+                                            )
+                                          : Container(
+                                              padding: const EdgeInsets.symmetric(
+                                                horizontal: 10,
+                                                vertical: 6,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFFDCFCE7),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              child: Text(
+                                                '+${CurrencyFormatter.formatRupiah(profitPerUnit)}',
+                                                style: const TextStyle(
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Color(0xFF16A34A),
+                                                ),
+                                              ),
+                                            ),
+                                      onTap: isSelected
+                                          ? null
+                                          : () {
+                                              Navigator.pop(context);
+                                              widget.onProductSelected(product);
+                                            },
+                                    ),
+                                  );
+                                },
+                              ),
               ),
             ],
           );

@@ -172,14 +172,12 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
   }
 
   void _showProductSelector() {
-    final productsAsync = ref.read(activeProductsProvider);
-    final products = productsAsync.valueOrNull ?? [];
     final items = ref.read(rekapItemsProvider);
     final selectedIds = items.map((i) => i.productId).toSet();
 
     RekapProductSelectorModal.show(
       context: context,
-      products: products,
+      products: ref.read(activeProductsProvider).valueOrNull,
       selectedProductIds: selectedIds,
       onProductSelected: _addProductItem,
     );
@@ -335,6 +333,8 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Keep active products stream warm
+    ref.watch(activeProductsProvider);
     final items = ref.watch(rekapItemsProvider);
     final canPop = Navigator.canPop(context);
 

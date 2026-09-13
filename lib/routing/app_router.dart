@@ -6,6 +6,7 @@ import '../features/home/home_screen.dart';
 import '../features/products/products_screen.dart';
 import '../features/products/product_form_screen.dart';
 import '../features/daily_rekap/daily_rekap_screen.dart';
+import '../features/history/history_screen.dart';
 import '../features/history/detail_rekap_screen.dart';
 import '../features/export/export_screen.dart';
 import '../features/backup/backup_screen.dart';
@@ -45,6 +46,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/daily-rekap',
         builder: (context, state) => const DailyRekapScreen(),
+      ),
+      GoRoute(
+        path: '/history',
+        builder: (context, state) => const HistoryScreen(),
       ),
       GoRoute(
         path: '/detail-rekap/:date',
