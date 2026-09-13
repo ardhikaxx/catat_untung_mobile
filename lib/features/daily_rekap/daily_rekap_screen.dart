@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import '../../core/constants/app_assets.dart';
+import '../../shared/widgets/app_gif_image.dart';
 import '../../core/theme/app_colors.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
 import '../../providers/database_provider.dart';
@@ -632,11 +633,10 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                             padding: const EdgeInsets.all(12),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(16),
-                              child: Image.asset(
-                                AppGifs.shoppingBag,
-                                cacheWidth: 168,
-                                cacheHeight: 168,
+                              child: AppGifImage(
+                                asset: AppGifs.shoppingBag,
                                 fit: BoxFit.contain,
+                                duration: const Duration(milliseconds: 1400),
                               ),
                             ),
                           ),

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/constants/app_assets.dart';
+import '../../shared/widgets/app_gif_image.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -87,11 +88,10 @@ class _SplashScreenState extends State<SplashScreen>
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(18),
-                        child: Image.asset(
-                          AppGifs.buy,
-                          cacheWidth: 220,
-                          cacheHeight: 220,
+                        child: AppGifImage(
+                          asset: AppGifs.buy,
                           fit: BoxFit.contain,
+                          duration: const Duration(milliseconds: 1400),
                         ),
                       ),
                     ),

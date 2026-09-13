@@ -6,6 +6,7 @@ import '../../core/constants/app_constants.dart';
 import '../../core/constants/app_assets.dart';
 import '../../core/theme/app_colors.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
+import '../../shared/widgets/app_gif_image.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -95,11 +96,10 @@ class AboutScreen extends StatelessWidget {
                   child: Center(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(14),
-                      child: Image.asset(
-                        AppGifs.buy,
-                        cacheWidth: 152,
-                        cacheHeight: 152,
+                      child: AppGifImage(
+                        asset: AppGifs.buy,
                         fit: BoxFit.contain,
+                        duration: const Duration(milliseconds: 1400),
                       ),
                     ),
                   ),
@@ -380,11 +380,10 @@ class AboutScreen extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14),
-                    child: Image.asset(
-                      AppGifs.customerService,
-                      cacheWidth: 120,
-                      cacheHeight: 120,
+                    child: AppGifImage(
+                      asset: AppGifs.customerService,
                       fit: BoxFit.contain,
+                      duration: const Duration(milliseconds: 1400),
                     ),
                   ),
                 ),

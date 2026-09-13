@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../core/constants/app_assets.dart';
+import '../../shared/widgets/app_gif_image.dart';
 import '../../core/theme/app_colors.dart';
 import '../../database/app_database.dart';
 import '../../providers/database_provider.dart';
@@ -307,11 +308,10 @@ class ReportsScreen extends ConsumerWidget {
                           padding: const EdgeInsets.all(12),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(16),
-                            child: Image.asset(
-                              AppGifs.profits,
-                              cacheWidth: 160,
-                              cacheHeight: 160,
+                            child: AppGifImage(
+                              asset: AppGifs.profits,
                               fit: BoxFit.contain,
+                              duration: const Duration(milliseconds: 1400),
                             ),
                           ),
                         ),

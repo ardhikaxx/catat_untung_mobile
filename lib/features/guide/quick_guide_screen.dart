@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../core/constants/app_assets.dart';
+import '../../shared/widgets/app_gif_image.dart';
 import '../../core/theme/app_colors.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
 
@@ -137,11 +138,10 @@ class QuickGuideScreen extends StatelessWidget {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(14),
-                        child: Image.asset(
-                          AppGifs.customerService,
-                          cacheWidth: 130,
-                          cacheHeight: 130,
+                        child: AppGifImage(
+                          asset: AppGifs.customerService,
                           fit: BoxFit.contain,
+                          duration: const Duration(milliseconds: 1400),
                         ),
                       ),
                     ),

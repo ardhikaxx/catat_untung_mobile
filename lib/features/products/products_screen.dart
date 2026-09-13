@@ -6,6 +6,7 @@ import '../../core/theme/app_colors.dart';
 import '../../providers/database_provider.dart';
 import '../../database/app_database.dart';
 import '../../core/constants/app_assets.dart';
+import '../../shared/widgets/app_gif_image.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
 import 'widgets/product_hero_card.dart';
 import 'widgets/product_search_filter_bar.dart';
@@ -320,11 +321,10 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
               padding: const EdgeInsets.all(10),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Image.asset(
-                  AppGifs.groceryBasket,
-                  cacheWidth: 210,
-                  cacheHeight: 210,
+                child: AppGifImage(
+                  asset: AppGifs.groceryBasket,
                   fit: BoxFit.contain,
+                  duration: const Duration(milliseconds: 1400),
                 ),
               ),
             ),

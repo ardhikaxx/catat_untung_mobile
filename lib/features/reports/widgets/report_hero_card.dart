@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import '../../../core/constants/app_assets.dart';
+import '../../../shared/widgets/app_gif_image.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../reports_screen.dart';
@@ -156,11 +157,10 @@ class ReportHeroCard extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(
-                    AppGifs.profits,
-                    cacheWidth: 100,
-                    cacheHeight: 100,
+                  child: AppGifImage(
+                    asset: AppGifs.profits,
                     fit: BoxFit.contain,
+                    duration: const Duration(milliseconds: 1400),
                   ),
                 ),
               ),
