@@ -3,25 +3,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/utils/currency_formatter.dart';
 import '../../providers/database_provider.dart';
-import '../../shared/widgets/empty_state.dart';
 import '../../database/app_database.dart';
+import 'widgets/product_hero_card.dart';
+import 'widgets/product_search_filter_bar.dart';
+import 'widgets/product_card.dart';
 
-final showInactiveProvider = StateProvider<bool>((ref) => false);
-final searchQueryProvider = StateProvider<String>((ref) => '');
-
-final filteredProductsListProvider = StreamProvider<List<Product>>((ref) {
-  final query = ref.watch(searchQueryProvider);
-  
-  final repo = ref.watch(productRepositoryProvider);
-  
-  if (query.isNotEmpty) {
-    return repo.searchProducts(query).asStream();
-  }
-  
-  return repo.watchAllProducts();
-});
+// State providers for search, filter status, and sorting
+final productSearchTextProvider = StateProvider<String>((ref) => '');
+final productStatusFilterProvider =
+    StateProvider<ProductFilterStatus>((ref) => ProductFilterStatus.all);
+final productSortOptionProvider =
+    StateProvider<ProductSortOption>((ref) => ProductSortOption.nameAsc);
 
 class ProductsScreen extends ConsumerStatefulWidget {
   const ProductsScreen({super.key});
@@ -39,198 +32,401 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
     super.dispose();
   }
 
+  void _resetSearchAndFilter() {
+    _searchController.clear();
+    ref.read(productSearchTextProvider.notifier).state = '';
+    ref.read(productStatusFilterProvider.notifier).state =
+        ProductFilterStatus.all;
+    ref.read(productSortOptionProvider.notifier).state =
+        ProductSortOption.nameAsc;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    final productsAsync = ref.watch(filteredProductsListProvider);
-    final showInactive = ref.watch(showInactiveProvider);
-    final hasProducts = productsAsync.valueOrNull?.isNotEmpty ?? false;
+    final repo = ref.watch(productRepositoryProvider);
+    final allProductsStream = repo.watchAllProducts();
+
+    final searchQuery = ref.watch(productSearchTextProvider);
+    final statusFilter = ref.watch(productStatusFilterProvider);
+    final sortOption = ref.watch(productSortOptionProvider);
 
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Iconsax.arrow_left, size: 20),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text('Master Produk'),
-        actions: [
-          if (hasProducts)
-            Switch(
-              value: showInactive,
-              onChanged: (val) {
-                ref.read(showInactiveProvider.notifier).state = val;
-              },
+        backgroundColor: AppColors.background,
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 14),
+          child: Center(
+            child: InkWell(
+              onTap: () => Navigator.pop(context),
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.greyBg,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.greyBorder),
+                ),
+                child: const Icon(
+                  Iconsax.arrow_left_2,
+                  size: 18,
+                  color: AppColors.textPrimary,
+                ),
+              ),
             ),
+          ),
+        ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text(
+              'Master Produk',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                color: AppColors.textPrimary,
+                letterSpacing: -0.3,
+              ),
+            ),
+            SizedBox(height: 2),
+            Text(
+              'Katalog harga jual, modal HPP & margin',
+              style: TextStyle(
+                fontSize: 11,
+                color: AppColors.textSecondary,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            tooltip: 'Tambah Produk',
+            icon: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: AppColors.greenTint,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(
+                Iconsax.add,
+                size: 18,
+                color: AppColors.primaryGreen,
+              ),
+            ),
+            onPressed: () => context.push('/products/add'),
+          ),
+          const SizedBox(width: 8),
         ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Cari produk...',
-                prefixIcon: const Icon(Iconsax.search_normal),
-                suffixIcon: _searchController.text.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Iconsax.close_circle),
-                        onPressed: () {
-                          _searchController.clear();
-                          ref.read(searchQueryProvider.notifier).state = '';
-                        },
-                      )
-                    : null,
-              ),
-              onChanged: (val) {
-                ref.read(searchQueryProvider.notifier).state = val;
-                setState(() {});
-              },
-            ),
-          ),
-          Expanded(
-            child: productsAsync.when(
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (e, s) => const Center(child: Text('Gagal memuat data')),
-              data: (products) {
-                final filtered = showInactive
-                    ? products
-                    : products.where((p) => p.isActive).toList();
-                
-                if (filtered.isEmpty) {
-                  return EmptyState(
-                    icon: Iconsax.box,
-                    title: 'Belum Ada Produk',
-                    subtitle: 'Tambahkan produk yang biasa kamu jual',
-                    actionLabel: 'Tambah Produk',
-                    onAction: () => context.push('/products/add'),
-                  );
-                }
+      body: StreamBuilder<List<Product>>(
+        stream: allProductsStream,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting &&
+              !snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(color: AppColors.primaryGreen),
+            );
+          }
 
-                return ListView.builder(
-                  padding: const EdgeInsets.only(bottom: 80),
-                  itemCount: filtered.length,
-                  itemBuilder: (context, index) {
-                    final product = filtered[index];
-                    return _ProductTile(product: product);
-                  },
-                );
-              },
-            ),
-          ),
-        ],
+          if (snapshot.hasError) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Iconsax.warning_2,
+                      size: 40,
+                      color: AppColors.error,
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Gagal Memuat Produk',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      '${snapshot.error}',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          final allProducts = snapshot.data ?? [];
+          final activeCount = allProducts.where((p) => p.isActive).length;
+          final inactiveCount = allProducts.length - activeCount;
+
+          // 1. Filter by Status
+          List<Product> filtered = allProducts.where((p) {
+            if (statusFilter == ProductFilterStatus.active) return p.isActive;
+            if (statusFilter == ProductFilterStatus.inactive) return !p.isActive;
+            return true;
+          }).toList();
+
+          // 2. Filter by Search Query
+          if (searchQuery.trim().isNotEmpty) {
+            final query = searchQuery.trim().toLowerCase();
+            filtered = filtered.where((p) {
+              final nameMatch = p.name.toLowerCase().contains(query);
+              final unitMatch = p.unit.toLowerCase().contains(query);
+              return nameMatch || unitMatch;
+            }).toList();
+          }
+
+          // 3. Sort
+          filtered.sort((a, b) {
+            switch (sortOption) {
+              case ProductSortOption.nameAsc:
+                return a.name.toLowerCase().compareTo(b.name.toLowerCase());
+              case ProductSortOption.marginDesc:
+                final marginA = a.sellingPrice > 0
+                    ? (a.sellingPrice - a.hpp) / a.sellingPrice
+                    : 0.0;
+                final marginB = b.sellingPrice > 0
+                    ? (b.sellingPrice - b.hpp) / b.sellingPrice
+                    : 0.0;
+                return marginB.compareTo(marginA);
+              case ProductSortOption.priceDesc:
+                return b.sellingPrice.compareTo(a.sellingPrice);
+              case ProductSortOption.hppDesc:
+                return b.hpp.compareTo(a.hpp);
+            }
+          });
+
+          return CustomScrollView(
+            slivers: [
+              // A. Hero Overview Card
+              if (allProducts.isNotEmpty)
+                SliverToBoxAdapter(
+                  child: ProductHeroCard(allProducts: allProducts),
+                ),
+
+              // B. Search, Filter Chips, & Sort Bar
+              if (allProducts.isNotEmpty)
+                SliverToBoxAdapter(
+                  child: ProductSearchFilterBar(
+                    searchController: _searchController,
+                    onSearchChanged: (val) {
+                      ref.read(productSearchTextProvider.notifier).state = val;
+                      setState(() {});
+                    },
+                    currentFilter: statusFilter,
+                    onFilterChanged: (status) {
+                      ref.read(productStatusFilterProvider.notifier).state =
+                          status;
+                    },
+                    currentSort: sortOption,
+                    onSortChanged: (sort) {
+                      ref.read(productSortOptionProvider.notifier).state = sort;
+                    },
+                    totalCount: allProducts.length,
+                    activeCount: activeCount,
+                    inactiveCount: inactiveCount,
+                  ),
+                ),
+
+              const SliverToBoxAdapter(
+                child: SizedBox(height: 8),
+              ),
+
+              // C. Product List or Empty States
+              if (allProducts.isEmpty)
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: _buildEmptyKatalogState(context),
+                )
+              else if (filtered.isEmpty)
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: _buildEmptySearchResultState(),
+                )
+              else
+                SliverPadding(
+                  padding: const EdgeInsets.only(bottom: 110),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        final product = filtered[index];
+                        return ProductCard(
+                          product: product,
+                          onTap: () =>
+                              context.push('/products/edit/${product.id}'),
+                        );
+                      },
+                      childCount: filtered.length,
+                    ),
+                  ),
+                ),
+            ],
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push('/products/add'),
-        icon: const Icon(Iconsax.add),
-        label: const Text('Tambah Produk'),
+        backgroundColor: AppColors.primaryGreen,
+        foregroundColor: Colors.white,
+        elevation: 4,
+        highlightElevation: 6,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        icon: const Icon(Iconsax.add, size: 20),
+        label: const Text(
+          'Tambah Produk',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.2,
+          ),
+        ),
       ),
     );
   }
-}
 
-class _ProductTile extends ConsumerWidget {
-  final Product product;
-
-  const _ProductTile({required this.product});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final margin = product.sellingPrice - product.hpp;
-    final marginPercent = product.sellingPrice > 0
-        ? ((margin / product.sellingPrice) * 100).toStringAsFixed(0)
-        : '0';
-
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        leading: Container(
-          width: 44,
-          height: 44,
-          decoration: BoxDecoration(
-            color: product.isActive
-                ? AppColors.primaryGreen.withAlpha(25)
-                : AppColors.textHint.withAlpha(25),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Icon(
-            Iconsax.box,
-            color: product.isActive ? AppColors.primaryGreen : AppColors.textHint,
-          ),
-        ),
-        title: Row(
+  Widget _buildEmptyKatalogState(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(28.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              child: Text(
-                product.name,
+            Container(
+              width: 80,
+              height: 80,
+              decoration: const BoxDecoration(
+                color: AppColors.greenTint,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Iconsax.box_add,
+                size: 38,
+                color: AppColors.primaryGreen,
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Belum Ada Produk Terdaftar',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                color: AppColors.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Tambahkan produk daganganmu beserta modal HPP dan harga jual agar sistem dapat menghitung keuntungan otomatis setiap hari.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 13,
+                color: AppColors.textSecondary,
+                height: 1.45,
+              ),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton.icon(
+              onPressed: () => context.push('/products/add'),
+              icon: const Icon(Iconsax.add_circle, size: 18),
+              label: const Text(
+                'Tambah Produk Pertama',
                 style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: product.isActive
-                      ? AppColors.textPrimary
-                      : AppColors.textSecondary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryGreen,
+                foregroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 22,
+                  vertical: 12,
                 ),
               ),
             ),
-            if (!product.isActive)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: AppColors.warning.withAlpha(25),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: const Text(
-                  'Nonaktif',
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: AppColors.warning,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
           ],
         ),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    'HPP: ${CurrencyFormatter.formatRupiah(product.hpp)}',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Text(
-                    'Jual: ${CurrencyFormatter.formatRupiah(product.sellingPrice)}',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
+      ),
+    );
+  }
+
+  Widget _buildEmptySearchResultState() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(28.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 72,
+              height: 72,
+              decoration: BoxDecoration(
+                color: AppColors.greyBg,
+                shape: BoxShape.circle,
               ),
-              const SizedBox(height: 2),
-              Text(
-                'Margin: $marginPercent%',
+              child: const Icon(
+                Iconsax.search_status,
+                size: 34,
+                color: AppColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 18),
+            const Text(
+              'Produk Tidak Ditemukan',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w800,
+                color: AppColors.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 6),
+            const Text(
+              'Tidak ada produk yang cocok dengan kata kunci atau filter status yang dipilih.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                color: AppColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 18),
+            OutlinedButton.icon(
+              onPressed: _resetSearchAndFilter,
+              icon: const Icon(Iconsax.refresh, size: 16),
+              label: const Text(
+                'Reset Pencarian & Filter',
                 style: TextStyle(
                   fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: margin > 0
-                      ? AppColors.profit
-                      : margin < 0
-                          ? AppColors.loss
-                          : AppColors.breakEven,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-            ],
-          ),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.primaryGreen,
+                side: const BorderSide(color: AppColors.primaryGreen),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ],
         ),
-        trailing: const Icon(Iconsax.arrow_right_3),
-        onTap: () => context.push('/products/edit/${product.id}'),
       ),
     );
   }
