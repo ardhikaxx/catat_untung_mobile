@@ -322,6 +322,8 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                 borderRadius: BorderRadius.circular(20),
                 child: Image.asset(
                   AppGifs.groceryBasket,
+                  cacheWidth: 210,
+                  cacheHeight: 210,
                   fit: BoxFit.contain,
                 ),
               ),

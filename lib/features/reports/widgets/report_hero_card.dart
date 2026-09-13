@@ -158,6 +158,8 @@ class ReportHeroCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   child: Image.asset(
                     AppGifs.profits,
+                    cacheWidth: 100,
+                    cacheHeight: 100,
                     fit: BoxFit.contain,
                   ),
                 ),

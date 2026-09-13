@@ -309,6 +309,8 @@ class ReportsScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(16),
                             child: Image.asset(
                               AppGifs.profits,
+                              cacheWidth: 160,
+                              cacheHeight: 160,
                               fit: BoxFit.contain,
                             ),
                           ),

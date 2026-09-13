@@ -89,6 +89,8 @@ class _SplashScreenState extends State<SplashScreen>
                         borderRadius: BorderRadius.circular(18),
                         child: Image.asset(
                           AppGifs.buy,
+                          cacheWidth: 220,
+                          cacheHeight: 220,
                           fit: BoxFit.contain,
                         ),
                       ),

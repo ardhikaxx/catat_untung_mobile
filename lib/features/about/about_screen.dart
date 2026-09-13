@@ -97,6 +97,8 @@ class AboutScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(14),
                       child: Image.asset(
                         AppGifs.buy,
+                        cacheWidth: 152,
+                        cacheHeight: 152,
                         fit: BoxFit.contain,
                       ),
                     ),
@@ -380,6 +382,8 @@ class AboutScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(14),
                     child: Image.asset(
                       AppGifs.customerService,
+                      cacheWidth: 120,
+                      cacheHeight: 120,
                       fit: BoxFit.contain,
                     ),
                   ),

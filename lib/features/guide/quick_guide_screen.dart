@@ -139,6 +139,8 @@ class QuickGuideScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(14),
                         child: Image.asset(
                           AppGifs.customerService,
+                          cacheWidth: 130,
+                          cacheHeight: 130,
                           fit: BoxFit.contain,
                         ),
                       ),

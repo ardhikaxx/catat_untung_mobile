@@ -634,6 +634,8 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                               borderRadius: BorderRadius.circular(16),
                               child: Image.asset(
                                 AppGifs.shoppingBag,
+                                cacheWidth: 168,
+                                cacheHeight: 168,
                                 fit: BoxFit.contain,
                               ),
                             ),

@@ -151,6 +151,8 @@ class _HistoryListViewState extends State<HistoryListView> {
                 borderRadius: BorderRadius.circular(16),
                 child: Image.asset(
                   AppGifs.calendar,
+                  cacheWidth: 160,
+                  cacheHeight: 160,
                   fit: BoxFit.contain,
                 ),
               ),

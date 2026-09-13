@@ -60,6 +60,8 @@ class RekapSavedView extends StatelessWidget {
                             AppGifs.task,
                             width: 26,
                             height: 26,
+                            cacheWidth: 80,
+                            cacheHeight: 80,
                             fit: BoxFit.contain,
                           ),
                         ),
