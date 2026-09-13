@@ -12,6 +12,10 @@ import 'package:catat_untung/features/reports/widgets/report_period_selector.dar
 import 'package:catat_untung/features/reports/widgets/report_hero_card.dart';
 import 'package:catat_untung/features/reports/widgets/report_metrics_grid.dart';
 import 'package:catat_untung/features/reports/widgets/report_top_products.dart';
+import 'package:catat_untung/features/settings/widgets/settings_header_card.dart';
+import 'package:catat_untung/features/settings/widgets/settings_section_card.dart';
+import 'package:catat_untung/features/settings/widgets/settings_menu_tile.dart';
+import 'package:iconsax/iconsax.dart';
 
 void main() {
   setUpAll(() async {
@@ -56,10 +60,15 @@ void main() {
       expect(find.text('Total Modal'), findsOneWidget);
       expect(find.text('1 Hari (20 unit)'), findsOneWidget);
 
-      // Tap navigation
-      await tester.tap(find.byIcon(Icons.arrow_back_ios_new).first.hasFound ? find.byIcon(Icons.arrow_back_ios_new) : find.byType(InkWell).first);
+      // Tap previous month navigation
+      await tester.tap(find.byType(InkWell).first);
       await tester.pump();
       expect(prevTapped, isTrue);
+
+      // Tap next month navigation
+      await tester.tap(find.byType(InkWell).at(1));
+      await tester.pump();
+      expect(nextTapped, isTrue);
     });
 
     testWidgets('HistoryViewToggle switches modes', (tester) async {
@@ -231,6 +240,53 @@ void main() {
       expect(find.text('#2'), findsOneWidget);
       expect(find.text('40 unit'), findsOneWidget);
       expect(find.text('25 unit'), findsOneWidget);
+    });
+
+    testWidgets('SettingsHeaderCard renders app name, tagline, and offline badge', (tester) async {
+      await tester.pumpWidget(
+        const ProviderScope(
+          child: MaterialApp(
+            home: Scaffold(
+              body: SettingsHeaderCard(),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Catat Untung'), findsOneWidget);
+      expect(find.textContaining('Rekap Penjualan Harian Tanpa Internet'), findsOneWidget);
+      expect(find.text('Offline Safe'), findsOneWidget);
+    });
+
+    testWidgets('SettingsMenuTile displays title, subtitle, and responds to tap', (tester) async {
+      bool tileTapped = false;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SettingsSectionCard(
+              title: 'Kelola Data',
+              children: [
+                SettingsMenuTile(
+                  icon: Iconsax.box,
+                  iconColor: const Color(0xFF6C4AB6),
+                  title: 'Katalog Produk',
+                  subtitle: 'Kelola daftar harga jual & HPP',
+                  onTap: () => tileTapped = true,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('KELOLA DATA'), findsOneWidget);
+      expect(find.text('Katalog Produk'), findsOneWidget);
+      expect(find.text('Kelola daftar harga jual & HPP'), findsOneWidget);
+
+      await tester.tap(find.text('Katalog Produk'));
+      await tester.pump();
+      expect(tileTapped, isTrue);
     });
   });
 }
