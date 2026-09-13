@@ -478,7 +478,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                           selectedDate: _selectedDate,
                           onEditRekap: _enterEditMode,
                           onViewHistory: () => context.push('/history'),
-                          bottomPadding: canPop ? 16.0 : 88.0,
+                          bottomSpacing: canPop ? 24.0 : 104.0,
                         )
                       : _buildFormView(items, canPop),
             ),
@@ -489,7 +489,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
   }
 
   Widget _buildFormView(List<RekapItem> items, bool canPop) {
-    final bottomSpacing = canPop ? 16.0 : 88.0;
+    final bottomSpacing = canPop ? 20.0 : 100.0;
 
     if (items.isEmpty) {
       return _buildEmptyState(bottomSpacing);
@@ -580,100 +580,116 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
   }
 
   Widget _buildEmptyState(double bottomSpacing) {
-    return Column(
-      children: [
-        Expanded(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 84,
-                    height: 84,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF3E8FF),
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF6C4AB6).withAlpha(30),
-                          blurRadius: 18,
-                          offset: const Offset(0, 6),
-                        ),
-                      ],
-                    ),
-                    child: const Icon(
-                      Iconsax.bag_2,
-                      size: 40,
-                      color: Color(0xFF6C4AB6),
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-                  const Text(
-                    'Belum Ada Item Terjual',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Pilih produk dari menu katalog Anda dan masukkan jumlah yang terjual hari ini untuk menghitung laba bersih otomatis.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: AppColors.textSecondary,
-                      height: 1.5,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    const Spacer(flex: 2),
 
-        // Bagian untuk menambah rekapan (Docked neatly right above navbottom!)
-        Container(
-          padding: EdgeInsets.fromLTRB(16, 12, 16, bottomSpacing),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withAlpha(8),
-                blurRadius: 14,
-                offset: const Offset(0, -3),
-              ),
-            ],
-          ),
-          child: SizedBox(
-            width: double.infinity,
-            height: 48,
-            child: ElevatedButton.icon(
-              onPressed: _showProductSelector,
-              icon: const Icon(Iconsax.add_circle, size: 20),
-              label: const Text(
-                'Tambah Produk Terjual',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF6C4AB6),
-                foregroundColor: Colors.white,
-                elevation: 2,
-                shadowColor: const Color(0xFF6C4AB6).withAlpha(100),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
+                    // Modern Card for Empty Recap
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(22),
+                        border: Border.all(color: const Color(0xFFE2E8F0)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withAlpha(6),
+                            blurRadius: 16,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 76,
+                            height: 76,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF3E8FF),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xFF6C4AB6).withAlpha(25),
+                                  blurRadius: 14,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: const Icon(
+                              Iconsax.bag_2,
+                              size: 36,
+                              color: Color(0xFF6C4AB6),
+                            ),
+                          ),
+                          const SizedBox(height: 18),
+                          const Text(
+                            'Belum Ada Rekap Hari Ini',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'Pilih produk dari katalog Anda dan masukkan jumlah yang terjual hari ini untuk menghitung omzet dan laba bersih otomatis.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: AppColors.textSecondary,
+                              height: 1.45,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 48,
+                            child: ElevatedButton.icon(
+                              onPressed: _showProductSelector,
+                              icon: const Icon(Iconsax.add_circle, size: 20),
+                              label: const Text(
+                                'Tambah Produk Terjual',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF6C4AB6),
+                                foregroundColor: Colors.white,
+                                elevation: 2,
+                                shadowColor: const Color(0xFF6C4AB6).withAlpha(100),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const Spacer(flex: 3),
+
+                    // Visual spacing above floating navbottom
+                    SizedBox(height: bottomSpacing),
+                  ],
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 }

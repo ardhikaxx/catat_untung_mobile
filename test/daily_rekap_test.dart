@@ -190,7 +190,7 @@ void main() {
               selectedDate: DateTime(2026, 9, 12),
               onEditRekap: () => editTapped = true,
               onViewHistory: () => historyTapped = true,
-              bottomPadding: 88.0,
+              bottomSpacing: 100.0,
             ),
           ),
         ),
