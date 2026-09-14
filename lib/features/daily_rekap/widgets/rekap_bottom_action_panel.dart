@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 
@@ -122,7 +122,7 @@ class RekapBottomActionPanel extends StatelessWidget {
                     height: 48,
                     child: OutlinedButton.icon(
                       onPressed: onAddProduct,
-                      icon: const Icon(Iconsax.add, size: 18),
+                      icon: const Icon(LucideIcons.plus, size: 18),
                       label: const Text(
                         'Tambah',
                         style: TextStyle(
@@ -163,7 +163,7 @@ class RekapBottomActionPanel extends StatelessWidget {
                                 color: Colors.white,
                               ),
                             )
-                          : const Icon(Iconsax.tick_circle, size: 18),
+                          : const Icon(LucideIcons.checkCircle2, size: 18),
                       label: Text(
                         isLoading ? 'Menyimpan...' : 'Simpan Rekap',
                         style: const TextStyle(

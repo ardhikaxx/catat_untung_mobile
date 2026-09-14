@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 
@@ -68,7 +68,7 @@ class HppHeroResultCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: const [
                     Icon(
-                      Iconsax.calculator,
+                      LucideIcons.calculator,
                       size: 14,
                       color: Colors.white,
                     ),
@@ -95,7 +95,7 @@ class HppHeroResultCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: const [
                     Icon(
-                      Iconsax.tick_circle,
+                      LucideIcons.checkCircle2,
                       size: 12,
                       color: AppColors.primaryGreen,
                     ),

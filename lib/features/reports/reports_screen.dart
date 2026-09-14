@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
 import '../../database/app_database.dart';
 import '../../providers/database_provider.dart';
@@ -182,7 +182,7 @@ class ReportsScreen extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(
-                    Iconsax.chart_21,
+                    LucideIcons.barChart3,
                     size: 20,
                     color: AppColors.primaryGreen,
                   ),
@@ -207,7 +207,7 @@ class ReportsScreen extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Icon(
-                Iconsax.export_3,
+                LucideIcons.share2,
                 size: 18,
                 color: AppColors.primaryGreen,
               ),
@@ -246,7 +246,7 @@ class ReportsScreen extends ConsumerWidget {
                 ),
                 child: Column(
                   children: [
-                    const Icon(Iconsax.warning_2, size: 40, color: AppColors.error),
+                    const Icon(LucideIcons.alertTriangle, size: 40, color: AppColors.error),
                     const SizedBox(height: 12),
                     const Text(
                       'Gagal Memuat Laporan',
@@ -306,7 +306,7 @@ class ReportsScreen extends ConsumerWidget {
                           ),
                           child: const Center(
                             child: Icon(
-                              Iconsax.chart_21,
+                              LucideIcons.barChart3,
                               size: 38,
                               color: AppColors.primaryGreen,
                             ),
@@ -336,7 +336,7 @@ class ReportsScreen extends ConsumerWidget {
                           height: 42,
                           child: ElevatedButton.icon(
                             onPressed: () => context.push('/daily-rekap'),
-                            icon: const Icon(Iconsax.add_circle, size: 18),
+                            icon: const Icon(LucideIcons.plusCircle, size: 18),
                             label: const Text(
                               'Rekap Penjualan Sekarang',
                               style: TextStyle(

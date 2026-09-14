@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 
 class SettingsMenuTile extends StatelessWidget {
@@ -87,7 +87,7 @@ class SettingsMenuTile extends StatelessWidget {
                     trailing!
                   else if (onTap != null)
                     const Icon(
-                      Iconsax.arrow_right_3,
+                      LucideIcons.chevronRight,
                       size: 16,
                       color: Color(0xFF94A3B8),
                     ),

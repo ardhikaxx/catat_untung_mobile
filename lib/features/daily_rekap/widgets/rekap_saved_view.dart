@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
@@ -62,7 +62,7 @@ class RekapSavedView extends StatelessWidget {
                           ),
                           child: const Center(
                             child: Icon(
-                              Iconsax.tick_circle,
+                              LucideIcons.checkCircle2,
                               size: 16,
                               color: Colors.white,
                             ),
@@ -201,7 +201,7 @@ class RekapSavedView extends StatelessWidget {
                                     Row(
                                       children: [
                                         Icon(
-                                          Iconsax.wallet_2,
+                                          LucideIcons.wallet,
                                           size: 13,
                                           color: Colors.white.withAlpha(180),
                                         ),
@@ -246,10 +246,10 @@ class RekapSavedView extends StatelessWidget {
                                       children: [
                                         Icon(
                                           isProfitPositive
-                                              ? Iconsax.trend_up
+                                              ? LucideIcons.trendingUp
                                               : (isProfitZero
-                                                  ? Iconsax.minus
-                                                  : Iconsax.trend_down),
+                                                  ? LucideIcons.minus
+                                                  : LucideIcons.trendingDown),
                                           size: 13,
                                           color: isProfitPositive
                                               ? const Color(0xFF4ADE80)
@@ -391,7 +391,7 @@ class RekapSavedView extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Icon(
-                              Iconsax.box_1,
+                              LucideIcons.package,
                               size: 20,
                               color: Color(0xFF00AA13),
                             ),
@@ -465,7 +465,7 @@ class RekapSavedView extends StatelessWidget {
                           height: 48,
                           child: ElevatedButton.icon(
                             onPressed: onEditRekap,
-                            icon: const Icon(Iconsax.edit_2, size: 18),
+                            icon: const Icon(LucideIcons.edit, size: 18),
                             label: const Text(
                               'Ubah / Tambah Rekap Ini',
                               style: TextStyle(
@@ -491,7 +491,7 @@ class RekapSavedView extends StatelessWidget {
                           height: 44,
                           child: OutlinedButton.icon(
                             onPressed: onViewHistory,
-                            icon: const Icon(Iconsax.calendar_1, size: 18),
+                            icon: const Icon(LucideIcons.calendar, size: 18),
                             label: const Text(
                               'Buka Riwayat Penjualan',
                               style: TextStyle(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/date_formatter.dart';
@@ -78,7 +78,7 @@ class HistoryMonthHeroCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(
-                    Iconsax.arrow_left_2,
+                    LucideIcons.chevronLeft,
                     color: Colors.white,
                     size: 16,
                   ),
@@ -89,7 +89,7 @@ class HistoryMonthHeroCard extends StatelessWidget {
               Row(
                 children: [
                   const Icon(
-                    Iconsax.calendar_2,
+                    LucideIcons.calendar,
                     color: Colors.white,
                     size: 16,
                   ),
@@ -119,7 +119,7 @@ class HistoryMonthHeroCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(
-                    Iconsax.arrow_right_3,
+                    LucideIcons.chevronRight,
                     color: canGoNext
                         ? Colors.white
                         : Colors.white.withAlpha(80),
@@ -175,7 +175,7 @@ class HistoryMonthHeroCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
-                      isProfit ? Iconsax.trend_up : Iconsax.trend_down,
+                      isProfit ? LucideIcons.trendingUp : LucideIcons.trendingDown,
                       size: 13,
                       color: isProfit
                           ? const Color(0xFF16A34A)

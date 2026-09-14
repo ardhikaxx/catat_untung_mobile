@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 
 enum ProductFilterStatus {
@@ -12,10 +12,10 @@ enum ProductFilterStatus {
 }
 
 enum ProductSortOption {
-  nameAsc('Nama A-Z', Iconsax.sort),
-  marginDesc('Margin Tertinggi', Iconsax.trend_up),
-  priceDesc('Harga Jual Tertinggi', Iconsax.money),
-  hppDesc('Modal HPP Tertinggi', Iconsax.wallet_3);
+  nameAsc('Nama A-Z', LucideIcons.arrowUpDown),
+  marginDesc('Margin Tertinggi', LucideIcons.trendingUp),
+  priceDesc('Harga Jual Tertinggi', LucideIcons.banknote),
+  hppDesc('Modal HPP Tertinggi', LucideIcons.wallet);
 
   final String label;
   final IconData icon;
@@ -87,14 +87,14 @@ class ProductSearchFilterBar extends StatelessWidget {
                         color: AppColors.textHint,
                       ),
                       prefixIcon: const Icon(
-                        Iconsax.search_normal_1,
+                        LucideIcons.search,
                         size: 18,
                         color: AppColors.textSecondary,
                       ),
                       suffixIcon: searchController.text.isNotEmpty
                           ? IconButton(
                               icon: const Icon(
-                                Iconsax.close_circle,
+                                LucideIcons.xCircle,
                                 size: 16,
                                 color: AppColors.textSecondary,
                               ),
@@ -170,13 +170,13 @@ class ProductSearchFilterBar extends StatelessWidget {
                   child: Row(
                     children: const [
                       Icon(
-                        Iconsax.sort,
+                        LucideIcons.arrowUpDown,
                         size: 18,
                         color: AppColors.textPrimary,
                       ),
                       SizedBox(width: 4),
                       Icon(
-                        Iconsax.arrow_down_1,
+                        LucideIcons.chevronDown,
                         size: 14,
                         color: AppColors.textSecondary,
                       ),

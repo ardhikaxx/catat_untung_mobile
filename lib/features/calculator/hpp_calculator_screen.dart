@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/currency_formatter.dart';
@@ -183,7 +183,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
               TextButton.icon(
                 onPressed: _clearAll,
                 icon: const Icon(
-                  Iconsax.refresh,
+                  LucideIcons.rotateCcw,
                   size: 16,
                   color: AppColors.error,
                 ),
@@ -199,7 +199,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
             else
               IconButton(
                 icon: const Icon(
-                  Iconsax.refresh,
+                  LucideIcons.rotateCcw,
                   size: 18,
                   color: AppColors.textSecondary,
                 ),
@@ -231,7 +231,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Icon(
-                      Iconsax.lamp_on,
+                      LucideIcons.lightbulb,
                       color: Colors.white,
                       size: 18,
                     ),
@@ -290,7 +290,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
               child: Row(
                 children: [
                   const Icon(
-                    Iconsax.magicpen,
+                    LucideIcons.wand2,
                     size: 14,
                     color: AppColors.textSecondary,
                   ),
@@ -362,7 +362,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: const Icon(
-                          Iconsax.edit_2,
+                          LucideIcons.edit,
                           size: 18,
                           color: AppColors.primaryGreen,
                         ),
@@ -400,7 +400,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                     label: 'Biaya Bahan Baku Utama',
                     subtitle: 'Daging, beras, bumbu, sayuran, dsb.',
                     hint: '0',
-                    icon: Iconsax.box_1,
+                    icon: LucideIcons.package,
                     iconColor: AppColors.primaryGreen,
                     bgColor: AppColors.greenTint,
                   ),
@@ -413,7 +413,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                     label: 'Biaya Kemasan & Packaging',
                     subtitle: 'Box, styrofoam, cup, plastik, stiker label',
                     hint: '0',
-                    icon: Iconsax.box,
+                    icon: LucideIcons.package,
                     iconColor: AppColors.warning,
                     bgColor: AppColors.warning.withAlpha(20),
                   ),
@@ -426,7 +426,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                     label: 'Biaya Operasional / Lainnya',
                     subtitle: 'Gas LPG, listrik, es batu, minyak goreng',
                     hint: '0',
-                    icon: Iconsax.flash_1,
+                    icon: LucideIcons.zap,
                     iconColor: AppColors.info,
                     bgColor: AppColors.info.withAlpha(20),
                   ),
@@ -447,7 +447,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: const Icon(
-                          Iconsax.chart_21,
+                          LucideIcons.barChart3,
                           size: 18,
                           color: AppColors.textPrimary,
                         ),
@@ -573,7 +573,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                         ),
                         elevation: hasData ? 3 : 0,
                       ),
-                      icon: const Icon(Iconsax.add_square, size: 20),
+                      icon: const Icon(LucideIcons.plusSquare, size: 20),
                       label: Text(
                         hasData
                             ? 'Jadikan Produk Baru (${CurrencyFormatter.formatRupiah(_recommendedSellingPrice.round())})'
@@ -599,7 +599,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                             borderRadius: BorderRadius.circular(14),
                           ),
                         ),
-                        icon: const Icon(Iconsax.refresh, size: 16),
+                        icon: const Icon(LucideIcons.rotateCcw, size: 16),
                         label: const Text(
                           'Reset Semua Hitungan',
                           style: TextStyle(

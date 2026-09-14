@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../database/app_database.dart';
@@ -131,7 +131,7 @@ class _RekapProductSelectorModalState
                       ],
                     ),
                     IconButton(
-                      icon: const Icon(Iconsax.close_circle, size: 22),
+                      icon: const Icon(LucideIcons.xCircle, size: 22),
                       color: const Color(0xFF94A3B8),
                       onPressed: () => Navigator.pop(context),
                     ),
@@ -156,13 +156,13 @@ class _RekapProductSelectorModalState
                         color: Color(0xFF94A3B8),
                       ),
                       prefixIcon: const Icon(
-                        Iconsax.search_normal_1,
+                        LucideIcons.search,
                         size: 18,
                         color: Color(0xFF94A3B8),
                       ),
                       suffixIcon: _searchQuery.isNotEmpty
                           ? IconButton(
-                              icon: const Icon(Iconsax.close_circle, size: 16),
+                              icon: const Icon(LucideIcons.xCircle, size: 16),
                               onPressed: () => _searchController.clear(),
                             )
                           : null,
@@ -232,7 +232,7 @@ class _RekapProductSelectorModalState
                                           borderRadius: BorderRadius.circular(12),
                                         ),
                                         child: Icon(
-                                          Iconsax.box,
+                                          LucideIcons.package,
                                           size: 20,
                                           color: isSelected
                                               ? const Color(0xFF94A3B8)
@@ -345,7 +345,7 @@ class _RekapProductSelectorModalState
                 shape: BoxShape.circle,
               ),
               child: const Icon(
-                Iconsax.box_add,
+                LucideIcons.packagePlus,
                 size: 30,
                 color: Color(0xFF00AA13),
               ),
@@ -374,7 +374,7 @@ class _RekapProductSelectorModalState
                 Navigator.pop(context);
                 context.push('/products/add');
               },
-              icon: const Icon(Iconsax.add, size: 18),
+              icon: const Icon(LucideIcons.plus, size: 18),
               label: const Text('Buat Produk Sekarang'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF00AA13),
@@ -399,7 +399,7 @@ class _RekapProductSelectorModalState
           mainAxisSize: MainAxisSize.min,
           children: [
             const Icon(
-              Iconsax.search_status,
+              LucideIcons.searchCheck,
               size: 44,
               color: Color(0xFF94A3B8),
             ),

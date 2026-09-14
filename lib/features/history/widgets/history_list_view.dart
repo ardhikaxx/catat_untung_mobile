@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../database/app_database.dart';
 import 'history_record_card.dart';
@@ -147,7 +147,7 @@ class _HistoryListViewState extends State<HistoryListView> {
               ),
               child: const Center(
                 child: Icon(
-                  Iconsax.calendar_remove,
+                  LucideIcons.calendarX,
                   size: 38,
                   color: AppColors.primaryGreen,
                 ),
@@ -178,7 +178,7 @@ class _HistoryListViewState extends State<HistoryListView> {
               const SizedBox(height: 18),
               ElevatedButton.icon(
                 onPressed: widget.onCreateRekap,
-                icon: const Icon(Iconsax.add, size: 16),
+                icon: const Icon(LucideIcons.plus, size: 16),
                 label: const Text('Buat Rekap Sekarang'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryGreen,

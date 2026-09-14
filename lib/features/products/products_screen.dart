@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
 import '../../providers/database_provider.dart';
 import '../../database/app_database.dart';
@@ -116,7 +116,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Icon(
-                Iconsax.add,
+                LucideIcons.plus,
                 size: 18,
                 color: AppColors.primaryGreen,
               ),
@@ -144,7 +144,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Icon(
-                      Iconsax.warning_2,
+                      LucideIcons.alertTriangle,
                       size: 40,
                       color: AppColors.error,
                     ),
@@ -290,7 +290,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        icon: const Icon(Iconsax.add, size: 20),
+        icon: const Icon(LucideIcons.plus, size: 20),
         label: const Text(
           'Tambah Produk',
           style: TextStyle(
@@ -319,7 +319,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
               ),
               child: const Center(
                 child: Icon(
-                  Iconsax.box_add,
+                  LucideIcons.packagePlus,
                   size: 44,
                   color: AppColors.primaryGreen,
                 ),
@@ -347,7 +347,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
             const SizedBox(height: 24),
             ElevatedButton.icon(
               onPressed: () => context.push('/products/add'),
-              icon: const Icon(Iconsax.add_circle, size: 18),
+              icon: const Icon(LucideIcons.plusCircle, size: 18),
               label: const Text(
                 'Tambah Produk Pertama',
                 style: TextStyle(
@@ -389,7 +389,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                 shape: BoxShape.circle,
               ),
               child: const Icon(
-                Iconsax.search_status,
+                LucideIcons.searchCheck,
                 size: 34,
                 color: AppColors.textSecondary,
               ),
@@ -415,7 +415,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
             const SizedBox(height: 18),
             OutlinedButton.icon(
               onPressed: _resetSearchAndFilter,
-              icon: const Icon(Iconsax.refresh, size: 16),
+              icon: const Icon(LucideIcons.rotateCcw, size: 16),
               label: const Text(
                 'Reset Pencarian & Filter',
                 style: TextStyle(

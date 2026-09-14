@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/constants/app_constants.dart';
 import '../../providers/database_provider.dart';
@@ -135,7 +135,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
           SnackBar(
             content: Row(
               children: [
-                const Icon(Iconsax.tick_circle, color: Colors.white, size: 18),
+                const Icon(LucideIcons.checkCircle2, color: Colors.white, size: 18),
                 const SizedBox(width: 8),
                 Text(_isEdit
                     ? 'Produk berhasil diperbarui'
@@ -171,7 +171,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Row(
           children: const [
-            Icon(Iconsax.trash, color: AppColors.loss, size: 22),
+            Icon(LucideIcons.trash2, color: AppColors.loss, size: 22),
             SizedBox(width: 10),
             Text(
               'Hapus Produk?',
@@ -299,7 +299,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Icon(
-                  Iconsax.trash,
+                  LucideIcons.trash2,
                   size: 18,
                   color: AppColors.loss,
                 ),
@@ -328,7 +328,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
             _buildSectionContainer(
               title: 'Identitas Barang',
               subtitle: 'Nama dan kemasan penjualan produk',
-              icon: Iconsax.box,
+              icon: LucideIcons.package,
               children: [
                 // Nama Produk
                 TextFormField(
@@ -343,7 +343,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                   decoration: InputDecoration(
                     labelText: 'Nama Produk / Menu *',
                     hintText: 'Contoh: Es Kopi Susu Aren, Nasi Goreng Spesial',
-                    prefixIcon: const Icon(Iconsax.tag, size: 20),
+                    prefixIcon: const Icon(LucideIcons.tag, size: 20),
                     filled: true,
                     fillColor: AppColors.greyBg,
                     border: OutlineInputBorder(
@@ -435,7 +435,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                       : AppConstants.unitOptions.first,
                   decoration: InputDecoration(
                     labelText: 'Pilih Satuan Lainnya',
-                    prefixIcon: const Icon(Iconsax.ruler, size: 20),
+                    prefixIcon: const Icon(LucideIcons.ruler, size: 20),
                     filled: true,
                     fillColor: AppColors.greyBg,
                     border: OutlineInputBorder(
@@ -466,7 +466,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
             _buildSectionContainer(
               title: 'Harga Modal & Penjualan',
               subtitle: 'Dasar penghitungan laba bersih harian',
-              icon: Iconsax.wallet_money,
+              icon: LucideIcons.wallet,
               children: [
                 // Modal HPP
                 TextFormField(
@@ -488,7 +488,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                       color: AppColors.textPrimary,
                     ),
                     helperText: 'Biaya pokok bahan & pembuatan satu unit produk',
-                    prefixIcon: const Icon(Iconsax.bag_2, size: 20),
+                    prefixIcon: const Icon(LucideIcons.shoppingBag, size: 20),
                     filled: true,
                     fillColor: AppColors.greyBg,
                     border: OutlineInputBorder(
@@ -541,7 +541,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                       color: AppColors.textPrimary,
                     ),
                     helperText: 'Harga normal yang ditawarkan kepada pelanggan',
-                    prefixIcon: const Icon(Iconsax.coin, size: 20),
+                    prefixIcon: const Icon(LucideIcons.coins, size: 20),
                     filled: true,
                     fillColor: AppColors.greyBg,
                     border: OutlineInputBorder(
@@ -635,7 +635,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                           color: Colors.white,
                         ),
                       )
-                    : const Icon(Iconsax.tick_circle, size: 20),
+                    : const Icon(LucideIcons.checkCircle2, size: 20),
                 label: Text(
                   _isEdit ? 'Simpan Perubahan' : 'Tambah ke Katalog Produk',
                   style: const TextStyle(

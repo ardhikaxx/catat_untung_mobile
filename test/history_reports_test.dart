@@ -15,7 +15,7 @@ import 'package:catat_untung/features/reports/widgets/report_top_products.dart';
 import 'package:catat_untung/features/settings/widgets/settings_header_card.dart';
 import 'package:catat_untung/features/settings/widgets/settings_section_card.dart';
 import 'package:catat_untung/features/settings/widgets/settings_menu_tile.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 void main() {
   setUpAll(() async {
@@ -268,7 +268,7 @@ void main() {
               title: 'Kelola Data',
               children: [
                 SettingsMenuTile(
-                  icon: Iconsax.box,
+                  icon: LucideIcons.package,
                   iconColor: const Color(0xFF6C4AB6),
                   title: 'Katalog Produk',
                   subtitle: 'Kelola daftar harga jual & HPP',

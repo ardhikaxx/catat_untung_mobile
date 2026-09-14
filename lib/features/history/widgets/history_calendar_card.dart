@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../core/theme/app_colors.dart';
@@ -220,7 +220,7 @@ class HistoryCalendarCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(
-                    Iconsax.calendar_remove,
+                    LucideIcons.calendarX,
                     size: 20,
                     color: Color(0xFF94A3B8),
                   ),
@@ -260,7 +260,7 @@ class HistoryCalendarCard extends StatelessWidget {
                 height: 40,
                 child: OutlinedButton.icon(
                   onPressed: () => onCreateRekap(day),
-                  icon: const Icon(Iconsax.add, size: 16),
+                  icon: const Icon(LucideIcons.plus, size: 16),
                   label: const Text(
                     'Buat Rekap Tanggal Ini',
                     style: TextStyle(
@@ -343,7 +343,7 @@ class HistoryCalendarCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
-                      isProfit ? Iconsax.arrow_up_3 : Iconsax.arrow_down3,
+                      isProfit ? LucideIcons.arrowUp : LucideIcons.arrowDown,
                       size: 13,
                       color: isProfit
                           ? const Color(0xFF16A34A)
@@ -375,7 +375,7 @@ class HistoryCalendarCard extends StatelessWidget {
                 child: _buildMetricTile(
                   label: 'Omzet',
                   value: CurrencyFormatter.formatRupiah(record.totalRevenue),
-                  icon: Iconsax.wallet_money,
+                  icon: LucideIcons.wallet,
                   color: const Color(0xFF2563EB),
                 ),
               ),
@@ -384,7 +384,7 @@ class HistoryCalendarCard extends StatelessWidget {
                 child: _buildMetricTile(
                   label: 'Modal',
                   value: CurrencyFormatter.formatRupiah(record.totalCost),
-                  icon: Iconsax.bag_2,
+                  icon: LucideIcons.shoppingBag,
                   color: const Color(0xFFEA580C),
                 ),
               ),
@@ -393,7 +393,7 @@ class HistoryCalendarCard extends StatelessWidget {
                 child: _buildMetricTile(
                   label: 'Margin',
                   value: '$margin%',
-                  icon: Iconsax.chart_21,
+                  icon: LucideIcons.barChart3,
                   color: const Color(0xFF16A34A),
                 ),
               ),
@@ -408,7 +408,7 @@ class HistoryCalendarCard extends StatelessWidget {
             height: 44,
             child: ElevatedButton.icon(
               onPressed: () => onOpenDetail(day),
-              icon: const Icon(Iconsax.document_text_1, size: 18),
+              icon: const Icon(LucideIcons.fileText, size: 18),
               label: Text(
                 'Lihat Detail Rekap (${record.totalQuantity} Item Terjual)',
                 style: const TextStyle(

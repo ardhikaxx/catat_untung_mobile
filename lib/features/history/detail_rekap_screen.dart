@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/date_formatter.dart';
@@ -77,7 +77,7 @@ class DetailRekapScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: const Icon(
-                            Iconsax.edit_2,
+                            LucideIcons.edit,
                             size: 16,
                             color: AppColors.primaryGreen,
                           ),
@@ -97,7 +97,7 @@ class DetailRekapScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: const Icon(
-                            Iconsax.trash,
+                            LucideIcons.trash2,
                             size: 16,
                             color: Color(0xFFDC2626),
                           ),
@@ -346,7 +346,7 @@ class DetailRekapScreen extends ConsumerWidget {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: const Icon(
-                                    Iconsax.box,
+                                    LucideIcons.package,
                                     size: 18,
                                     color: AppColors.primaryGreen,
                                   ),

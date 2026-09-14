@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/calculation_utils.dart';
@@ -111,7 +111,7 @@ class _RekapItemTileState extends State<RekapItemTile> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(
-                    Iconsax.box_1,
+                    LucideIcons.package,
                     size: 20,
                     color: Color(0xFF00AA13),
                   ),
@@ -167,7 +167,7 @@ class _RekapItemTileState extends State<RekapItemTile> {
 
                 // Remove Button
                 IconButton(
-                  icon: const Icon(Iconsax.trash, size: 18),
+                  icon: const Icon(LucideIcons.trash2, size: 18),
                   color: const Color(0xFF94A3B8),
                   hoverColor: const Color(0xFFFEE2E2),
                   splashRadius: 20,
@@ -222,7 +222,7 @@ class _RekapItemTileState extends State<RekapItemTile> {
                                   width: 36,
                                   alignment: Alignment.center,
                                   child: const Icon(
-                                    Iconsax.minus,
+                                    LucideIcons.minus,
                                     size: 16,
                                     color: Color(0xFF475569),
                                   ),
@@ -267,7 +267,7 @@ class _RekapItemTileState extends State<RekapItemTile> {
                                   width: 36,
                                   alignment: Alignment.center,
                                   child: const Icon(
-                                    Iconsax.add,
+                                    LucideIcons.plus,
                                     size: 16,
                                     color: Color(0xFF00AA13),
                                   ),

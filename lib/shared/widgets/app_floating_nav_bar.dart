@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
 import '../../features/home/home_screen.dart';
 
@@ -14,11 +14,11 @@ class AppFloatingNavBar extends ConsumerWidget {
   static const double bottomSpacing = 110.0;
 
   static const _items = [
-    _NavItem(icon: Iconsax.home_2, activeIcon: Iconsax.home_2, label: 'Beranda'),
-    _NavItem(icon: Iconsax.note_1, activeIcon: Iconsax.note_1, label: 'Rekap'),
-    _NavItem(icon: Iconsax.calendar, activeIcon: Iconsax.calendar, label: 'Riwayat'),
-    _NavItem(icon: Iconsax.chart_21, activeIcon: Iconsax.chart_21, label: 'Laporan'),
-    _NavItem(icon: Iconsax.setting_2, activeIcon: Iconsax.setting_2, label: 'Setelan'),
+    _NavItem(icon: LucideIcons.home, activeIcon: LucideIcons.home, label: 'Beranda'),
+    _NavItem(icon: LucideIcons.clipboardList, activeIcon: LucideIcons.clipboardList, label: 'Rekap'),
+    _NavItem(icon: LucideIcons.calendar, activeIcon: LucideIcons.calendar, label: 'Riwayat'),
+    _NavItem(icon: LucideIcons.barChart3, activeIcon: LucideIcons.barChart3, label: 'Laporan'),
+    _NavItem(icon: LucideIcons.settings, activeIcon: LucideIcons.settings, label: 'Setelan'),
   ];
 
   @override

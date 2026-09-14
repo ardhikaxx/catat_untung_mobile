@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../providers/product_provider.dart';
@@ -128,21 +128,21 @@ class SettingsHeaderCard extends ConsumerWidget {
             children: [
               Expanded(
                 child: _buildInfoChip(
-                  icon: Iconsax.box,
+                  icon: LucideIcons.package,
                   label: '$productCount Produk',
                 ),
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: _buildInfoChip(
-                  icon: Iconsax.calendar_tick,
+                  icon: LucideIcons.calendarCheck,
                   label: '${allRecords.length} Hari Rekap',
                 ),
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: _buildInfoChip(
-                  icon: Iconsax.shield_tick,
+                  icon: LucideIcons.shieldCheck,
                   label: 'Offline Safe',
                 ),
               ),

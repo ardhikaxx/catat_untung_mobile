@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
 import '../../../core/theme/app_colors.dart';
 
@@ -31,7 +31,7 @@ class RekapDateSelector extends StatelessWidget {
         children: [
           // Tombol Hari Sebelumnya
           _NavArrowButton(
-            icon: Iconsax.arrow_left_2,
+            icon: LucideIcons.chevronLeft,
             tooltip: 'Hari Sebelumnya',
             onTap: () {
               onDateChanged(
@@ -69,7 +69,7 @@ class RekapDateSelector extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
-                        Iconsax.calendar_1,
+                        LucideIcons.calendar,
                         size: 16,
                         color: Color(0xFF00AA13),
                       ),
@@ -112,7 +112,7 @@ class RekapDateSelector extends StatelessWidget {
 
           // Tombol Hari Berikutnya (dinonaktifkan jika hari ini)
           _NavArrowButton(
-            icon: Iconsax.arrow_right_3,
+            icon: LucideIcons.chevronRight,
             tooltip: 'Hari Berikutnya',
             onTap: _isToday
                 ? null

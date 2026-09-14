@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/calculation_utils.dart';
 
@@ -145,7 +145,7 @@ class RekapLiveSummaryCard extends StatelessWidget {
                       Row(
                         children: [
                           Icon(
-                            Iconsax.wallet_2,
+                            LucideIcons.wallet,
                             size: 13,
                             color: Colors.white.withAlpha(180),
                           ),
@@ -189,8 +189,8 @@ class RekapLiveSummaryCard extends StatelessWidget {
                         children: [
                           Icon(
                             isProfitPositive
-                                ? Iconsax.trend_up
-                                : (isProfitZero ? Iconsax.minus : Iconsax.trend_down),
+                                ? LucideIcons.trendingUp
+                                : (isProfitZero ? LucideIcons.minus : LucideIcons.trendingDown),
                             size: 13,
                             color: isProfitPositive
                                 ? const Color(0xFF4ADE80)

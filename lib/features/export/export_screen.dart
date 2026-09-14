@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -264,7 +264,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () => _selectDate(isStart: true),
-                  icon: const Icon(Iconsax.calendar, size: 16),
+                  icon: const Icon(LucideIcons.calendar, size: 16),
                   label: Text(DateFormatter.formatShort(_startDate)),
                 ),
               ),
@@ -274,7 +274,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () => _selectDate(isStart: false),
-                  icon: const Icon(Iconsax.calendar, size: 16),
+                  icon: const Icon(LucideIcons.calendar, size: 16),
                   label: Text(DateFormatter.formatShort(_endDate)),
                 ),
               ),
@@ -288,7 +288,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: _exportPdf,
-                icon: const Icon(Iconsax.document),
+                icon: const Icon(LucideIcons.file),
                 label: const Text('Ekspor PDF'),
               ),
             ),
@@ -297,7 +297,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
               width: double.infinity,
               child: OutlinedButton.icon(
                 onPressed: _exportCsv,
-                icon: const Icon(Iconsax.chart_2),
+                icon: const Icon(LucideIcons.barChart2),
                 label: const Text('Ekspor CSV'),
               ),
             ),

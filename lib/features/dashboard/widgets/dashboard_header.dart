@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/date_formatter.dart';
@@ -85,7 +85,7 @@ class DashboardHeader extends StatelessWidget implements PreferredSizeWidget {
         Padding(
           padding: const EdgeInsets.only(right: 18),
           child: _CircleIconButton(
-            icon: Iconsax.menu_1,
+            icon: LucideIcons.menu,
             onTap: onMenuTap,
           ),
         ),

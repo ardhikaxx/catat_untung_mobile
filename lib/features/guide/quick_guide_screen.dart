@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
 
@@ -91,7 +91,7 @@ class QuickGuideScreen extends StatelessWidget {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: const [
-                                Icon(Iconsax.book_1, size: 14, color: Colors.white),
+                                Icon(LucideIcons.bookOpen, size: 14, color: Colors.white),
                                 SizedBox(width: 6),
                                 Text(
                                   'PANDUAN LENGKAP UMKM',
@@ -136,7 +136,7 @@ class QuickGuideScreen extends StatelessWidget {
                       ),
                       child: const Center(
                         child: Icon(
-                          Iconsax.lamp_on,
+                          LucideIcons.lightbulb,
                           size: 28,
                           color: AppColors.primaryGreen,
                         ),
@@ -165,7 +165,7 @@ class QuickGuideScreen extends StatelessWidget {
             child: Row(
               children: [
                 const Icon(
-                  Iconsax.task_square,
+                  LucideIcons.checkSquare,
                   size: 16,
                   color: AppColors.primaryGreen,
                 ),
@@ -191,7 +191,7 @@ class QuickGuideScreen extends StatelessWidget {
             title: 'Daftarkan Katalog & Modal HPP',
             description:
                 'Tambahkan produk yang Anda jual beserta harga jual dan modal HPP per unitnya. Jika belum tahu HPP, gunakan fitur Kalkulator HPP.',
-            icon: Iconsax.box_add,
+            icon: LucideIcons.packagePlus,
             actionLabel: 'Buka Katalog Produk',
             onAction: () => context.push('/products'),
           ),
@@ -202,7 +202,7 @@ class QuickGuideScreen extends StatelessWidget {
             title: 'Catat Rekap Penjualan Harian',
             description:
                 'Setiap sore atau saat toko tutup, buka menu Rekap Penjualan. Masukkan jumlah unit produk yang laku terjual hari ini.',
-            icon: Iconsax.edit_2,
+            icon: LucideIcons.edit,
             actionLabel: 'Buka Rekap Penjualan',
             onAction: () => context.push('/daily-rekap'),
           ),
@@ -213,7 +213,7 @@ class QuickGuideScreen extends StatelessWidget {
             title: 'Pantau Omzet & Laba Bersih',
             description:
                 'Lihat langsung di halaman Beranda berapa total uang masuk (omzet), total modal yang terpakai, dan keuntungan bersih yang Anda bawa pulang.',
-            icon: Iconsax.chart_21,
+            icon: LucideIcons.barChart3,
             actionLabel: 'Lihat Beranda',
             onAction: () => context.go('/'),
           ),
@@ -224,7 +224,7 @@ class QuickGuideScreen extends StatelessWidget {
             title: 'Analisis Tren & Unduh Laporan',
             description:
                 'Pelajari produk apa yang paling laris (Best Seller) dan tren omzet mingguan. Anda juga bisa mengekspor laporan bulanan ke format PDF / CSV.',
-            icon: Iconsax.document_upload,
+            icon: LucideIcons.fileUp,
             actionLabel: 'Ekspor Laporan PDF',
             onAction: () => context.push('/export'),
           ),
@@ -237,7 +237,7 @@ class QuickGuideScreen extends StatelessWidget {
             child: Row(
               children: [
                 const Icon(
-                  Iconsax.lamp_charge,
+                  LucideIcons.lightbulb,
                   size: 16,
                   color: AppColors.primaryGreen,
                 ),
@@ -257,7 +257,7 @@ class QuickGuideScreen extends StatelessWidget {
           const SizedBox(height: 8),
 
           _buildTipCard(
-            icon: Iconsax.money_send,
+            icon: LucideIcons.wallet,
             iconColor: AppColors.primaryGreen,
             bgColor: AppColors.greenTint,
             title: 'Pisahkan Dompet Pribadi & Kas Usaha',
@@ -266,7 +266,7 @@ class QuickGuideScreen extends StatelessWidget {
           ),
 
           _buildTipCard(
-            icon: Iconsax.calculator,
+            icon: LucideIcons.calculator,
             iconColor: const Color(0xFFD97706),
             bgColor: const Color(0xFFFEF3C7),
             title: 'Perhitungkan Kemasan & Gas LPG',
@@ -275,7 +275,7 @@ class QuickGuideScreen extends StatelessWidget {
           ),
 
           _buildTipCard(
-            icon: Iconsax.shield_tick,
+            icon: LucideIcons.shieldCheck,
             iconColor: const Color(0xFF2563EB),
             bgColor: const Color(0xFFDBEAFE),
             title: 'Cadangkan Data Secara Berkala',
@@ -291,7 +291,7 @@ class QuickGuideScreen extends StatelessWidget {
             child: Row(
               children: [
                 const Icon(
-                  Iconsax.message_question,
+                  LucideIcons.helpCircle,
                   size: 16,
                   color: AppColors.primaryGreen,
                 ),
@@ -352,7 +352,7 @@ class QuickGuideScreen extends StatelessWidget {
                   ),
                   elevation: 2,
                 ),
-                icon: const Icon(Iconsax.edit_2, size: 20),
+                icon: const Icon(LucideIcons.edit, size: 20),
                 label: const Text(
                   'Mulai Catat Rekap Penjualan',
                   style: TextStyle(
@@ -473,7 +473,7 @@ class QuickGuideScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     const Icon(
-                      Iconsax.arrow_right_3,
+                      LucideIcons.chevronRight,
                       size: 14,
                       color: AppColors.primaryGreen,
                     ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
@@ -197,7 +197,7 @@ class HistoryRecordCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 2),
                         const Icon(
-                          Iconsax.arrow_right_3,
+                          LucideIcons.chevronRight,
                           size: 12,
                           color: Color(0xFF94A3B8),
                         ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/app_colors.dart';
@@ -57,7 +57,7 @@ class SettingsScreen extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(
-                    Iconsax.setting_2,
+                    LucideIcons.settings,
                     size: 20,
                     color: AppColors.primaryGreen,
                   ),
@@ -86,7 +86,7 @@ class SettingsScreen extends ConsumerWidget {
             title: 'Kelola Data & Fitur',
             children: [
               SettingsMenuTile(
-                icon: Iconsax.box,
+                icon: LucideIcons.package,
                 iconColor: AppColors.primaryGreen,
                 iconBg: AppColors.greenTint,
                 title: 'Katalog Produk',
@@ -94,7 +94,7 @@ class SettingsScreen extends ConsumerWidget {
                 onTap: () => context.push('/products'),
               ),
               SettingsMenuTile(
-                icon: Iconsax.document_upload,
+                icon: LucideIcons.fileUp,
                 iconColor: const Color(0xFF2563EB),
                 iconBg: const Color(0xFFDBEAFE),
                 title: 'Ekspor Laporan',
@@ -102,7 +102,7 @@ class SettingsScreen extends ConsumerWidget {
                 onTap: () => context.push('/export'),
               ),
               SettingsMenuTile(
-                icon: Iconsax.calculator,
+                icon: LucideIcons.calculator,
                 iconColor: const Color(0xFFD97706),
                 iconBg: const Color(0xFFFEF3C7),
                 title: 'Kalkulator HPP Otomatis',
@@ -110,7 +110,7 @@ class SettingsScreen extends ConsumerWidget {
                 onTap: () => context.push('/calculator'),
               ),
               SettingsMenuTile(
-                icon: Iconsax.document_download,
+                icon: LucideIcons.fileDown,
                 iconColor: const Color(0xFF16A34A),
                 iconBg: const Color(0xFFDCFCE7),
                 title: 'Backup & Pemulihan',
@@ -128,7 +128,7 @@ class SettingsScreen extends ConsumerWidget {
             title: 'Preferensi & Bahasa',
             children: [
               SettingsMenuTile(
-                icon: Iconsax.coin,
+                icon: LucideIcons.coins,
                 iconColor: AppColors.primaryGreen,
                 iconBg: AppColors.greenTint,
                 title: 'Format Mata Uang',
@@ -150,7 +150,7 @@ class SettingsScreen extends ConsumerWidget {
                 ),
               ),
               SettingsMenuTile(
-                icon: Iconsax.global,
+                icon: LucideIcons.globe,
                 iconColor: const Color(0xFF2563EB),
                 iconBg: const Color(0xFFDBEAFE),
                 title: 'Bahasa Tampilan',
@@ -172,7 +172,7 @@ class SettingsScreen extends ConsumerWidget {
                 ),
               ),
               SettingsMenuTile(
-                icon: Iconsax.security_safe,
+                icon: LucideIcons.shieldCheck,
                 iconColor: const Color(0xFF16A34A),
                 iconBg: const Color(0xFFDCFCE7),
                 title: 'Privasi & Keamanan',
@@ -204,7 +204,7 @@ class SettingsScreen extends ConsumerWidget {
             title: 'Bantuan & Informasi',
             children: [
               SettingsMenuTile(
-                icon: Iconsax.info_circle,
+                icon: LucideIcons.info,
                 iconColor: const Color(0xFF475569),
                 iconBg: const Color(0xFFF1F5F9),
                 title: 'Tentang Aplikasi',
@@ -212,7 +212,7 @@ class SettingsScreen extends ConsumerWidget {
                 onTap: () => context.push('/about'),
               ),
               SettingsMenuTile(
-                icon: Iconsax.book_1,
+                icon: LucideIcons.bookOpen,
                 iconColor: const Color(0xFF475569),
                 iconBg: const Color(0xFFF1F5F9),
                 title: 'Panduan Singkat',
@@ -231,7 +231,7 @@ class SettingsScreen extends ConsumerWidget {
             titleColor: const Color(0xFFDC2626),
             children: [
               SettingsMenuTile(
-                icon: Iconsax.trash,
+                icon: LucideIcons.trash2,
                 iconColor: const Color(0xFFDC2626),
                 iconBg: const Color(0xFFFEE2E2),
                 title: 'Hapus Semua Data',
@@ -285,7 +285,7 @@ class SettingsScreen extends ConsumerWidget {
         ),
         title: Row(
           children: const [
-            Icon(Iconsax.warning_2, color: Color(0xFFDC2626), size: 24),
+            Icon(LucideIcons.alertTriangle, color: Color(0xFFDC2626), size: 24),
             SizedBox(width: 10),
             Text(
               'Hapus Semua Data?',

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 
@@ -34,19 +34,19 @@ class ProductLivePreviewCard extends StatelessWidget {
     if (!hasData) {
       statusColor = AppColors.textSecondary;
       statusLabel = 'Simulasi keuntungan akan muncul otomatis saat Anda mengisi modal & harga jual.';
-      statusIcon = Iconsax.info_circle;
+      statusIcon = LucideIcons.info;
     } else if (sellingPrice > 0 && profit < 0) {
       statusColor = AppColors.loss;
       statusLabel = 'Harga jual di bawah modal! Penjualan produk ini akan mengalami rugi.';
-      statusIcon = Iconsax.warning_2;
+      statusIcon = LucideIcons.alertTriangle;
     } else if (marginDouble >= 30) {
       statusColor = AppColors.profit;
       statusLabel = 'Margin sangat sehat (≥ 30%). Bagus untuk ketahanan usaha dan promo.';
-      statusIcon = Iconsax.tick_circle;
+      statusIcon = LucideIcons.checkCircle2;
     } else {
       statusColor = const Color(0xFFD97706);
       statusLabel = 'Margin cukup tipis (< 30%). Perhatikan biaya operasional lainnya.';
-      statusIcon = Iconsax.info_circle;
+      statusIcon = LucideIcons.info;
     }
 
     return Container(
@@ -79,7 +79,7 @@ class ProductLivePreviewCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Icon(
-                      Iconsax.chart_21,
+                      LucideIcons.barChart3,
                       size: 16,
                       color: AppColors.primaryGreen,
                     ),

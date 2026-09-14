@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/date_formatter.dart';
@@ -81,7 +81,7 @@ class PerformanceListSection extends StatelessWidget {
             children: [
               // 1. Total Modal (HPP)
               _PerformanceTile(
-                icon: Iconsax.bag_2,
+                icon: LucideIcons.shoppingBag,
                 iconBgColor: const Color(0xFFFEF3C7),
                 iconColor: const Color(0xFFD97706),
                 title: 'Total Modal (HPP)',
@@ -93,7 +93,7 @@ class PerformanceListSection extends StatelessWidget {
 
               // 2. Laba Bersih
               _PerformanceTile(
-                icon: totalProfit >= 0 ? Iconsax.arrow_up_3 : Iconsax.arrow_down3,
+                icon: totalProfit >= 0 ? LucideIcons.arrowUp : LucideIcons.arrowDown,
                 iconBgColor: totalProfit >= 0
                     ? AppColors.greenTint
                     : const Color(0xFFFEE2E2),
@@ -115,7 +115,7 @@ class PerformanceListSection extends StatelessWidget {
 
               // 3. Unit Terjual
               _PerformanceTile(
-                icon: Iconsax.box_1,
+                icon: LucideIcons.package,
                 iconBgColor: const Color(0xFFDBEAFE),
                 iconColor: const Color(0xFF2563EB),
                 title: 'Unit Terjual',
@@ -131,7 +131,7 @@ class PerformanceListSection extends StatelessWidget {
                   return Column(
                     children: [
                       _PerformanceTile(
-                        icon: Iconsax.receipt_item,
+                        icon: LucideIcons.receipt,
                         iconBgColor: AppColors.greenTint,
                         iconColor: AppColors.primaryGreen,
                         title: item.productNameSnapshot,

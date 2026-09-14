@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../reports_screen.dart';
@@ -23,7 +23,7 @@ class ReportMetricsGrid extends StatelessWidget {
               // 1. Margin
               Expanded(
                 child: _buildMetricTile(
-                  icon: Iconsax.percentage_circle,
+                  icon: LucideIcons.percent,
                   iconColor: const Color(0xFF16A34A),
                   iconBg: const Color(0xFFDCFCE7),
                   label: 'Margin Rata-rata',
@@ -42,7 +42,7 @@ class ReportMetricsGrid extends StatelessWidget {
               // 2. Volume Sold
               Expanded(
                 child: _buildMetricTile(
-                  icon: Iconsax.box,
+                  icon: LucideIcons.package,
                   iconColor: AppColors.primaryGreen,
                   iconBg: AppColors.greenTint,
                   label: 'Total Terjual',
@@ -59,7 +59,7 @@ class ReportMetricsGrid extends StatelessWidget {
               // 3. Rata-rata laba per hari
               Expanded(
                 child: _buildMetricTile(
-                  icon: Iconsax.calendar_tick,
+                  icon: LucideIcons.calendarCheck,
                   iconColor: const Color(0xFF2563EB),
                   iconBg: const Color(0xFFDBEAFE),
                   label: 'Rata-rata Laba',
@@ -72,7 +72,7 @@ class ReportMetricsGrid extends StatelessWidget {
               // 4. Hari Aktif
               Expanded(
                 child: _buildMetricTile(
-                  icon: Iconsax.chart_success,
+                  icon: LucideIcons.trendingUp,
                   iconColor: const Color(0xFFD97706),
                   iconBg: const Color(0xFFFEF3C7),
                   label: 'Hari Aktif Rekap',

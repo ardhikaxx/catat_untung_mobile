@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import 'history_view_mode.dart';
 
@@ -28,7 +28,7 @@ class HistoryViewToggle extends StatelessWidget {
             child: _buildToggleItem(
               mode: HistoryViewMode.calendar,
               title: 'Kalender',
-              icon: Iconsax.calendar_1,
+              icon: LucideIcons.calendar,
             ),
           ),
           const SizedBox(width: 4),
@@ -36,7 +36,7 @@ class HistoryViewToggle extends StatelessWidget {
             child: _buildToggleItem(
               mode: HistoryViewMode.list,
               title: 'Daftar Rekap',
-              icon: Iconsax.receipt_2_1,
+              icon: LucideIcons.receipt,
             ),
           ),
         ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../database/app_database.dart';
@@ -66,7 +66,7 @@ class ProductCard extends StatelessWidget {
                         ),
                       ),
                       child: Icon(
-                        Iconsax.box,
+                        LucideIcons.package,
                         size: 20,
                         color: product.isActive
                             ? AppColors.primaryGreen
@@ -301,7 +301,7 @@ class ProductCard extends StatelessWidget {
                     ),
                     SizedBox(width: 3),
                     Icon(
-                      Iconsax.arrow_right_3,
+                      LucideIcons.chevronRight,
                       size: 11,
                       color: AppColors.textSecondary,
                     ),

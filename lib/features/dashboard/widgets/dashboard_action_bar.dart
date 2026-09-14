@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 
 class DashboardActionBar extends StatelessWidget {
@@ -36,22 +36,22 @@ class DashboardActionBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _ActionButton(
-            icon: Iconsax.send_2,
+            icon: LucideIcons.send,
             label: 'Rekap',
             onTap: onRekap,
           ),
           _ActionButton(
-            icon: Iconsax.received,
+            icon: LucideIcons.arrowDownLeft,
             label: 'Riwayat',
             onTap: onRiwayat,
           ),
           _ActionButton(
-            icon: Iconsax.box,
+            icon: LucideIcons.package,
             label: 'Produk',
             onTap: onProduk,
           ),
           _ActionButton(
-            icon: Iconsax.calculator,
+            icon: LucideIcons.calculator,
             label: 'HPP',
             onTap: onKalkulator,
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../core/theme/app_colors.dart';
 import '../../database/app_database.dart';
@@ -105,7 +105,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(
-                    Iconsax.calendar,
+                    LucideIcons.calendar,
                     size: 20,
                     color: Color(0xFF00AA13),
                   ),
@@ -126,7 +126,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
               child: TextButton.icon(
                 onPressed: _jumpToToday,
-                icon: const Icon(Iconsax.calendar_tick, size: 16),
+                icon: const Icon(LucideIcons.calendarCheck, size: 16),
                 label: const Text(
                   'Bulan Ini',
                   style: TextStyle(
@@ -155,7 +155,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Iconsax.warning_2, size: 40, color: AppColors.error),
+              const Icon(LucideIcons.alertTriangle, size: 40, color: AppColors.error),
               const SizedBox(height: 12),
               const Text(
                 'Gagal memuat riwayat',

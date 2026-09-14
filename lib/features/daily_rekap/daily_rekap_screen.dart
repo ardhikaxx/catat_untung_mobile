@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
 import '../../core/theme/app_colors.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
@@ -284,7 +284,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
           SnackBar(
             content: Row(
               children: [
-                const Icon(Iconsax.tick_circle, color: Colors.white, size: 20),
+                const Icon(LucideIcons.checkCircle2, color: Colors.white, size: 20),
                 const SizedBox(width: 10),
                 Text(
                   'Rekap ${DateFormat('d MMM yyyy', 'id_ID').format(_selectedDate)} berhasil disimpan!',
@@ -410,7 +410,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Icon(
-                      Iconsax.note_1,
+                      LucideIcons.clipboardList,
                       size: 20,
                       color: Color(0xFF00AA13),
                     ),
@@ -431,7 +431,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
                 child: TextButton.icon(
                   onPressed: () => _handleDateChange(DateTime.now()),
-                  icon: const Icon(Iconsax.calendar_tick, size: 16),
+                  icon: const Icon(LucideIcons.calendarCheck, size: 16),
                   label: const Text(
                     'Hari Ini',
                     style: TextStyle(
@@ -450,7 +450,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                 ),
               ),
             IconButton(
-              icon: const Icon(Iconsax.calendar, size: 20),
+              icon: const Icon(LucideIcons.calendar, size: 20),
               color: AppColors.textPrimary,
               tooltip: 'Pilih Tanggal',
               onPressed: _selectDate,
@@ -631,7 +631,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                             ),
                             child: const Center(
                               child: Icon(
-                                Iconsax.receipt_edit,
+                                LucideIcons.fileEdit,
                                 size: 40,
                                 color: Color(0xFF00AA13),
                               ),
@@ -662,7 +662,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                             height: 48,
                             child: ElevatedButton.icon(
                               onPressed: _showProductSelector,
-                              icon: const Icon(Iconsax.add_circle, size: 20),
+                              icon: const Icon(LucideIcons.plusCircle, size: 20),
                               label: const Text(
                                 'Tambah Produk Terjual',
                                 style: TextStyle(

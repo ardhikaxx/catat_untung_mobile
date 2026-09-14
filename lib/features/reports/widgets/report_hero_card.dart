@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
@@ -62,7 +62,7 @@ class ReportHeroCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Icon(
-                      Iconsax.calendar_1,
+                      LucideIcons.calendar,
                       size: 13,
                       color: Colors.white,
                     ),
@@ -90,7 +90,7 @@ class ReportHeroCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
-                      isProfit ? Iconsax.trend_up : Iconsax.trend_down,
+                      isProfit ? LucideIcons.trendingUp : LucideIcons.trendingDown,
                       size: 12,
                       color: isProfit
                           ? const Color(0xFF16A34A)
@@ -154,7 +154,7 @@ class ReportHeroCard extends StatelessWidget {
                 ),
                 child: const Center(
                   child: Icon(
-                    Iconsax.trend_up,
+                    LucideIcons.trendingUp,
                     size: 22,
                     color: Colors.white,
                   ),

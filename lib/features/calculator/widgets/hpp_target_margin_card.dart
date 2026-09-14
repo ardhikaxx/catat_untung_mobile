@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 
@@ -64,7 +64,7 @@ class HppTargetMarginCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Icon(
-                  Iconsax.trend_up,
+                  LucideIcons.trendingUp,
                   size: 18,
                   color: AppColors.primaryGreen,
                 ),

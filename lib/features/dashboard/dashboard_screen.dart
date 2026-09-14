@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_colors.dart';
 
@@ -333,7 +333,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
                 const SizedBox(height: 14),
                 ListTile(
-                  leading: const Icon(Iconsax.box, color: Color(0xFF2563EB)),
+                  leading: const Icon(LucideIcons.package, color: Color(0xFF2563EB)),
                   title: const Text('Master Produk'),
                   subtitle: const Text('Kelola daftar barang dagangan & HPP'),
                   shape: RoundedRectangleBorder(
@@ -345,7 +345,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Iconsax.edit_2, color: Color(0xFF16A34A)),
+                  leading: const Icon(LucideIcons.edit, color: Color(0xFF16A34A)),
                   title: const Text('Rekap Penjualan'),
                   subtitle: const Text('Catat penjualan harian toko'),
                   shape: RoundedRectangleBorder(
@@ -357,7 +357,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Iconsax.calculator, color: Color(0xFFF59E0B)),
+                  leading: const Icon(LucideIcons.calculator, color: Color(0xFFF59E0B)),
                   title: const Text('Kalkulator HPP'),
                   subtitle: const Text('Hitung harga pokok & margin untung'),
                   shape: RoundedRectangleBorder(
@@ -369,7 +369,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Iconsax.document_download, color: AppColors.primaryGreen),
+                  leading: const Icon(LucideIcons.fileDown, color: AppColors.primaryGreen),
                   title: const Text('Ekspor Laporan'),
                   subtitle: const Text('Unduh laporan PDF & CSV'),
                   shape: RoundedRectangleBorder(
@@ -381,7 +381,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Iconsax.setting_2, color: Color(0xFF475569)),
+                  leading: const Icon(LucideIcons.settings, color: Color(0xFF475569)),
                   title: const Text('Pengaturan'),
                   subtitle: const Text('Setelan toko & cadangan data'),
                   shape: RoundedRectangleBorder(

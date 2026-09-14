@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
 import '../../../core/theme/app_colors.dart';
 import '../reports_screen.dart';
@@ -50,11 +50,11 @@ class ReportPeriodSelector extends ConsumerWidget {
         : 'Pilih Rentang';
 
     final options = [
-      (period: ReportPeriod.sevenDays, label: '7 Hari Terakhir', icon: Iconsax.clock),
-      (period: ReportPeriod.thisWeek, label: 'Minggu Ini', icon: Iconsax.calendar_1),
-      (period: ReportPeriod.thisMonth, label: 'Bulan Ini', icon: Iconsax.calendar_2),
-      (period: ReportPeriod.lastMonth, label: 'Bulan Lalu', icon: Iconsax.calendar_tick),
-      (period: ReportPeriod.custom, label: customLabel, icon: Iconsax.calendar_search),
+      (period: ReportPeriod.sevenDays, label: '7 Hari Terakhir', icon: LucideIcons.clock),
+      (period: ReportPeriod.thisWeek, label: 'Minggu Ini', icon: LucideIcons.calendar),
+      (period: ReportPeriod.thisMonth, label: 'Bulan Ini', icon: LucideIcons.calendar),
+      (period: ReportPeriod.lastMonth, label: 'Bulan Lalu', icon: LucideIcons.calendarCheck),
+      (period: ReportPeriod.custom, label: customLabel, icon: LucideIcons.calendarSearch),
     ];
 
     return SingleChildScrollView(

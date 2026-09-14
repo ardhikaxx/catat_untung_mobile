@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/date_formatter.dart';
 
@@ -101,7 +101,7 @@ class OmzetHeroCard extends StatelessWidget {
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
-                                Iconsax.wallet_3,
+                                LucideIcons.wallet,
                                 color: Colors.white,
                                 size: 22,
                               ),
@@ -267,7 +267,7 @@ class OmzetHeroCard extends StatelessWidget {
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
-                          Icons.add,
+                          LucideIcons.plus,
                           size: 15,
                           color: Colors.black,
                         ),

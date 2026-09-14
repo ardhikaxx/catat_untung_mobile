@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../database/app_database.dart';
 
@@ -69,7 +69,7 @@ class ProductHeroCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: const [
                     Icon(
-                      Iconsax.box,
+                      LucideIcons.package,
                       size: 14,
                       color: Colors.white,
                     ),
@@ -96,7 +96,7 @@ class ProductHeroCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Icon(
-                      Iconsax.trend_up,
+                      LucideIcons.trendingUp,
                       size: 12,
                       color: AppColors.primaryGreen,
                     ),
@@ -167,7 +167,7 @@ class ProductHeroCard extends StatelessWidget {
                 child: _buildSubStat(
                   label: 'Produk Aktif',
                   value: '$activeCount Item',
-                  icon: Iconsax.tick_circle,
+                  icon: LucideIcons.checkCircle2,
                 ),
               ),
               Container(
@@ -181,7 +181,7 @@ class ProductHeroCard extends StatelessWidget {
                   child: _buildSubStat(
                     label: 'Nonaktif',
                     value: '$inactiveCount Item',
-                    icon: Iconsax.minus_cirlce,
+                    icon: LucideIcons.minusCircle,
                   ),
                 ),
               ),
@@ -196,7 +196,7 @@ class ProductHeroCard extends StatelessWidget {
                   child: _buildSubStat(
                     label: 'Siap Jual',
                     value: '${totalCount > 0 ? ((activeCount / totalCount) * 100).round() : 0}%',
-                    icon: Iconsax.bag_tick,
+                    icon: LucideIcons.shoppingBag,
                   ),
                 ),
               ),

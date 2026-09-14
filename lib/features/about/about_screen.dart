@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_colors.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
@@ -153,7 +153,7 @@ class AboutScreen extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: const [
                           Icon(
-                            Iconsax.tick_circle,
+                            LucideIcons.checkCircle2,
                             size: 12,
                             color: AppColors.primaryGreen,
                           ),
@@ -206,7 +206,7 @@ class AboutScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Icon(
-                        Iconsax.heart,
+                        LucideIcons.heart,
                         size: 18,
                         color: AppColors.primaryGreen,
                       ),
@@ -252,7 +252,7 @@ class AboutScreen extends StatelessWidget {
             child: Row(
               children: [
                 const Icon(
-                  Iconsax.star_1,
+                  LucideIcons.star,
                   size: 16,
                   color: AppColors.primaryGreen,
                 ),
@@ -272,7 +272,7 @@ class AboutScreen extends StatelessWidget {
           const SizedBox(height: 8),
 
           _buildPillarCard(
-            icon: Iconsax.security_safe,
+            icon: LucideIcons.shieldCheck,
             iconColor: AppColors.primaryGreen,
             bgColor: AppColors.greenTint,
             title: 'Privasi & Bebas Kuota Internet',
@@ -281,7 +281,7 @@ class AboutScreen extends StatelessWidget {
           ),
 
           _buildPillarCard(
-            icon: Iconsax.flash_1,
+            icon: LucideIcons.zap,
             iconColor: const Color(0xFFD97706),
             bgColor: const Color(0xFFFEF3C7),
             title: 'Desain Cepat untuk Jam Sibuk',
@@ -290,7 +290,7 @@ class AboutScreen extends StatelessWidget {
           ),
 
           _buildPillarCard(
-            icon: Iconsax.calculator,
+            icon: LucideIcons.calculator,
             iconColor: const Color(0xFF2563EB),
             bgColor: const Color(0xFFDBEAFE),
             title: 'Kalkulasi HPP & Laba Akurat',
@@ -322,7 +322,7 @@ class AboutScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Icon(
-                        Iconsax.cpu,
+                        LucideIcons.cpu,
                         size: 18,
                         color: Color(0xFF475569),
                       ),
@@ -375,7 +375,7 @@ class AboutScreen extends StatelessWidget {
                   ),
                   child: const Center(
                     child: Icon(
-                      Iconsax.shop,
+                      LucideIcons.store,
                       size: 28,
                       color: AppColors.primaryGreen,
                     ),
@@ -428,7 +428,7 @@ class AboutScreen extends StatelessWidget {
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 12),
                         ),
-                        icon: const Icon(Iconsax.copy, size: 16),
+                        icon: const Icon(LucideIcons.copy, size: 16),
                         label: const Text(
                           'Salin Info',
                           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
@@ -448,7 +448,7 @@ class AboutScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           elevation: 1,
                         ),
-                        icon: const Icon(Iconsax.book_1, size: 16),
+                        icon: const Icon(LucideIcons.bookOpen, size: 16),
                         label: const Text(
                           'Buka Panduan',
                           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
