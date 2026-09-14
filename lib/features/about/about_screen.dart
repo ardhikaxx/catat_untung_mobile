@@ -77,24 +77,25 @@ class AboutScreen extends StatelessWidget {
               children: [
                 // App Logo Badge
                 Container(
-                  width: 76,
-                  height: 76,
+                  width: 80,
+                  height: 80,
+                  padding: const EdgeInsets.all(3),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(22),
+                    borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withAlpha(30),
-                        blurRadius: 12,
+                        blurRadius: 14,
                         offset: const Offset(0, 4),
                       ),
                     ],
                   ),
-                  child: const Center(
-                    child: Icon(
-                      Iconsax.wallet_3,
-                      size: 40,
-                      color: AppColors.primaryGreen,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(21),
+                    child: Image.asset(
+                      AppConstants.appLogo,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),

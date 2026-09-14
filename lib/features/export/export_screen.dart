@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -125,6 +127,10 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
           ? ((totalProfit / totalRevenue) * 100).round()
           : 0;
 
+      final logoBytes = await rootBundle.load('assets/logo.png');
+      final logoImage = pw.MemoryImage(logoBytes.buffer.asUint8List());
+
+
       final pdf = pw.Document();
 
       pdf.addPage(
@@ -132,23 +138,47 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
           pageFormat: PdfPageFormat.a4,
           margin: const pw.EdgeInsets.all(40),
           build: (context) => [
-            pw.Header(
-              level: 0,
-              child: pw.Text(
-                'Catat Untung',
-                style: pw.TextStyle(
-                  fontSize: 24,
-                  fontWeight: pw.FontWeight.bold,
+            pw.Row(
+              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              children: [
+                pw.Container(
+                  width: 44,
+                  height: 44,
+                  margin: const pw.EdgeInsets.only(right: 12),
+                  child: pw.ClipRRect(
+                    horizontalRadius: 10,
+                    verticalRadius: 10,
+                    child: pw.Image(logoImage),
+                  ),
                 ),
-              ),
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Text(
+                      'Catat Untung',
+                      style: pw.TextStyle(
+                        fontSize: 22,
+                        fontWeight: pw.FontWeight.bold,
+                      ),
+                    ),
+                    pw.Text(
+                      'Laporan Rekap Penjualan Toko',
+                      style: const pw.TextStyle(
+                        fontSize: 10,
+                        color: PdfColors.grey700,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            pw.Header(
-              level: 1,
-              child: pw.Text('Laporan Penjualan'),
-            ),
+            pw.Divider(thickness: 1.5, color: PdfColors.grey300),
+            pw.SizedBox(height: 8),
             pw.Text(
               'Periode: ${DateFormatter.formatShort(_startDate)} - ${DateFormatter.formatShort(_endDate)}',
+              style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
             ),
+
             pw.SizedBox(height: 20),
             pw.Text('Total Omzet: ${CurrencyFormatter.formatRupiah(totalRevenue)}'),
             pw.Text('Total Modal: ${CurrencyFormatter.formatRupiah(totalCost)}'),

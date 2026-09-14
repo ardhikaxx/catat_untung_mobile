@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax/iconsax.dart';
 import '../../core/theme/app_colors.dart';
+
 import '../../core/constants/app_constants.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -71,27 +71,29 @@ class _SplashScreenState extends State<SplashScreen>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 110,
-                      height: 110,
+                      width: 120,
+                      height: 120,
+                      padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(28),
+                        borderRadius: BorderRadius.circular(32),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withAlpha(40),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
+                            color: Colors.black.withAlpha(45),
+                            blurRadius: 25,
+                            offset: const Offset(0, 10),
                           ),
                         ],
                       ),
-                      child: const Center(
-                        child: Icon(
-                          Iconsax.wallet_3,
-                          size: 54,
-                          color: AppColors.primaryGreen,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(28),
+                        child: Image.asset(
+                          AppConstants.appLogo,
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
+
                     const SizedBox(height: 24),
                     Text(
                       AppConstants.appName,

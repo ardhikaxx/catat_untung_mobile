@@ -41,21 +41,29 @@ class SettingsHeaderCard extends ConsumerWidget {
           Row(
             children: [
               Container(
-                width: 54,
-                height: 54,
+                width: 56,
+                height: 56,
+                padding: const EdgeInsets.all(2.5),
                 decoration: BoxDecoration(
-                  color: Colors.white.withAlpha(35),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.white.withAlpha(50)),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(18),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withAlpha(30),
+                      blurRadius: 10,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
-                child: const Center(
-                  child: Icon(
-                    Iconsax.wallet_money,
-                    color: Colors.white,
-                    size: 28,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15.5),
+                  child: Image.asset(
+                    AppConstants.appLogo,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
+
               const SizedBox(width: 16),
               Expanded(
                 child: Column(

@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:iconsax/iconsax.dart';
+import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_colors.dart';
+
 import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/date_formatter.dart';
 import '../../database/app_database.dart';
@@ -292,14 +294,43 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'Menu Cepat',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                  ),
+                Row(
+                  children: [
+                    Container(
+                      width: 28,
+                      height: 28,
+                      padding: const EdgeInsets.all(1.5),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withAlpha(20),
+                            blurRadius: 4,
+                            offset: const Offset(0, 1),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(7),
+                        child: Image.asset(
+                          AppConstants.appLogo,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    const Text(
+                      'Menu Cepat Catat Untung',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                  ],
                 ),
+
                 const SizedBox(height: 14),
                 ListTile(
                   leading: const Icon(Iconsax.box, color: Color(0xFF2563EB)),
