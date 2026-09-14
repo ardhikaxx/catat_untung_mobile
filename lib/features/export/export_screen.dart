@@ -242,11 +242,12 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
       bottomNavigationBar: const AppFloatingNavBar(activeIndex: 3),
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Iconsax.arrow_left, size: 20),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text('Export Laporan'),
       ),
+
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

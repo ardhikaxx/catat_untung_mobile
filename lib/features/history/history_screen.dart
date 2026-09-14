@@ -88,11 +88,12 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                     onTap: () => Navigator.maybePop(context),
                     child: const Center(
                       child: Icon(
-                        Iconsax.arrow_left_2,
+                        Icons.arrow_back_ios_new_rounded,
                         size: 18,
                         color: AppColors.textPrimary,
                       ),
                     ),
+
                   ),
                 ),
               )

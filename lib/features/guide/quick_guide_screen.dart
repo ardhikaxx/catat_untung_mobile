@@ -18,12 +18,13 @@ class QuickGuideScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(
-            Iconsax.arrow_left,
+            Icons.arrow_back_ios_new_rounded,
             size: 20,
             color: AppColors.textPrimary,
           ),
           onPressed: () => Navigator.pop(context),
         ),
+
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

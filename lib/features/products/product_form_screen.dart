@@ -270,10 +270,11 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                   border: Border.all(color: AppColors.greyBorder),
                 ),
                 child: const Icon(
-                  Iconsax.arrow_left_2,
+                  Icons.arrow_back_ios_new_rounded,
                   size: 18,
                   color: AppColors.textPrimary,
                 ),
+
               ),
             ),
           ),
