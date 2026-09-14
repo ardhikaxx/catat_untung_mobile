@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/constants/app_constants.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
 
 class QuickGuideScreen extends StatelessWidget {
@@ -360,6 +361,20 @@ class QuickGuideScreen extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          Center(
+            child: Text(
+              AppConstants.copyright,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textSecondary.withAlpha(190),
               ),
             ),
           ),

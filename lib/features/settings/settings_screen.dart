@@ -265,6 +265,16 @@ class SettingsScreen extends ConsumerWidget {
                     color: Color(0xFFCBD5E1),
                   ),
                 ),
+                const SizedBox(height: 6),
+                Text(
+                  AppConstants.copyright,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF94A3B8),
+                  ),
+                ),
               ],
             ),
           ),

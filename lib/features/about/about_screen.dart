@@ -389,6 +389,16 @@ class AboutScreen extends StatelessWidget {
                     color: AppColors.textPrimary,
                   ),
                 ),
+                const SizedBox(height: 4),
+                const Text(
+                  'Dikembangkan oleh ${AppConstants.authorName}',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryGreen,
+                  ),
+                ),
                 const SizedBox(height: 6),
                 Text(
                   'Dibuat dengan dedikasi untuk mendukung jutaan wirausahawan dan pejuang UMKM di seluruh Nusantara.',
@@ -407,12 +417,12 @@ class AboutScreen extends StatelessWidget {
                         onPressed: () {
                           Clipboard.setData(
                             const ClipboardData(
-                              text: 'Catat Untung v1.0.0 - Aplikasi Kasir & Rekap Harian UMKM 100% Offline',
+                              text: '${AppConstants.appName} v${AppConstants.appVersion}\n${AppConstants.copyright}',
                             ),
                           );
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: const Text('Info aplikasi berhasil disalin ke clipboard'),
+                              content: const Text('Info aplikasi & hak cipta berhasil disalin ke clipboard'),
                               behavior: SnackBarBehavior.floating,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -420,6 +430,7 @@ class AboutScreen extends StatelessWidget {
                             ),
                           );
                         },
+
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.textPrimary,
                           side: BorderSide(color: AppColors.divider),
@@ -539,14 +550,29 @@ class AboutScreen extends StatelessWidget {
 
           // Copyright
           Center(
-            child: Text(
-              '© 2026 Catat Untung. Hak Cipta Dilindungi.',
-              style: TextStyle(
-                fontSize: 11,
-                color: AppColors.textSecondary.withAlpha(150),
-              ),
+            child: Column(
+              children: [
+                Text(
+                  AppConstants.copyright,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textSecondary.withAlpha(190),
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  'Hak Cipta Dilindungi Undang-Undang.',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: AppColors.textSecondary.withAlpha(140),
+                  ),
+                ),
+              ],
             ),
           ),
+
 
 
           const SizedBox(height: AppFloatingNavBar.bottomSpacing),

@@ -12,6 +12,7 @@ import 'package:csv/csv.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import '../../core/theme/app_colors.dart';
+import '../../core/constants/app_constants.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/date_formatter.dart';
 import '../../providers/database_provider.dart';
@@ -86,6 +87,9 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
         ]);
       }
 
+      csvData.add([]);
+      csvData.add(['${AppConstants.appName} - ${AppConstants.copyright}']);
+
       final csv = const ListToCsvConverter().convert(csvData);
       final directory = await getApplicationDocumentsDirectory();
       final filePath = p.join(
@@ -137,6 +141,23 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
         pw.MultiPage(
           pageFormat: PdfPageFormat.a4,
           margin: const pw.EdgeInsets.all(40),
+          footer: (context) => pw.Container(
+            alignment: pw.Alignment.center,
+            margin: const pw.EdgeInsets.only(top: 16),
+            child: pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
+                pw.Text(
+                  'Catat Untung - ${AppConstants.copyright}',
+                  style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey600),
+                ),
+                pw.Text(
+                  'Halaman ${context.pageNumber} dari ${context.pagesCount}',
+                  style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey600),
+                ),
+              ],
+            ),
+          ),
           build: (context) => [
             pw.Row(
               crossAxisAlignment: pw.CrossAxisAlignment.center,
@@ -299,6 +320,18 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
                 onPressed: _exportCsv,
                 icon: const Icon(LucideIcons.barChart2),
                 label: const Text('Ekspor CSV'),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Center(
+              child: Text(
+                AppConstants.copyright,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.textSecondary.withAlpha(180),
+                ),
               ),
             ),
             const SizedBox(height: AppFloatingNavBar.bottomSpacing),

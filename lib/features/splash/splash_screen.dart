@@ -57,6 +57,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.primaryGreen,
       body: Container(
         width: double.infinity,
         color: AppColors.primaryGreen,
@@ -118,6 +119,28 @@ class _SplashScreenState extends State<SplashScreen>
             );
           },
         ),
+      ),
+      bottomNavigationBar: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          return FadeTransition(
+            opacity: _fadeAnimation,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Text(
+                  AppConstants.copyright,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: Colors.white.withAlpha(180),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
