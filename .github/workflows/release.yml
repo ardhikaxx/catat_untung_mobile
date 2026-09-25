@@ -41,6 +41,28 @@ jobs:
           distribution: temurin
           java-version: '17'
 
+      - name: Prepare release signing key
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          if [ -z "${KEYSTORE_BASE64:-}" ] || [ -z "${KEYSTORE_PASSWORD:-}" ] || [ -z "${KEY_ALIAS:-}" ] || [ -z "${KEY_PASSWORD:-}" ]; then
+            echo "::error::Signing secrets are missing (KEYSTORE_BASE64, KEYSTORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD). Without them Gradle falls back to the throwaway debug key and users cannot upgrade over the previous release. See README 'Rilis & Identitas Aplikasi'."
+            exit 1
+          fi
+          echo "$KEYSTORE_BASE64" | base64 --decode > android/app/upload-keystore.jks
+          cat > android/key.properties <<EOF
+          storePassword=$KEYSTORE_PASSWORD
+          keyPassword=$KEY_PASSWORD
+          keyAlias=$KEY_ALIAS
+          storeFile=upload-keystore.jks
+          EOF
+          echo "keystore written: $(ls -l android/app/upload-keystore.jks | awk '{print $5}') bytes"
+          keytool -list -keystore android/app/upload-keystore.jks -storepass "$KEYSTORE_PASSWORD" -alias "$KEY_ALIAS" > /dev/null
+
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.32.7'
@@ -60,6 +82,27 @@ jobs:
           done
           test -f "$target"
           ls -l "$target"
+      - name: Verify APK signature
+        env:
+          # SHA-256 of the release signing certificate. Obtained with:
+          #   keytool -list -v -keystore <jks> -alias <alias> | grep SHA256
+          # A release must be signed with this exact certificate, otherwise users
+          # cannot install it over the previous version.
+          EXPECTED_CERT_SHA256: 52:9E:11:A1:C0:95:77:76:65:7C:CE:83:AC:AB:4B:F8:FC:1B:42:FC:8D:3A:AB:A0:06:AF:DE:CE:C1:6D:E7:C9
+        run: |
+          set -euo pipefail
+          apk="build/app/outputs/flutter-apk/$APK_NAME"
+          actual="$(keytool -printcert -jarfile "$apk" | sed -nE 's/^[[:space:]]*SHA256:[[:space:]]*//p' | tr -d '[:space:]')"
+          expected="$(echo "$EXPECTED_CERT_SHA256" | tr -d '[:space:]')"
+          if [ -z "$actual" ]; then
+            echo "::error::Could not read the signing certificate from the APK."
+            exit 1
+          fi
+          if [ "$actual" != "$expected" ]; then
+            echo "::error::APK is signed with $actual but the release certificate is $expected. Do not publish this build."
+            exit 1
+          fi
+          echo "APK signed with the release certificate."
       - name: Verify APK integrity
         run: |
           set -euo pipefail

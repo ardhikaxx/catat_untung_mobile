@@ -177,6 +177,23 @@ flutter test integration_test/backup_roundtrip_test.dart
 | iOS bundle identifier | `id.ardhikaxx.catat_untueng` |
 | Sumber versi | `pubspec.yaml` (dibaca runtime via `package_info_plus`) |
 | Backup | JSON + checksum SHA-256, mode pulihkan *ganti* atau *gabungkan* |
+| Sertifikat rilis | SHA-256 `52:9E:11:A1:…:C1:6D:E7:C9` (diverifikasi otomatis tiap rilis) |
+
+### Menlify signing key ke GitHub Actions
+
+APK rilis **wajib** ditandatangani dengan keystore yang sama seperti build lokal,
+kalau tidak pengguna tidak bisa memasang APK baru di atas versi lama. Simpan
+keystore sebagai secret (Settings → Secrets and variables → Actions):
+
+| Secret | Isi |
+| --- | --- |
+| `KEYSTORE_BASE64` | `base64 -w0 android/app/upload-keystore.jks` (PowerShell: `[Convert]::ToBase64String([IO.File]::ReadAllBytes('android/app/upload-keystore.jks'))`) |
+| `KEYSTORE_PASSWORD` | `storePassword` dari `android/key.properties` |
+| `KEY_ALIAS` | `keyAlias` dari `android/key.properties` |
+| `KEY_PASSWORD` | `keyPassword` dari `android/key.properties` |
+
+Workflow akan berhenti dengan pesan jelas bila secret belum ada, dan menolak
+mempublish APK yang sertifikatnya bukan sertifikat rilis di atas.
 
 > iOS memerlukan macOS + Xcode + signing Apple Developer untuk build & rilis.
 > Distribusi resmi saat ini berupa APK Android.
