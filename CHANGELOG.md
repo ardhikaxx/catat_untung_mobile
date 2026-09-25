@@ -18,7 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - **Package name resmi**: `com.example.*` → `id.ardhikaxx.catat_untueng` (Android `applicationId`/`namespace`, iOS bundle id, package `MainActivity`), agar siap dikirim ke Play Store.
 - **Nomor versi dari satu sumber kebenaran**: About, Pengaturan, dan footer laporan PDF/CSV kini membaca versi dari `pubspec.yaml` lewat `package_info_plus`; konstanta `AppConstants.appVersion` dihapus sehingga tidak bisa lagi tidak sinkron dengan rilis.
-- **APK lebih kecil**: R8 `minifyEnabled` + `shrinkResources` aktif dengan `android/app/proguard-rules.pro`; nama class tetap utuh agar log error masih terbaca.
+- **R8 shrinking aktif**: `minifyEnabled` + `shrinkResources` dengan `android/app/proguard-rules.pro` dan `android.enableR8.fullMode=false` (compatibility mode, lebih aman untuk plugin yang memakai reflection). Nama class tidak di-obfuscate agar log error masih terbaca. Perlu dicatat: sebagian besar ukuran APK berasal dari library native (`libflutter.so`, `libapp.so`) yang tidak dipangkas R8, jadi ukuran APK praktis tetap sekitar 31 MB.
 - **Workflow rilis tanpa hardcode versi**: `release.yml` menurunkan nama release, judul, dan link unduhan dari tag, serta memverifikasi tag cocok dengan versi `pubspec.yaml` sebelum build.
 - **CI**: `flutter test --coverage` dan artefak `coverage/lcov.info` diunggah tiap push.
 

@@ -108,7 +108,7 @@ jobs:
 
             - 🆔 Package name Android kini final dan resmi, siap dikirim ke Play Store.
             - 🔢 Nomor versi dibaca otomatis dari `pubspec.yaml` sehingga tidak lagi bisa tidak sinkron dengan rilis.
-            - 📦 APK lebih kecil (±30%) lewat R8 code + resource shrinking.
+            - 📦 R8 code + resource shrinking aktif (`proguard-rules.pro`, compatibility mode). Nama class tidak di-obfuscate agar log error tetap terbaca.
             - 🔐 Backup/restore punya checksum SHA-256 dan pilihan mode pulihkan (ganti atau gabungkan).
             - 🧾 Satuan produk bisa diketik bebas, tidak lagi memakai daftar tertutup.
             - 🐞 Laporan error tersimpan lokal dan bisa dibagikan pengguna, tanpa izin jaringan.
