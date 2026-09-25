@@ -1,4 +1,4 @@
-package com.example.catat_untung
+package id.ardhikaxx.catat_untung
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,10 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/utils/app_info.dart';
+import '../../core/utils/app_logger.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../providers/app_locale_provider.dart';
 import '../../providers/daily_record_provider.dart';
@@ -216,6 +222,15 @@ class SettingsScreen extends ConsumerWidget {
                 onTap: () => context.push('/about'),
               ),
               SettingsMenuTile(
+                icon: LucideIcons.bug,
+                iconColor: const Color(0xFF475569),
+                iconBg: const Color(0xFFF1F5F9),
+                title: l10n?.setErrorReport ?? 'Laporan Error',
+                subtitle: l10n?.setErrorReportSubtitle ??
+                    'Salin atau bagikan log error yang tersimpan di perangkat',
+                onTap: () => _showErrorReport(context),
+              ),
+              SettingsMenuTile(
                 icon: LucideIcons.bookOpen,
                 iconColor: const Color(0xFF475569),
                 iconBg: const Color(0xFFF1F5F9),
@@ -255,9 +270,9 @@ class SettingsScreen extends ConsumerWidget {
           Center(
             child: Column(
               children: [
-                const Text(
-                  '${AppConstants.appName} v${AppConstants.appVersion}',
-                  style: TextStyle(
+                Text(
+                  '${AppConstants.appName} v${AppInfo.version}',
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: Color(0xFF94A3B8),
@@ -288,6 +303,93 @@ class SettingsScreen extends ConsumerWidget {
 
           // Bottom clearance for floating navbar
           const SizedBox(height: bottomSpacing),
+        ],
+      ),
+    );
+  }
+
+  /// Shows the locally buffered error log and lets the user share it.
+  /// Nothing is uploaded automatically: the app has no network permission.
+  void _showErrorReport(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final report = AppLogger.buildReport(appVersion: AppInfo.versionWithBuild);
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            const Icon(LucideIcons.bug, color: Color(0xFF475569), size: 22),
+            const SizedBox(width: 10),
+            Text(
+              l10n?.setErrorReport ?? 'Laporan Error',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+            ),
+          ],
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n?.setErrorReportHint ??
+                    'Log ini tersimpan hanya di perangkat Anda dan tidak dikirim ke mana pun.',
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppColors.textSecondary,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Flexible(
+                child: SingleChildScrollView(
+                  child: SelectableText(
+                    report,
+                    style: const TextStyle(fontSize: 10, fontFamily: 'monospace'),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          if (AppLogger.hasEntries)
+            TextButton(
+              onPressed: () {
+                AppLogger.clear();
+                Navigator.pop(dialogContext);
+              },
+              child: Text(l10n?.setErrorReportClear ?? 'Hapus Log'),
+            ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(dialogContext);
+              Clipboard.setData(ClipboardData(text: report));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(l10n?.setErrorReportCopied ?? 'Log error disalin'),
+                ),
+              );
+            },
+            child: Text(l10n?.setErrorReportCopy ?? 'Salin'),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.pop(dialogContext);
+              Share.shareXFiles(
+                [
+                  XFile.fromData(
+                    const Utf8Encoder().convert(report),
+                    mimeType: 'text/plain',
+                  ),
+                ],
+                text: l10n?.setErrorReport ?? 'Laporan Error',
+              );
+            },
+            child: Text(l10n?.setErrorReportShare ?? 'Bagikan'),
+          ),
         ],
       ),
     );

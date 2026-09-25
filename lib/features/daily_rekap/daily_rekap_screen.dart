@@ -332,7 +332,8 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
         ref.read(rekapItemsProvider.notifier).state = [];
         await _loadExistingRecord();
       }
-    } catch (e) {
+    } catch (e, stack) {
+      AppLogger.report('DailyRekap.save', e, stack);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

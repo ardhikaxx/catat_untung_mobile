@@ -276,6 +276,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bkpShareText => 'Catat Untung Backup';
 
   @override
+  String get bkpModeReplaceTitle => 'Replace All Data';
+
+  @override
+  String get bkpModeReplaceSubtitle =>
+      'Delete current data, then refill it from the backup file';
+
+  @override
+  String get bkpModeMergeTitle => 'Merge With My Data';
+
+  @override
+  String get bkpModeMergeSubtitle =>
+      'Existing data is kept. Days already recorded are not counted twice.';
+
+  @override
+  String bkpRestoreMergeDetail(Object items, Object records) {
+    return 'Added $records records & $items items';
+  }
+
+  @override
+  String bkpRestoreReplaceDetail(
+    Object items,
+    Object products,
+    Object records,
+  ) {
+    return '$products products, $records records, $items items';
+  }
+
+  @override
+  String get bkpRestoreRejected => 'Restore cancelled:';
+
+  @override
+  String get bkpRestoreFailed =>
+      'Restore failed. Try again, or contact the developer if it keeps failing.';
+
+  @override
+  String get bkpBackupFailed =>
+      'Backup failed. Check that device storage is not full.';
+
+  @override
   String get calcEnterCostFirst => 'Enter cost components and unit count first';
 
   @override
@@ -968,6 +1007,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get prodSelectOtherUnit => 'Select Another Unit';
 
   @override
+  String get prodUnitFieldLabel => 'Other Unit';
+
+  @override
+  String get prodUnitFieldHint => 'e.g. pcs, dozen, 250g pack';
+
+  @override
+  String get prodUnitRequired => 'Sales unit is required';
+
+  @override
+  String get prodUnitTooLong => 'Unit must be 16 characters or fewer';
+
+  @override
   String get prodPriceSectionTitle => 'Cost & Selling Price';
 
   @override
@@ -1274,6 +1325,29 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get setGuideSubtitle =>
       'Practical tips for logging daily sales recaps';
+
+  @override
+  String get setErrorReport => 'Error Report';
+
+  @override
+  String get setErrorReportSubtitle =>
+      'Copy or share the error log stored on this device';
+
+  @override
+  String get setErrorReportHint =>
+      'This log stays on your device and is never uploaded anywhere.';
+
+  @override
+  String get setErrorReportCopy => 'Copy';
+
+  @override
+  String get setErrorReportShare => 'Share';
+
+  @override
+  String get setErrorReportClear => 'Clear Log';
+
+  @override
+  String get setErrorReportCopied => 'Error log copied to clipboard';
 
   @override
   String get setDangerZoneSection => 'Danger Zone';

@@ -4,6 +4,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/utils/app_info.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../../../providers/daily_record_provider.dart';
 import '../../../providers/product_provider.dart';
@@ -93,9 +94,9 @@ class SettingsHeaderCard extends ConsumerWidget {
                             color: Colors.white.withAlpha(35),
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: const Text(
-                            'v${AppConstants.appVersion}',
-                            style: TextStyle(
+                          child: Text(
+                            'v${AppInfo.version}',
+                            style: const TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w700,
                               color: Colors.white,

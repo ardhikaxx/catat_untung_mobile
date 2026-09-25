@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/utils/app_info.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../shared/widgets/app_back_button.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
@@ -129,9 +130,9 @@ class AboutScreen extends StatelessWidget {
                         color: Colors.white.withAlpha(25),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Text(
-                        'v${AppConstants.appVersion}',
-                        style: TextStyle(
+                      child: Text(
+                        'v${AppInfo.version}',
+                        style: const TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
@@ -430,8 +431,8 @@ class AboutScreen extends StatelessWidget {
                       child: OutlinedButton.icon(
                         onPressed: () {
                           Clipboard.setData(
-                            const ClipboardData(
-                              text: '${AppConstants.appName} v${AppConstants.appVersion}\n${AppConstants.copyright}',
+                            ClipboardData(
+                              text: '${AppInfo.titleWithVersion}\n${AppConstants.copyright}',
                             ),
                           );
                           ScaffoldMessenger.of(context).showSnackBar(

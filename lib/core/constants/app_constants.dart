@@ -3,7 +3,6 @@ class AppConstants {
 
   static const String appName = 'Catat Untung';
   static const String appTagline = 'Rekap Penjualan Harian Tanpa Internet';
-  static const String appVersion = '1.0.0';
   static const String appLogo = 'assets/logo.png';
   static const String authorName = 'Yanuar Ardhika Rahmadhani Ubaidillah';
   static const String copyright = 'Copyright (c) 2026 Yanuar Ardhika Rahmadhani Ubaidillah';

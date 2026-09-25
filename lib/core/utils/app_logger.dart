@@ -1,5 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 
+/// In-memory error buffer.
+///
+/// The app ships without any network permission, so nothing is ever uploaded.
+/// Errors are kept locally and the user can share them from Settings when they
+/// report a problem.
 class AppLogger {
   AppLogger._();
 
@@ -21,5 +28,26 @@ class AppLogger {
   static void report(String scope, Object error, StackTrace? stack) {
     record(scope, error, stack);
     debugPrint('[$scope] $error\n${stack ?? StackTrace.empty}');
+  }
+
+  static bool get hasEntries => recentErrors.isNotEmpty;
+
+  static void clear() => recentErrors.clear();
+
+  /// Plain-text crash report, ready to be shared by the user through any app.
+  static String buildReport({required String appVersion}) {
+    final buffer = StringBuffer()
+      ..writeln('Catat Untung - Laporan Error')
+      ..writeln('Versi aplikasi: $appVersion')
+      ..writeln('Platform: ${Platform.operatingSystem} ${Platform.operatingSystemVersion}')
+      ..writeln('Waktu laporan: ${DateTime.now().toIso8601String()}')
+      ..writeln('Jumlah error: ${recentErrors.length}')
+      ..writeln('---');
+    if (recentErrors.isEmpty) {
+      buffer.writeln('Tidak ada error yang tercatat.');
+    } else {
+      buffer.writeln(recentErrors.join('\n\n'));
+    }
+    return buffer.toString();
   }
 }

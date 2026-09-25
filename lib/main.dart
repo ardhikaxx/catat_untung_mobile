@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'core/theme/app_theme.dart';
+import 'core/utils/app_info.dart';
 import 'core/utils/app_logger.dart';
 import 'l10n/generated/app_localizations.dart';
 import 'providers/app_locale_provider.dart';
@@ -28,6 +29,7 @@ void main() {
       };
 
       await initializeDateFormatting('id_ID', null);
+      await AppInfo.load();
       final savedLocale = await loadAppLocale();
       runApp(
         ProviderScope(

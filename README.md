@@ -123,7 +123,27 @@ flutter run
 ```bash
 flutter build apk --release
 ```
-*File APK yang dihasilkan berada di: `build/app/outputs/flutter-apk/app-release.apk`.*
+*File APK yang dihasilkan berada di: `build/app/outputs/flutter-apk/Catat_Untung_v<versi>.apk`.*
+
+Build release memakai R8 (`minifyEnabled` + `shrinkResources`) dengan aturan di
+`android/app/proguard-rules.pro`. R8 berjalan dalam *compatibility mode*
+(`android.enableR8.fullMode=false`) supaya member yang dicari plugin lewat
+reflection tidak ikut terbuang. Nama class **tidak** di-obfuscate supaya log error
+masih terbaca. Karena R8 memangkas kode, selalu lakukan smoke test di perangkat
+sebelum rilis ke pengguna.
+
+> **Butuh JDK 17** untuk build Android. Toolchain Kotlin/AGP bawaan Flutter 3.32
+> gagal pada JDK 25 (`IllegalArgumentException` saat membaca versi Java). Workflow
+> GitHub Actions sudah memakai Java 17.
+
+Butuh AAB untuk Play Store?
+```bash
+flutter build appbundle --release   # build/app/outputs/bundle/release/app-release.aab
+```
+
+> Rilis resmi dibuat otomatis oleh GitHub Actions: buat tag (`git tag v1.2.0`) lalu
+> push. Workflow akan memverifikasi versi tag sama dengan `pubspec.yaml`, build APK,
+> meng-uploadnya sebagai `Catat_Untung_v<versi>.apk`, dan membuat GitHub Release.
 
 ---
 
@@ -135,9 +155,29 @@ Proyek ini dilengkapi dengan suite pengujian menyeluruh (*unit tests* & *widget 
 # Menjalankan seluruh unit & widget tests
 flutter test
 
+# Alongside laporan coverage (coverage/lcov.info)
+flutter test --coverage
+
 # Memeriksa kepatuhan kode dan linting
 flutter analyze
+
+# Integration test (butuh perangkat/emulator terpasang)
+flutter test integration_test/backup_roundtrip_test.dart
 ```
+
+---
+
+## 📦 Rilis & Identitas Aplikasi
+
+| Item | Nilai |
+| --- | --- |
+| Android `applicationId` | `id.ardhikaxx.catat_untueng` |
+| iOS bundle identifier | `id.ardhikaxx.catat_untueng` |
+| Sumber versi | `pubspec.yaml` (dibaca runtime via `package_info_plus`) |
+| Backup | JSON + checksum SHA-256, mode pulihkan *ganti* atau *gabungkan* |
+
+> iOS memerlukan macOS + Xcode + signing Apple Developer untuk build & rilis.
+> Distribusi resmi saat ini berupa APK Android.
 
 ---
 
@@ -148,7 +188,7 @@ lib/
 ├── core/                   # Utilitas inti, konstanta, tema, & formatter
 │   ├── constants/          # Konstanta aplikasi & path logo
 │   ├── theme/              # Warna identitas (Gojek Green palette) & AppTheme
-│   └── utils/              # Formatter Rupiah, Tanggal, & Utilitas Perhitungan HPP
+│   └── utils/              # Formatter Rupiah, Tanggal, AppInfo (versi), AppLogger, kalkulasi HPP
 ├── data/                   # Data repositories (Product, DailyRecord, Settings)
 ├── database/               # Definisi tabel Drift SQLite & DAO
 │   ├── daos/               # Data Access Objects untuk query cepat
@@ -156,7 +196,7 @@ lib/
 ├── domain/                 # Domain enums & entity rules
 ├── features/               # Fitur utama berbasis arsitektur modular
 │   ├── about/              # Halaman tentang aplikasi & spesifikasi sistem
-│   ├── backup/             # Fitur backup & restore data lokal JSON
+│   ├── backup/             # Fitur backup & restore data lokal JSON (checksum SHA-256, mode ganti/gabung)
 │   ├── calculator/         # Kalkulator HPP & margin modal otomatis
 │   ├── daily_rekap/        # Halaman pencatatan rekap harian
 │   ├── dashboard/          # Beranda utama, omzet hero card, & grafik laba

@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/utils/app_logger.dart';
 import '../../database/app_database.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../providers/database_provider.dart';
@@ -36,8 +36,9 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
   final _nameController = TextEditingController();
   final _hppController = TextEditingController();
   final _sellingPriceController = TextEditingController();
+  final _unitController = TextEditingController(text: 'pcs');
 
-  String _selectedUnit = 'pcs';
+  String get _selectedUnit => _unitController.text.trim();
   bool _isActive = true;
   bool _isLoading = false;
   bool _isEdit = false;
@@ -80,7 +81,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
         _nameController.text = product.name;
         _hppController.text = product.hpp.toString();
         _sellingPriceController.text = product.sellingPrice.toString();
-        _selectedUnit = product.unit;
+        _unitController.text = product.unit;
         _isActive = product.isActive;
       });
     }
@@ -91,6 +92,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
     _nameController.dispose();
     _hppController.dispose();
     _sellingPriceController.dispose();
+    _unitController.dispose();
     super.dispose();
   }
 
@@ -155,7 +157,8 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
         );
         context.pop();
       }
-    } catch (e) {
+    } catch (e, stack) {
+      AppLogger.report('ProductFormScreen.save', e, stack);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -236,7 +239,8 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
           );
           context.pop();
         }
-      } catch (e) {
+      } catch (e, stack) {
+        AppLogger.report('ProductFormScreen.delete', e, stack);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -381,7 +385,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                   children: _quickUnits.map((unit) {
                     final isSelected = _selectedUnit == unit;
                     return InkWell(
-                      onTap: () => setState(() => _selectedUnit = unit),
+                      onTap: () => setState(() => _unitController.text = unit),
                       borderRadius: BorderRadius.circular(10),
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 150),
@@ -419,14 +423,17 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
 
                 const SizedBox(height: 12),
 
-                // Dropdown fallback for all units
-                DropdownButtonFormField<String>(
-                  value: AppConstants.unitOptions.contains(_selectedUnit)
-                      ? _selectedUnit
-                      : AppConstants.unitOptions.first,
+                // Free-form unit: anything the seller actually uses.
+                TextFormField(
+                  controller: _unitController,
+                  textInputAction: TextInputAction.done,
+                  maxLength: 16,
                   decoration: InputDecoration(
-                    labelText: l10n?.prodSelectOtherUnit ?? 'Pilih Satuan Lainnya',
+                    labelText: l10n?.prodUnitFieldLabel ?? 'Satuan Lainnya',
+                    hintText: l10n?.prodUnitFieldHint ??
+                        'Misal: pcs, lusin, Renteng, Bungkus 250g',
                     prefixIcon: const Icon(LucideIcons.ruler, size: 20),
+                    counterText: '',
                     filled: true,
                     fillColor: AppColors.greyBg,
                     border: OutlineInputBorder(
@@ -438,14 +445,16 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                       borderSide: const BorderSide(color: AppColors.greyBorder),
                     ),
                   ),
-                  items: AppConstants.unitOptions
-                      .map((unit) => DropdownMenuItem(
-                            value: unit,
-                            child: Text(unit),
-                          ))
-                      .toList(),
-                  onChanged: (val) {
-                    if (val != null) setState(() => _selectedUnit = val);
+                  onChanged: (_) => setState(() {}),
+                  validator: (value) {
+                    final text = (value ?? '').trim();
+                    if (text.isEmpty) {
+                      return l10n?.prodUnitRequired ?? 'Satuan penjualan wajib diisi';
+                    }
+                    if (text.length > 16) {
+                      return l10n?.prodUnitTooLong ?? 'Satuan maksimal 16 karakter';
+                    }
+                    return null;
                   },
                 ),
               ],

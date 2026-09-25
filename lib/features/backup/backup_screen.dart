@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/theme/app_colors.dart';
+import '../../core/utils/app_logger.dart';
 import '../../data/services/backup_service.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../providers/database_provider.dart';
@@ -51,10 +52,11 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
           SnackBar(content: Text(l10n?.bkpBackupSuccess ?? 'Backup berhasil dibuat')),
         );
       }
-    } catch (e) {
+    } catch (e, stack) {
+      AppLogger.report('BackupScreen.export', e, stack);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal membuat backup: $e')),
+          SnackBar(content: Text(l10n?.bkpBackupFailed ?? 'Gagal membuat backup')),
         );
       }
     } finally {
@@ -64,28 +66,40 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
 
   Future<void> _restoreData() async {
     final l10n = AppLocalizations.of(context);
-    final confirmed = await showDialog<bool>(
+    final mode = await showDialog<RestoreMode>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n?.bkpRestoreDialogTitle ?? 'Restore Data?'),
-        content: Text(
-          l10n?.bkpRestoreDialogContent ??
-              'Semua data saat ini akan diganti dengan data dari backup. Pastikan kamu sudah melakukan backup data terbaru.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n?.commonCancel ?? 'Batal'),
+      builder: (context) => SimpleDialog(
+        title: Text(l10n?.bkpRestoreDialogTitle ?? 'Pilih Cara Restore'),
+        children: [
+          SimpleDialogOption(
+            onPressed: () => Navigator.pop(context, RestoreMode.replace),
+            child: ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(LucideIcons.refreshCw, color: AppColors.warning),
+              title: Text(l10n?.bkpModeReplaceTitle ?? 'Ganti Semua Data'),
+              subtitle: Text(
+                l10n?.bkpModeReplaceSubtitle ??
+                    'Hapus data saat ini, lalu isi ulang dari file backup',
+              ),
+            ),
           ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(l10n?.bkpRestoreButton ?? 'Restore', style: const TextStyle(color: AppColors.warning)),
+          SimpleDialogOption(
+            onPressed: () => Navigator.pop(context, RestoreMode.merge),
+            child: ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(LucideIcons.gitMerge, color: AppColors.primaryGreen),
+              title: Text(l10n?.bkpModeMergeTitle ?? 'Gabungkan dengan Data Saya'),
+              subtitle: Text(
+                l10n?.bkpModeMergeSubtitle ??
+                    'Data lama tetap ada. Rekap pada tanggal yang sudah ada tidak dihitung dua kali.',
+              ),
+            ),
           ),
         ],
       ),
     );
 
-    if (confirmed != true) return;
+    if (mode == null || !mounted) return;
 
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -108,24 +122,31 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
       }
 
       final db = ref.read(databaseProvider);
-      await BackupService(db).restoreData(decoded);
+      final summary = await BackupService(db).restoreData(decoded, mode: mode);
 
       if (mounted) {
+        final detail = mode == RestoreMode.merge
+            ? (l10n?.bkpRestoreMergeDetail(summary.items, summary.records) ??
+                'Ditambahkan ${summary.records} rekap & ${summary.items} item')
+            : (l10n?.bkpRestoreReplaceDetail(
+                    summary.items, summary.products, summary.records) ??
+                'Data diganti dari file backup');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n?.bkpRestoreSuccess ?? 'Restore berhasil')),
+          SnackBar(content: Text('${l10n?.bkpRestoreSuccess ?? 'Restore berhasil'} · $detail')),
         );
         Navigator.pop(context);
       }
     } on BackupFormatException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Restore dibatalkan: ${e.message}')),
+          SnackBar(content: Text('${l10n?.bkpRestoreRejected ?? 'Restore dibatalkan'} ${e.message}')),
         );
       }
-    } catch (e) {
+    } catch (e, stack) {
+      AppLogger.report('BackupScreen.restore', e, stack);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal restore: $e')),
+          SnackBar(content: Text(l10n?.bkpRestoreFailed ?? 'Gagal restore')),
         );
       }
     } finally {

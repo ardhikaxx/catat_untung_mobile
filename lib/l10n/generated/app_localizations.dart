@@ -614,6 +614,60 @@ abstract class AppLocalizations {
   /// **'Backup Catat Untung'**
   String get bkpShareText;
 
+  /// No description provided for @bkpModeReplaceTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Ganti Semua Data'**
+  String get bkpModeReplaceTitle;
+
+  /// No description provided for @bkpModeReplaceSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Hapus data saat ini, lalu isi ulang dari file backup'**
+  String get bkpModeReplaceSubtitle;
+
+  /// No description provided for @bkpModeMergeTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Gabungkan dengan Data Saya'**
+  String get bkpModeMergeTitle;
+
+  /// No description provided for @bkpModeMergeSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Data lama tetap ada. Rekap pada tanggal yang sudah ada tidak dihitung dua kali.'**
+  String get bkpModeMergeSubtitle;
+
+  /// No description provided for @bkpRestoreMergeDetail.
+  ///
+  /// In id, this message translates to:
+  /// **'Ditambahkan {records} rekap & {items} item'**
+  String bkpRestoreMergeDetail(Object items, Object records);
+
+  /// No description provided for @bkpRestoreReplaceDetail.
+  ///
+  /// In id, this message translates to:
+  /// **'{products} produk, {records} rekap, {items} item'**
+  String bkpRestoreReplaceDetail(Object items, Object products, Object records);
+
+  /// No description provided for @bkpRestoreRejected.
+  ///
+  /// In id, this message translates to:
+  /// **'Restore dibatalkan:'**
+  String get bkpRestoreRejected;
+
+  /// No description provided for @bkpRestoreFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Gagal restore. Coba lagi, atau hubungi developer bila tetap gagal.'**
+  String get bkpRestoreFailed;
+
+  /// No description provided for @bkpBackupFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Gagal membuat backup. Pastikan penyimpanan perangkat tidak penuh.'**
+  String get bkpBackupFailed;
+
   /// No description provided for @calcEnterCostFirst.
   ///
   /// In id, this message translates to:
@@ -1928,6 +1982,30 @@ abstract class AppLocalizations {
   /// **'Pilih Satuan Lainnya'**
   String get prodSelectOtherUnit;
 
+  /// No description provided for @prodUnitFieldLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Satuan Lainnya'**
+  String get prodUnitFieldLabel;
+
+  /// No description provided for @prodUnitFieldHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Misal: pcs, lusin, Renteng, Bungkus 250g'**
+  String get prodUnitFieldHint;
+
+  /// No description provided for @prodUnitRequired.
+  ///
+  /// In id, this message translates to:
+  /// **'Satuan penjualan wajib diisi'**
+  String get prodUnitRequired;
+
+  /// No description provided for @prodUnitTooLong.
+  ///
+  /// In id, this message translates to:
+  /// **'Satuan maksimal 16 karakter'**
+  String get prodUnitTooLong;
+
   /// No description provided for @prodPriceSectionTitle.
   ///
   /// In id, this message translates to:
@@ -2485,6 +2563,48 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Tips praktis mencatat rekap penjualan harian'**
   String get setGuideSubtitle;
+
+  /// No description provided for @setErrorReport.
+  ///
+  /// In id, this message translates to:
+  /// **'Laporan Error'**
+  String get setErrorReport;
+
+  /// No description provided for @setErrorReportSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Salin atau bagikan log error yang tersimpan di perangkat'**
+  String get setErrorReportSubtitle;
+
+  /// No description provided for @setErrorReportHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Log ini tersimpan hanya di perangkat Anda dan tidak dikirim ke mana pun.'**
+  String get setErrorReportHint;
+
+  /// No description provided for @setErrorReportCopy.
+  ///
+  /// In id, this message translates to:
+  /// **'Salin'**
+  String get setErrorReportCopy;
+
+  /// No description provided for @setErrorReportShare.
+  ///
+  /// In id, this message translates to:
+  /// **'Bagikan'**
+  String get setErrorReportShare;
+
+  /// No description provided for @setErrorReportClear.
+  ///
+  /// In id, this message translates to:
+  /// **'Hapus Log'**
+  String get setErrorReportClear;
+
+  /// No description provided for @setErrorReportCopied.
+  ///
+  /// In id, this message translates to:
+  /// **'Log error disalin ke clipboard'**
+  String get setErrorReportCopied;
 
   /// No description provided for @setDangerZoneSection.
   ///

@@ -277,6 +277,45 @@ class AppLocalizationsId extends AppLocalizations {
   String get bkpShareText => 'Backup Catat Untung';
 
   @override
+  String get bkpModeReplaceTitle => 'Ganti Semua Data';
+
+  @override
+  String get bkpModeReplaceSubtitle =>
+      'Hapus data saat ini, lalu isi ulang dari file backup';
+
+  @override
+  String get bkpModeMergeTitle => 'Gabungkan dengan Data Saya';
+
+  @override
+  String get bkpModeMergeSubtitle =>
+      'Data lama tetap ada. Rekap pada tanggal yang sudah ada tidak dihitung dua kali.';
+
+  @override
+  String bkpRestoreMergeDetail(Object items, Object records) {
+    return 'Ditambahkan $records rekap & $items item';
+  }
+
+  @override
+  String bkpRestoreReplaceDetail(
+    Object items,
+    Object products,
+    Object records,
+  ) {
+    return '$products produk, $records rekap, $items item';
+  }
+
+  @override
+  String get bkpRestoreRejected => 'Restore dibatalkan:';
+
+  @override
+  String get bkpRestoreFailed =>
+      'Gagal restore. Coba lagi, atau hubungi developer bila tetap gagal.';
+
+  @override
+  String get bkpBackupFailed =>
+      'Gagal membuat backup. Pastikan penyimpanan perangkat tidak penuh.';
+
+  @override
   String get calcEnterCostFirst =>
       'Masukkan komponen biaya dan jumlah unit terlebih dahulu';
 
@@ -972,6 +1011,18 @@ class AppLocalizationsId extends AppLocalizations {
   String get prodSelectOtherUnit => 'Pilih Satuan Lainnya';
 
   @override
+  String get prodUnitFieldLabel => 'Satuan Lainnya';
+
+  @override
+  String get prodUnitFieldHint => 'Misal: pcs, lusin, Renteng, Bungkus 250g';
+
+  @override
+  String get prodUnitRequired => 'Satuan penjualan wajib diisi';
+
+  @override
+  String get prodUnitTooLong => 'Satuan maksimal 16 karakter';
+
+  @override
   String get prodPriceSectionTitle => 'Harga Modal & Penjualan';
 
   @override
@@ -1277,6 +1328,29 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get setGuideSubtitle => 'Tips praktis mencatat rekap penjualan harian';
+
+  @override
+  String get setErrorReport => 'Laporan Error';
+
+  @override
+  String get setErrorReportSubtitle =>
+      'Salin atau bagikan log error yang tersimpan di perangkat';
+
+  @override
+  String get setErrorReportHint =>
+      'Log ini tersimpan hanya di perangkat Anda dan tidak dikirim ke mana pun.';
+
+  @override
+  String get setErrorReportCopy => 'Salin';
+
+  @override
+  String get setErrorReportShare => 'Bagikan';
+
+  @override
+  String get setErrorReportClear => 'Hapus Log';
+
+  @override
+  String get setErrorReportCopied => 'Log error disalin ke clipboard';
 
   @override
   String get setDangerZoneSection => 'Zona Bahaya';

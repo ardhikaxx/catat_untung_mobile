@@ -14,6 +14,8 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/utils/app_info.dart';
+import '../../core/utils/app_logger.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/date_formatter.dart';
 import '../../l10n/generated/app_localizations.dart';
@@ -92,7 +94,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
       }
 
       csvData.add([]);
-      csvData.add(['${AppConstants.appName} - ${AppConstants.copyright}']);
+      csvData.add(['${AppConstants.appName} ${AppInfo.version} - ${AppConstants.copyright}']);
 
       final csv = const ListToCsvConverter().convert(csvData);
       final directory = await getApplicationDocumentsDirectory();
@@ -110,7 +112,8 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
           SnackBar(content: Text(l10n?.expCsvExportSuccess ?? 'CSV berhasil diekspor')),
         );
       }
-    } catch (e) {
+    } catch (e, stack) {
+      AppLogger.report('ExportScreen.csv', e, stack);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Gagal ekspor CSV: $e')),
@@ -153,7 +156,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
               mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
               children: [
                 pw.Text(
-                  'Catat Untung - ${AppConstants.copyright}',
+                  '${AppConstants.appName} ${AppInfo.version} - ${AppConstants.copyright}',
                   style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey600),
                 ),
                 pw.Text(
@@ -249,7 +252,8 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
           SnackBar(content: Text(l10n?.expPdfExportSuccess ?? 'PDF berhasil diekspor')),
         );
       }
-    } catch (e) {
+    } catch (e, stack) {
+      AppLogger.report('ExportScreen.pdf', e, stack);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Gagal ekspor PDF: $e')),
@@ -293,7 +297,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
                 ),
               ),
               const SizedBox(width: 8),
-              const Text('—', style: TextStyle(color: AppColors.textSecondary)),
+              const Text('Ã¢â‚¬â€', style: TextStyle(color: AppColors.textSecondary)),
               const SizedBox(width: 8),
               Expanded(
                 child: OutlinedButton.icon(
