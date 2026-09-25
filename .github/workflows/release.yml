@@ -20,7 +20,7 @@ jobs:
   build-apk:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ inputs.tag_name || github.ref }}
 
@@ -40,4 +40,36 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ inputs.tag_name || github.ref_name }}
+          name: Catat Untung v1.0.1
+          body: |
+            # 📱 Catat Untung v1.0.1
+
+            Aplikasi kasir dan pembukuan harian untuk UMKM, warung, dan usaha kuliner. Catat omzet, modal, serta laba bersih secara praktis. **Berjalan 100% offline, tanpa login, dan tanpa biaya langganan.**
+
+            ## ✨ Fitur Utama
+
+            - 📦 **Katalog Produk & HPP** — Kelola produk, satuan, harga jual, dan modal per unit; lihat margin secara otomatis.
+            - 🧮 **Kalkulator HPP** — Hitung biaya bahan, kemasan, dan operasional, lalu simulasikan harga jual berdasarkan target margin.
+            - 📝 **Rekap Penjualan Harian** — Catat jumlah produk terjual dan lihat estimasi omzet serta laba.
+            - 📊 **Dashboard Keuangan** — Pantau omzet, modal, laba bersih, produk terjual, dan tren laba 7 hari.
+            - 📅 **Riwayat & Kalender** — Telusuri rekap per tanggal, lihat detail transaksi, dan ringkasan bulanan.
+            - 📈 **Laporan** — Lihat produk terlaris, metrik penjualan, dan laporan berdasarkan periode.
+            - 📄 **Ekspor PDF & CSV** — Simpan atau bagikan laporan untuk dicetak maupun diolah di spreadsheet.
+            - 💾 **Backup & Restore** — Cadangkan dan pulihkan data aplikasi melalui file lokal.
+
+            ## 🆕 Pembaruan di v1.0.1
+
+            - 🌐 Pilih bahasa tampilan **Bahasa Indonesia**, **English**, atau ikuti bahasa perangkat.
+            - 🎨 Penyempurnaan tampilan dan navigasi pada dashboard, rekap, katalog produk, riwayat, laporan, dan pengaturan.
+            - 🛠️ Pembaruan pengelolaan data, backup/restore, serta migrasi database.
+
+            ## 📥 Unduh & Instal APK
+
+            [**Unduh Catat Untung v1.0.1 (APK)**](https://github.com/ardhikaxx/catat_untung_mobile/releases/download/v1.0.1/app-release.apk)
+
+            Setelah diunduh, buka APK di perangkat Android. Jika diminta, izinkan instalasi aplikasi dari sumber ini, lalu lanjutkan pemasangan.
+
+            ---
+            Dikembangkan oleh **Yanuar Ardhika Rahmadhani Ubaidillah** · Copyright © 2026.
           files: build/app/outputs/flutter-apk/app-release.apk
+          overwrite_files: true
