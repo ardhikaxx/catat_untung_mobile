@@ -123,7 +123,9 @@ flutter run
 ```bash
 flutter build apk --release
 ```
-*File APK yang dihasilkan berada di: `build/app/outputs/flutter-apk/Catat_Untung_v<versi>.apk`.*
+*Gradle menghasilkan `build/app/outputs/flutter-apk/app-release.apk`. Workflow
+rilis menamainya menjadi `Catat_Untung_v<versi>.apk` sebelum di-upload ke GitHub
+Releases.*
 
 Build release memakai R8 (`minifyEnabled` + `shrinkResources`) dengan aturan di
 `android/app/proguard-rules.pro`. R8 berjalan dalam *compatibility mode*

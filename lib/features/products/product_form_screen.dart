@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
+import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/app_logger.dart';
 import '../../database/app_database.dart';
@@ -43,17 +44,6 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
   bool _isLoading = false;
   bool _isEdit = false;
 
-  // Preset quick unit options for instant selection
-  static const List<String> _quickUnits = [
-    'pcs',
-    'porsi',
-    'cup',
-    'botol',
-    'box',
-    'paket',
-    'kg',
-    'unit',
-  ];
 
   @override
   void initState() {
@@ -382,7 +372,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                 Wrap(
                   spacing: 6,
                   runSpacing: 6,
-                  children: _quickUnits.map((unit) {
+                  children: AppConstants.quickUnitSuggestions.map((unit) {
                     final isSelected = _selectedUnit == unit;
                     return InkWell(
                       onTap: () => setState(() => _unitController.text = unit),

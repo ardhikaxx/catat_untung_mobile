@@ -9,16 +9,16 @@ class AppConstants {
 
   static const String dbName = 'catat_untung.db';
 
-  static const List<String> unitOptions = [
+  /// Units offered as one-tap chips in the product form. The unit itself is
+  /// free text, so sellers are not limited to this list.
+  static const List<String> quickUnitSuggestions = [
     'pcs',
-    'unit',
-    'botol',
-    'kg',
-    'paket',
     'porsi',
-    'liter',
-    'meter',
-    'lusin',
+    'cup',
+    'botol',
     'box',
+    'paket',
+    'kg',
+    'unit',
   ];
 }

@@ -54,7 +54,8 @@ android {
             } else {
                 signingConfigs.getByName("debug")
             }
-            outputFileName = "Catat_Untung_v${flutter.versionName}.apk"
+            // The APK name is set by the release workflow after the build
+            // (`outputFileName` is not available in the Kotlin DSL).
 
             // R8 code + resource shrinking. Keeps the release APK small without
             // obfuscating names, so crash reports stay readable.
