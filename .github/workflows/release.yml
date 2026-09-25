@@ -71,5 +71,5 @@ jobs:
 
             ---
             Dikembangkan oleh **Yanuar Ardhika Rahmadhani Ubaidillah** · Copyright © 2026.
-          files: build/app/outputs/flutter-apk/app-release.apk
+           files: build/app/outputs/flutter-apk/Catat_Untung_v${{ inputs.tag_name || github.ref_name }}.apk
           overwrite_files: true

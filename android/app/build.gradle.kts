@@ -55,6 +55,7 @@ android {
             } else {
                 signingConfigs.getByName("debug")
             }
+            outputFileName = "Catat_Untung_v${flutter.versionName}.apk"
         }
     }
 }
