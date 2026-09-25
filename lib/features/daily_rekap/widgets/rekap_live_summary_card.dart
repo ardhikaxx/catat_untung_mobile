@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import '../../../core/utils/currency_formatter.dart';
+
 import '../../../core/utils/calculation_utils.dart';
+import '../../../core/utils/currency_formatter.dart';
+import '../../../l10n/generated/app_localizations.dart';
 
 class RekapLiveSummaryCard extends StatelessWidget {
   final int totalRevenue;
@@ -21,6 +23,7 @@ class RekapLiveSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final margin = CalculationUtils.calculateMarginDouble(
       totalRevenue,
       totalCost,
@@ -74,9 +77,9 @@ class RekapLiveSummaryCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 6),
-                    const Text(
-                      'ESTIMASI REKAP',
-                      style: TextStyle(
+                    Text(
+                      l10n?.rekapEstimateBadge ?? 'ESTIMASI REKAP',
+                      style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 0.6,
@@ -107,9 +110,9 @@ class RekapLiveSummaryCard extends StatelessWidget {
           const SizedBox(height: 14),
 
           // Total Omzet
-          const Text(
-            'Total Estimasi Omzet',
-            style: TextStyle(
+          Text(
+            l10n?.rekapTotalEstRevenue ?? 'Total Estimasi Omzet',
+            style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w500,
               color: Color(0xFFE0E7FF),
@@ -151,7 +154,7 @@ class RekapLiveSummaryCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            'Total Modal',
+                            l10n?.rekapTotalCapital ?? 'Total Modal',
                             style: TextStyle(
                               fontSize: 11,
                               color: Colors.white.withAlpha(180),
@@ -198,7 +201,7 @@ class RekapLiveSummaryCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            'Laba Bersih',
+                            l10n?.rekapNetProfit ?? 'Laba Bersih',
                             style: TextStyle(
                               fontSize: 11,
                               color: Colors.white.withAlpha(180),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
+import '../../../l10n/generated/app_localizations.dart';
 
 class RekapBottomActionPanel extends StatelessWidget {
   final int totalRevenue;
@@ -29,6 +30,7 @@ class RekapBottomActionPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final isProfitPositive = totalProfit > 0;
     final isProfitZero = totalProfit == 0;
     final canSave = itemCount > 0 && !isLoading;
@@ -62,9 +64,9 @@ class RekapBottomActionPanel extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const Text(
-                        'Omzet: ',
-                        style: TextStyle(
+                      Text(
+                        l10n?.rekapOmzetLabel ?? 'Omzet: ',
+                        style: const TextStyle(
                           fontSize: 12,
                           color: AppColors.textSecondary,
                         ),
@@ -82,7 +84,7 @@ class RekapBottomActionPanel extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'Laba: ',
+                        l10n?.rekapLabaLabel ?? 'Laba: ',
                         style: TextStyle(
                           fontSize: 12,
                           color: isProfitPositive
@@ -123,9 +125,9 @@ class RekapBottomActionPanel extends StatelessWidget {
                     child: OutlinedButton.icon(
                       onPressed: onAddProduct,
                       icon: const Icon(LucideIcons.plus, size: 18),
-                      label: const Text(
-                        'Tambah',
-                        style: TextStyle(
+                      label: Text(
+                        l10n?.commonAdd ?? 'Tambah',
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                         ),
@@ -165,7 +167,9 @@ class RekapBottomActionPanel extends StatelessWidget {
                             )
                           : const Icon(LucideIcons.checkCircle2, size: 18),
                       label: Text(
-                        isLoading ? 'Menyimpan...' : 'Simpan Rekap',
+                        isLoading
+                            ? l10n?.rekapSaving ?? 'Menyimpan...'
+                            : l10n?.rekapSaveRecap ?? 'Simpan Rekap',
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,

@@ -1,13 +1,14 @@
+import 'package:catat_untung/database/app_database.dart';
+import 'package:catat_untung/features/daily_rekap/daily_rekap_screen.dart';
+import 'package:catat_untung/features/daily_rekap/widgets/rekap_bottom_action_panel.dart';
+import 'package:catat_untung/features/daily_rekap/widgets/rekap_date_selector.dart';
+import 'package:catat_untung/features/daily_rekap/widgets/rekap_item_tile.dart';
+import 'package:catat_untung/features/daily_rekap/widgets/rekap_live_summary_card.dart';
+import 'package:catat_untung/features/daily_rekap/widgets/rekap_saved_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:catat_untung/features/daily_rekap/daily_rekap_screen.dart';
-import 'package:catat_untung/features/daily_rekap/widgets/rekap_date_selector.dart';
-import 'package:catat_untung/features/daily_rekap/widgets/rekap_live_summary_card.dart';
-import 'package:catat_untung/features/daily_rekap/widgets/rekap_item_tile.dart';
-import 'package:catat_untung/features/daily_rekap/widgets/rekap_bottom_action_panel.dart';
-import 'package:catat_untung/features/daily_rekap/widgets/rekap_saved_view.dart';
-import 'package:catat_untung/database/app_database.dart';
 
 void main() {
   setUpAll(() async {
@@ -16,7 +17,7 @@ void main() {
 
   group('Daily Rekap Widgets Tests', () {
     testWidgets('RekapDateSelector renders date and handles navigation', (tester) async {
-      DateTime selected = DateTime(2026, 9, 10);
+      final DateTime selected = DateTime(2026, 9, 10);
       bool selectDateTapped = false;
       DateTime? changedDate;
 
@@ -209,6 +210,23 @@ void main() {
       await tester.tap(find.text('Buka Riwayat Penjualan'));
       await tester.pump();
       expect(historyTapped, isTrue);
+    });
+  });
+
+  group('DailyRekapScreen', () {
+    testWidgets('opens without "modify a provider while building" error', (tester) async {
+      await tester.pumpWidget(
+        const ProviderScope(
+          child: MaterialApp(
+            home: DailyRekapScreen(),
+          ),
+        ),
+      );
+      await tester.pump();
+      expect(tester.takeException(), isNull);
+      expect(find.text('Rekap Penjualan'), findsOneWidget);
+
+      await tester.pumpWidget(const SizedBox());
     });
   });
 }

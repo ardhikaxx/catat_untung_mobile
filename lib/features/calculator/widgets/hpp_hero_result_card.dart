@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
+import '../../../l10n/generated/app_localizations.dart';
 
 class HppHeroResultCard extends StatelessWidget {
   final double hppPerUnit;
@@ -23,6 +24,7 @@ class HppHeroResultCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final hasData = totalBiaya > 0 && jumlahProduk > 0;
 
     // Percentages of cost components
@@ -66,16 +68,16 @@ class HppHeroResultCard extends StatelessWidget {
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(
+                  children: [
+                    const Icon(
                       LucideIcons.calculator,
                       size: 14,
                       color: Colors.white,
                     ),
-                    SizedBox(width: 6),
+                    const SizedBox(width: 6),
                     Text(
-                      'KALKULASI HPP OTOMATIS',
-                      style: TextStyle(
+                      l10n?.calcAutoHppBadge ?? 'KALKULASI HPP OTOMATIS',
+                      style: const TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
@@ -93,16 +95,16 @@ class HppHeroResultCard extends StatelessWidget {
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(
+                  children: [
+                    const Icon(
                       LucideIcons.checkCircle2,
                       size: 12,
                       color: AppColors.primaryGreen,
                     ),
-                    SizedBox(width: 4),
+                    const SizedBox(width: 4),
                     Text(
-                      'Real-time',
-                      style: TextStyle(
+                      l10n?.calcRealtimeBadge ?? 'Real-time',
+                      style: const TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
                         color: AppColors.primaryGreen,
@@ -118,7 +120,7 @@ class HppHeroResultCard extends StatelessWidget {
 
           // Main KPI: HPP per unit
           Text(
-            'HARGA POKOK PRODUKSI (HPP)',
+            l10n?.calcHppHeading ?? 'HARGA POKOK PRODUKSI (HPP)',
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w600,
@@ -144,7 +146,7 @@ class HppHeroResultCard extends StatelessWidget {
               ),
               const SizedBox(width: 6),
               Text(
-                '/ unit produk',
+                l10n?.calcPerUnitLabel ?? '/ unit produk',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
@@ -166,7 +168,7 @@ class HppHeroResultCard extends StatelessWidget {
             children: [
               Expanded(
                 child: _buildSubStat(
-                  label: 'Total Biaya Produksi',
+                  label: l10n?.calcTotalProductionCost ?? 'Total Biaya Produksi',
                   value: CurrencyFormatter.formatRupiah(totalBiaya.round()),
                 ),
               ),
@@ -179,7 +181,7 @@ class HppHeroResultCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: _buildSubStat(
-                    label: 'Jumlah Target Jadi',
+                    label: l10n?.calcTargetYieldTotal ?? 'Jumlah Target Jadi',
                     value: jumlahProduk > 0 ? '$jumlahProduk Unit' : '0 Unit',
                   ),
                 ),
@@ -197,7 +199,7 @@ class HppHeroResultCard extends StatelessWidget {
             const SizedBox(height: 12),
 
             Text(
-              'Komposisi Beban Biaya Produksi',
+              l10n?.calcCostCompositionHeading ?? 'Komposisi Beban Biaya Produksi',
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w600,

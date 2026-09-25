@@ -1,0 +1,10 @@
+{
+  "expTitle": "Export Report",
+  "expSelectPeriod": "Select Period",
+  "expExporting": "Exporting data...",
+  "expExportPdfButton": "Export PDF",
+  "expExportCsvButton": "Export CSV",
+  "expCsvExportSuccess": "CSV exported successfully",
+  "expPdfExportSuccess": "PDF exported successfully",
+  "expShareText": "Catat Untung Report"
+}

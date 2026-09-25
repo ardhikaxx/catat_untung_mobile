@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/currency_formatter.dart';
+import '../../l10n/generated/app_localizations.dart';
+import '../../shared/widgets/app_back_button.dart';
+import '../../shared/widgets/app_floating_nav_bar.dart';
 import 'widgets/hpp_hero_result_card.dart';
 import 'widgets/hpp_target_margin_card.dart';
-import '../../shared/widgets/app_floating_nav_bar.dart';
 
 class HppCalculatorScreen extends StatefulWidget {
   const HppCalculatorScreen({super.key});
@@ -115,10 +118,11 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
   }
 
   void _navigateToCreateProduct() {
+    final l10n = AppLocalizations.of(context);
     if (_hppPerUnit <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Masukkan komponen biaya dan jumlah unit terlebih dahulu'),
+          content: Text(l10n?.calcEnterCostFirst ?? 'Masukkan komponen biaya dan jumlah unit terlebih dahulu'),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
@@ -137,6 +141,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final hasData = _totalBiaya > 0 && _jumlahProduk > 0;
 
     return GestureDetector(
@@ -148,29 +153,22 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
         appBar: AppBar(
           backgroundColor: AppColors.surface,
           elevation: 0,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios_new_rounded,
-              size: 20,
-              color: AppColors.textPrimary,
-            ),
-            onPressed: () => Navigator.pop(context),
-          ),
+          leading: const AppBackButton(),
 
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Kalkulator HPP',
-                style: TextStyle(
+              Text(
+                l10n?.calcAppBarTitle ?? 'Kalkulator HPP',
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,
                 ),
               ),
               Text(
-                'Hitung modal & simulasi harga jual UMKM',
-                style: TextStyle(
+                l10n?.calcAppBarSubtitle ?? 'Hitung modal & simulasi harga jual UMKM',
+                style: const TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w400,
                   color: AppColors.textSecondary,
@@ -187,9 +185,9 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                   size: 16,
                   color: AppColors.error,
                 ),
-                label: const Text(
-                  'Reset',
-                  style: TextStyle(
+                label: Text(
+                  l10n?.calcReset ?? 'Reset',
+                  style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: AppColors.error,
@@ -203,7 +201,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                   size: 18,
                   color: AppColors.textSecondary,
                 ),
-                tooltip: 'Reset hitungan',
+                tooltip: l10n?.calcResetTooltip ?? 'Reset hitungan',
                 onPressed: _clearAll,
               ),
           ],
@@ -241,9 +239,9 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Formula HPP UMKM Sehat',
-                          style: TextStyle(
+                        Text(
+                          l10n?.calcFormulaTitle ?? 'Formula HPP UMKM Sehat',
+                          style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                             color: AppColors.primaryGreenDark,
@@ -251,7 +249,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                         ),
                         const SizedBox(height: 3),
                         Text(
-                          'HPP = (Bahan Baku + Kemasan + Operasional) ÷ Jumlah Porsi Jadi. Menghitung kemasan & gas mencegah produk jual rugi.',
+                          l10n?.calcFormulaDesc ?? 'HPP = (Bahan Baku + Kemasan + Operasional) ÷ Jumlah Porsi Jadi. Menghitung kemasan & gas mencegah produk jual rugi.',
                           style: TextStyle(
                             fontSize: 11,
                             height: 1.4,
@@ -296,8 +294,8 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                   ),
                   const SizedBox(width: 6),
                   Text(
-                    'CONTOH SIMULASI CEPAT',
-                    style: TextStyle(
+                    l10n?.calcQuickExamplesHeading ?? 'CONTOH SIMULASI CEPAT',
+                    style: const TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 0.8,
@@ -314,17 +312,17 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
               child: Row(
                 children: [
                   _buildQuickRecipeChip(
-                    label: '🍗 Ayam Geprek (30 Porsi)',
+                    label: l10n?.calcRecipeAyamGeprek ?? '🍗 Ayam Geprek (30 Porsi)',
                     onTap: () => _applyQuickRecipe('Ayam Geprek', 210000, 35000, 25000, 30),
                   ),
                   const SizedBox(width: 8),
                   _buildQuickRecipeChip(
-                    label: '☕ Kopi Susu (50 Cup)',
+                    label: l10n?.calcRecipeKopiSusu ?? '☕ Kopi Susu (50 Cup)',
                     onTap: () => _applyQuickRecipe('Kopi Susu', 175000, 65000, 20000, 50),
                   ),
                   const SizedBox(width: 8),
                   _buildQuickRecipeChip(
-                    label: '🍪 Cookies (12 Toples)',
+                    label: l10n?.calcRecipeCookies ?? '🍪 Cookies (12 Toples)',
                     onTap: () => _applyQuickRecipe('Cookies', 140000, 36000, 15000, 12),
                   ),
                 ],
@@ -372,17 +370,17 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Komponen Biaya Produksi',
-                              style: TextStyle(
+                            Text(
+                              l10n?.calcCostComponentsTitle ?? 'Komponen Biaya Produksi',
+                              style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.textPrimary,
                               ),
                             ),
                             Text(
-                              'Ketik nominal, hasil HPP terhitung otomatis',
-                              style: TextStyle(
+                              l10n?.calcCostComponentsSubtitle ?? 'Ketik nominal, hasil HPP terhitung otomatis',
+                              style: const TextStyle(
                                 fontSize: 11,
                                 color: AppColors.textSecondary,
                               ),
@@ -397,8 +395,8 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                   // 1. Biaya Bahan Baku
                   _buildCostField(
                     controller: _biayaBahanController,
-                    label: 'Biaya Bahan Baku Utama',
-                    subtitle: 'Daging, beras, bumbu, sayuran, dsb.',
+                    label: l10n?.calcCostBahanLabel ?? 'Biaya Bahan Baku Utama',
+                    subtitle: l10n?.calcCostBahanSubtitle ?? 'Daging, beras, bumbu, sayuran, dsb.',
                     hint: '0',
                     icon: LucideIcons.package,
                     iconColor: AppColors.primaryGreen,
@@ -410,8 +408,8 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                   // 2. Biaya Kemasan & Label
                   _buildCostField(
                     controller: _biayaKemasanController,
-                    label: 'Biaya Kemasan & Packaging',
-                    subtitle: 'Box, styrofoam, cup, plastik, stiker label',
+                    label: l10n?.calcCostKemasanLabel ?? 'Biaya Kemasan & Packaging',
+                    subtitle: l10n?.calcCostKemasanSubtitle ?? 'Box, styrofoam, cup, plastik, stiker label',
                     hint: '0',
                     icon: LucideIcons.package,
                     iconColor: AppColors.warning,
@@ -423,8 +421,8 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                   // 3. Biaya Operasional / Lainnya
                   _buildCostField(
                     controller: _biayaLainController,
-                    label: 'Biaya Operasional / Lainnya',
-                    subtitle: 'Gas LPG, listrik, es batu, minyak goreng',
+                    label: l10n?.calcCostOperasionalLabel ?? 'Biaya Operasional / Lainnya',
+                    subtitle: l10n?.calcCostOperasionalSubtitle ?? 'Gas LPG, listrik, es batu, minyak goreng',
                     hint: '0',
                     icon: LucideIcons.zap,
                     iconColor: AppColors.info,
@@ -432,7 +430,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                   ),
 
                   const SizedBox(height: 20),
-                  Divider(height: 1, color: AppColors.divider),
+                  const Divider(height: 1, color: AppColors.divider),
                   const SizedBox(height: 18),
 
                   // 4. Target Hasil Jadi (Porsi/Unit)
@@ -457,17 +455,17 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Target Jumlah Jadi',
-                              style: TextStyle(
+                            Text(
+                              l10n?.calcTargetYieldTitle ?? 'Target Jumlah Jadi',
+                              style: const TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.textPrimary,
                               ),
                             ),
                             Text(
-                              'Berapa porsi / unit yang dihasilkan',
-                              style: TextStyle(
+                              l10n?.calcTargetYieldSubtitle ?? 'Berapa porsi / unit yang dihasilkan',
+                              style: const TextStyle(
                                 fontSize: 11,
                                 color: AppColors.textSecondary,
                               ),
@@ -484,12 +482,12 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: InputDecoration(
-                      hintText: 'Contoh: 50',
+                      hintText: l10n?.calcUnitCountHint ?? 'Contoh: 50',
                       hintStyle: const TextStyle(
                         color: AppColors.textHint,
                         fontSize: 14,
                       ),
-                      suffixText: 'Unit / Porsi',
+                      suffixText: l10n?.calcUnitSuffix ?? 'Unit / Porsi',
                       suffixStyle: const TextStyle(
                         fontWeight: FontWeight.w600,
                         color: AppColors.textSecondary,
@@ -503,11 +501,11 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColors.divider),
+                        borderSide: const BorderSide(color: AppColors.divider),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColors.divider),
+                        borderSide: const BorderSide(color: AppColors.divider),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -530,8 +528,8 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                   Row(
                     children: [
                       Text(
-                        'Tambah cepat: ',
-                        style: TextStyle(
+                        l10n?.calcQuickAddLabel ?? 'Tambah cepat: ',
+                        style: const TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
                           color: AppColors.textSecondary,
@@ -577,7 +575,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                       label: Text(
                         hasData
                             ? 'Jadikan Produk Baru (${CurrencyFormatter.formatRupiah(_recommendedSellingPrice.round())})'
-                            : 'Jadikan Produk Baru',
+                            : l10n?.calcCreateProductButton ?? 'Jadikan Produk Baru',
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
@@ -594,15 +592,15 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                         onPressed: _clearAll,
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.textSecondary,
-                          side: BorderSide(color: AppColors.divider),
+                          side: const BorderSide(color: AppColors.divider),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
                         ),
                         icon: const Icon(LucideIcons.rotateCcw, size: 16),
-                        label: const Text(
-                          'Reset Semua Hitungan',
-                          style: TextStyle(
+                        label: Text(
+                          l10n?.calcResetAllButton ?? 'Reset Semua Hitungan',
+                          style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
@@ -658,7 +656,7 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
                   ),
                   Text(
                     subtitle,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 11,
                       color: AppColors.textSecondary,
                     ),
@@ -696,11 +694,11 @@ class _HppCalculatorScreenState extends State<HppCalculatorScreen> {
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.divider),
+              borderSide: const BorderSide(color: AppColors.divider),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.divider),
+              borderSide: const BorderSide(color: AppColors.divider),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),

@@ -1,23 +1,26 @@
 import 'dart:io';
+
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:path/path.dart' as p;
-import 'package:share_plus/share_plus.dart';
-import 'package:csv/csv.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import '../../core/theme/app_colors.dart';
+import 'package:share_plus/share_plus.dart';
+
 import '../../core/constants/app_constants.dart';
+import '../../core/theme/app_colors.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/date_formatter.dart';
+import '../../l10n/generated/app_localizations.dart';
 import '../../providers/database_provider.dart';
-import '../../shared/widgets/loading_state.dart';
+import '../../shared/widgets/app_back_button.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
+import '../../shared/widgets/loading_state.dart';
 
 class ExportScreen extends ConsumerStatefulWidget {
   const ExportScreen({super.key});
@@ -50,6 +53,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
   }
 
   Future<void> _exportCsv() async {
+    final l10n = AppLocalizations.of(context);
     setState(() => _isExporting = true);
     try {
       final repo = ref.read(dailyRecordRepositoryProvider);
@@ -99,11 +103,11 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
       final file = File(filePath);
       await file.writeAsString(csv);
 
-      await Share.shareXFiles([XFile(filePath)], text: 'Laporan Catat Untung');
+      await Share.shareXFiles([XFile(filePath)], text: l10n?.expShareText ?? 'Laporan Catat Untung');
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('CSV berhasil diekspor')),
+          SnackBar(content: Text(l10n?.expCsvExportSuccess ?? 'CSV berhasil diekspor')),
         );
       }
     } catch (e) {
@@ -118,6 +122,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
   }
 
   Future<void> _exportPdf() async {
+    final l10n = AppLocalizations.of(context);
     setState(() => _isExporting = true);
     try {
       final repo = ref.read(dailyRecordRepositoryProvider);
@@ -237,11 +242,11 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
       final file = File(filePath);
       await file.writeAsBytes(await pdf.save());
 
-      await Share.shareXFiles([XFile(filePath)], text: 'Laporan Catat Untung');
+      await Share.shareXFiles([XFile(filePath)], text: l10n?.expShareText ?? 'Laporan Catat Untung');
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('PDF berhasil diekspor')),
+          SnackBar(content: Text(l10n?.expPdfExportSuccess ?? 'PDF berhasil diekspor')),
         );
       }
     } catch (e) {
@@ -257,24 +262,22 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       extendBody: true,
       bottomNavigationBar: const AppFloatingNavBar(activeIndex: 3),
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text('Export Laporan'),
+        leading: const AppBackButton(),
+        title: Text(l10n?.expTitle ?? 'Export Laporan'),
       ),
 
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text(
-            'Pilih Periode',
-            style: TextStyle(
+          Text(
+            l10n?.expSelectPeriod ?? 'Pilih Periode',
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -303,14 +306,14 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
           ),
           const SizedBox(height: 32),
           if (_isExporting)
-            const LoadingState(message: 'Mengekspor data...')
+            LoadingState(message: l10n?.expExporting ?? 'Mengekspor data...')
           else ...[
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: _exportPdf,
                 icon: const Icon(LucideIcons.file),
-                label: const Text('Ekspor PDF'),
+                label: Text(l10n?.expExportPdfButton ?? 'Ekspor PDF'),
               ),
             ),
             const SizedBox(height: 12),
@@ -319,7 +322,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
               child: OutlinedButton.icon(
                 onPressed: _exportCsv,
                 icon: const Icon(LucideIcons.barChart2),
-                label: const Text('Ekspor CSV'),
+                label: Text(l10n?.expExportCsvButton ?? 'Ekspor CSV'),
               ),
             ),
             const SizedBox(height: 24),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/date_formatter.dart';
+import '../../../l10n/generated/app_localizations.dart';
 
 class OmzetHeroCard extends StatelessWidget {
   final int totalRevenue;
@@ -34,6 +35,7 @@ class OmzetHeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     const btnR = btnH / 2; // 23.0
 
     final clipper = _ConcentricNotchedCardClipper(
@@ -150,7 +152,7 @@ class OmzetHeroCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Total Omzet',
+                              l10n?.dashTotalOmzet ?? 'Total Omzet',
                               style: TextStyle(
                                 color: Colors.white.withAlpha(200),
                                 fontSize: 13,
@@ -175,7 +177,7 @@ class OmzetHeroCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              'Laba Bersih',
+                              l10n?.dashNetProfit ?? 'Laba Bersih',
                               style: TextStyle(
                                 color: Colors.white.withAlpha(200),
                                 fontSize: 13,
@@ -206,7 +208,7 @@ class OmzetHeroCard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          'Total Terjual',
+                          l10n?.dashTotalSold ?? 'Total Terjual',
                           style: TextStyle(
                             color: Colors.white.withAlpha(200),
                             fontSize: 12,
@@ -273,10 +275,10 @@ class OmzetHeroCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 6),
-                      const Flexible(
+                      Flexible(
                         child: Text(
-                          'Rekap Baru',
-                          style: TextStyle(
+                          l10n?.dashNewRecap ?? 'Rekap Baru',
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,
                             fontWeight: FontWeight.w700,

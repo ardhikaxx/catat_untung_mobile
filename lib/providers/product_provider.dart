@@ -13,13 +13,3 @@ final activeProductsProvider = StreamProvider<List<Product>>((ref) {
 final productCountProvider = StreamProvider<int>((ref) {
   return ref.watch(productRepositoryProvider).watchProductCount();
 });
-
-final searchQueryProvider = StateProvider<String>((ref) => '');
-
-final filteredProductsStreamProvider = StreamProvider<List<Product>>((ref) {
-  final query = ref.watch(searchQueryProvider);
-  if (query.isEmpty) {
-    return ref.watch(productRepositoryProvider).watchAllProducts();
-  }
-  return ref.watch(productRepositoryProvider).searchProducts(query).asStream();
-});

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+
 import '../../../core/theme/app_colors.dart';
+import '../../../core/utils/calculation_utils.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/date_formatter.dart';
-import '../../../core/utils/calculation_utils.dart';
 import '../../../database/app_database.dart';
+import '../../../l10n/generated/app_localizations.dart';
 
 class HistoryMonthHeroCard extends StatelessWidget {
   final DateTime focusedMonth;
@@ -24,6 +26,7 @@ class HistoryMonthHeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     int totalRevenue = 0;
     int totalCost = 0;
     int totalProfit = 0;
@@ -141,7 +144,7 @@ class HistoryMonthHeroCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'TOTAL LABA BULAN INI',
+                    l10n?.histTotalMonthlyProfit ?? 'TOTAL LABA BULAN INI',
                     style: TextStyle(
                       color: Colors.white.withAlpha(190),
                       fontSize: 11,
@@ -211,7 +214,7 @@ class HistoryMonthHeroCard extends StatelessWidget {
               // Omzet
               Expanded(
                 child: _buildSubMetric(
-                  label: 'Total Omzet',
+                  label: l10n?.histTotalOmzet ?? 'Total Omzet',
                   value: CurrencyFormatter.formatRupiah(totalRevenue),
                 ),
               ),
@@ -227,7 +230,7 @@ class HistoryMonthHeroCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: _buildSubMetric(
-                    label: 'Total Modal',
+                    label: l10n?.histTotalModal ?? 'Total Modal',
                     value: CurrencyFormatter.formatRupiah(totalCost),
                   ),
                 ),
@@ -244,7 +247,7 @@ class HistoryMonthHeroCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: _buildSubMetric(
-                    label: 'Hari Tercatat',
+                    label: l10n?.histDaysRecorded ?? 'Hari Tercatat',
                     value: '${recordsInMonth.length} Hari ($totalQuantity unit)',
                   ),
                 ),

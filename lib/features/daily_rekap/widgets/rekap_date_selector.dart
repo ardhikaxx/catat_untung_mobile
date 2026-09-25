@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/generated/app_localizations.dart';
 
 class RekapDateSelector extends StatelessWidget {
   final DateTime selectedDate;
@@ -24,6 +26,7 @@ class RekapDateSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
@@ -32,7 +35,7 @@ class RekapDateSelector extends StatelessWidget {
           // Tombol Hari Sebelumnya
           _NavArrowButton(
             icon: LucideIcons.chevronLeft,
-            tooltip: 'Hari Sebelumnya',
+            tooltip: l10n?.rekapPreviousDay ?? 'Hari Sebelumnya',
             onTap: () {
               onDateChanged(
                 selectedDate.subtract(const Duration(days: 1)),
@@ -94,9 +97,9 @@ class RekapDateSelector extends StatelessWidget {
                           color: const Color(0xFFE8F8EA),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Text(
-                          'Hari Ini',
-                          style: TextStyle(
+                        child: Text(
+                          l10n?.rekapToday ?? 'Hari Ini',
+                          style: const TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
                             color: Color(0xFF00AA13),
@@ -113,7 +116,7 @@ class RekapDateSelector extends StatelessWidget {
           // Tombol Hari Berikutnya (dinonaktifkan jika hari ini)
           _NavArrowButton(
             icon: LucideIcons.chevronRight,
-            tooltip: 'Hari Berikutnya',
+            tooltip: l10n?.rekapNextDay ?? 'Hari Berikutnya',
             onTap: _isToday
                 ? null
                 : () {

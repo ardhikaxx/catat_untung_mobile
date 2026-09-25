@@ -1,5 +1,5 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:catat_untung/core/utils/calculation_utils.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('CalculationUtils', () {

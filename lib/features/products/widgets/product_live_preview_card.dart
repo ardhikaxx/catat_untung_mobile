@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
+import '../../../l10n/generated/app_localizations.dart';
 
 class ProductLivePreviewCard extends StatelessWidget {
   final String productName;
@@ -19,6 +20,7 @@ class ProductLivePreviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final profit = sellingPrice - hpp;
     final isProfit = profit >= 0;
     final hasData = sellingPrice > 0 || hpp > 0;
@@ -33,19 +35,23 @@ class ProductLivePreviewCard extends StatelessWidget {
 
     if (!hasData) {
       statusColor = AppColors.textSecondary;
-      statusLabel = 'Simulasi keuntungan akan muncul otomatis saat Anda mengisi modal & harga jual.';
+      statusLabel = l10n?.prodPreviewNoDataAdvice ??
+          'Simulasi keuntungan akan muncul otomatis saat Anda mengisi modal & harga jual.';
       statusIcon = LucideIcons.info;
     } else if (sellingPrice > 0 && profit < 0) {
       statusColor = AppColors.loss;
-      statusLabel = 'Harga jual di bawah modal! Penjualan produk ini akan mengalami rugi.';
+      statusLabel = l10n?.prodPreviewLossAdvice ??
+          'Harga jual di bawah modal! Penjualan produk ini akan mengalami rugi.';
       statusIcon = LucideIcons.alertTriangle;
     } else if (marginDouble >= 30) {
       statusColor = AppColors.profit;
-      statusLabel = 'Margin sangat sehat (≥ 30%). Bagus untuk ketahanan usaha dan promo.';
+      statusLabel = l10n?.prodPreviewHealthyAdvice ??
+          'Margin sangat sehat (≥ 30%). Bagus untuk ketahanan usaha dan promo.';
       statusIcon = LucideIcons.checkCircle2;
     } else {
       statusColor = const Color(0xFFD97706);
-      statusLabel = 'Margin cukup tipis (< 30%). Perhatikan biaya operasional lainnya.';
+      statusLabel = l10n?.prodPreviewThinAdvice ??
+          'Margin cukup tipis (< 30%). Perhatikan biaya operasional lainnya.';
       statusIcon = LucideIcons.info;
     }
 
@@ -85,9 +91,9 @@ class ProductLivePreviewCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  const Text(
-                    'Simulasi Laba per Unit',
-                    style: TextStyle(
+                  Text(
+                    l10n?.prodPreviewTitle ?? 'Simulasi Laba per Unit',
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textPrimary,
@@ -108,7 +114,8 @@ class ProductLivePreviewCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
-                    '$marginPercent% Margin',
+                    l10n?.prodPercentMargin(marginPercent) ??
+                        '$marginPercent% Margin',
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w800,
@@ -132,7 +139,7 @@ class ProductLivePreviewCard extends StatelessWidget {
                 children: [
                   Text(
                     productName.trim().isEmpty
-                        ? 'Nama Produk Belum Diisi'
+                        ? l10n?.prodPreviewNameEmpty ?? 'Nama Produk Belum Diisi'
                         : '${productName.trim()} / $unit',
                     style: const TextStyle(
                       fontSize: 13,
@@ -159,7 +166,7 @@ class ProductLivePreviewCard extends StatelessWidget {
                 ],
               ),
               Text(
-                'Laba Bersih / $unit',
+                l10n?.prodNetProfitPerUnit(unit) ?? 'Laba Bersih / $unit',
                 style: const TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
@@ -181,11 +188,15 @@ class ProductLivePreviewCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildSubItem('Modal (HPP)', CurrencyFormatter.formatRupiah(hpp)),
+                _buildSubItem(
+                    l10n?.prodPreviewHpp ?? 'Modal (HPP)',
+                    CurrencyFormatter.formatRupiah(hpp)),
                 Container(width: 1, height: 20, color: AppColors.greyBorder),
-                _buildSubItem('Harga Jual', CurrencyFormatter.formatRupiah(sellingPrice)),
+                _buildSubItem(
+                    l10n?.prodSellingPrice ?? 'Harga Jual',
+                    CurrencyFormatter.formatRupiah(sellingPrice)),
                 Container(width: 1, height: 20, color: AppColors.greyBorder),
-                _buildSubItem('Satuan', unit),
+                _buildSubItem(l10n?.prodUnit ?? 'Satuan', unit),
               ],
             ),
           ),

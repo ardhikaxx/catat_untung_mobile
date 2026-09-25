@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+
 import '../../../core/theme/app_colors.dart';
-import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/calculation_utils.dart';
+import '../../../core/utils/currency_formatter.dart';
 import '../../../database/app_database.dart';
+import '../../../l10n/generated/app_localizations.dart';
 
 class RekapSavedView extends StatelessWidget {
   final DailyRecord record;
@@ -26,6 +28,7 @@ class RekapSavedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final margin = CalculationUtils.calculateMarginDouble(
       record.totalRevenue,
       record.totalCost,
@@ -73,9 +76,9 @@ class RekapSavedView extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'Rekap Sudah Tersimpan',
-                                style: TextStyle(
+                              Text(
+                                l10n?.rekapSavedStatus ?? 'Rekap Sudah Tersimpan',
+                                style: const TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w700,
                                   color: Color(0xFF15803D),
@@ -163,9 +166,9 @@ class RekapSavedView extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 14),
-                        const Text(
-                          'Total Omzet',
-                          style: TextStyle(
+                        Text(
+                          l10n?.rekapTotalRevenue ?? 'Total Omzet',
+                          style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: Color(0xFFE0E7FF),
@@ -207,7 +210,7 @@ class RekapSavedView extends StatelessWidget {
                                         ),
                                         const SizedBox(width: 4),
                                         Text(
-                                          'Total Modal',
+                                          l10n?.rekapTotalCapital ?? 'Total Modal',
                                           style: TextStyle(
                                             fontSize: 11,
                                             color: Colors.white.withAlpha(180),
@@ -259,7 +262,7 @@ class RekapSavedView extends StatelessWidget {
                                         ),
                                         const SizedBox(width: 4),
                                         Text(
-                                          'Laba Bersih',
+                                          l10n?.rekapNetProfit ?? 'Laba Bersih',
                                           style: TextStyle(
                                             fontSize: 11,
                                             color: Colors.white.withAlpha(180),
@@ -329,9 +332,9 @@ class RekapSavedView extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Rincian Produk Terjual',
-                          style: TextStyle(
+                        Text(
+                          l10n?.rekapProductDetails ?? 'Rincian Produk Terjual',
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
                             color: AppColors.textPrimary,
@@ -466,9 +469,9 @@ class RekapSavedView extends StatelessWidget {
                           child: ElevatedButton.icon(
                             onPressed: onEditRekap,
                             icon: const Icon(LucideIcons.edit, size: 18),
-                            label: const Text(
-                              'Ubah / Tambah Rekap Ini',
-                              style: TextStyle(
+                            label: Text(
+                              l10n?.rekapEditAdd ?? 'Ubah / Tambah Rekap Ini',
+                              style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -492,9 +495,9 @@ class RekapSavedView extends StatelessWidget {
                           child: OutlinedButton.icon(
                             onPressed: onViewHistory,
                             icon: const Icon(LucideIcons.calendar, size: 18),
-                            label: const Text(
-                              'Buka Riwayat Penjualan',
-                              style: TextStyle(
+                            label: Text(
+                              l10n?.rekapOpenHistory ?? 'Buka Riwayat Penjualan',
+                              style: const TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
                               ),

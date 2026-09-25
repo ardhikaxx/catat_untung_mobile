@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/generated/app_localizations.dart';
 import 'history_view_mode.dart';
 
 class HistoryViewToggle extends StatelessWidget {
@@ -15,6 +16,7 @@ class HistoryViewToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
       padding: const EdgeInsets.all(4),
@@ -27,7 +29,7 @@ class HistoryViewToggle extends StatelessWidget {
           Expanded(
             child: _buildToggleItem(
               mode: HistoryViewMode.calendar,
-              title: 'Kalender',
+              title: l10n?.histCalendarView ?? 'Kalender',
               icon: LucideIcons.calendar,
             ),
           ),
@@ -35,7 +37,7 @@ class HistoryViewToggle extends StatelessWidget {
           Expanded(
             child: _buildToggleItem(
               mode: HistoryViewMode.list,
-              title: 'Daftar Rekap',
+              title: l10n?.histRecapListView ?? 'Daftar Rekap',
               icon: LucideIcons.receipt,
             ),
           ),

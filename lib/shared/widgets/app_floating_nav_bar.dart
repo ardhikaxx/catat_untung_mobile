@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/theme/app_colors.dart';
 import '../../features/home/home_screen.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class AppFloatingNavBar extends ConsumerWidget {
   /// Optional override of which tab is active. If null, uses [currentTabProvider].
@@ -14,12 +15,21 @@ class AppFloatingNavBar extends ConsumerWidget {
   static const double bottomSpacing = 110.0;
 
   static const _items = [
-    _NavItem(icon: LucideIcons.home, activeIcon: LucideIcons.home, label: 'Beranda'),
-    _NavItem(icon: LucideIcons.clipboardList, activeIcon: LucideIcons.clipboardList, label: 'Rekap'),
-    _NavItem(icon: LucideIcons.calendar, activeIcon: LucideIcons.calendar, label: 'Riwayat'),
-    _NavItem(icon: LucideIcons.barChart3, activeIcon: LucideIcons.barChart3, label: 'Laporan'),
-    _NavItem(icon: LucideIcons.settings, activeIcon: LucideIcons.settings, label: 'Setelan'),
+    _NavItem(icon: LucideIcons.home, activeIcon: LucideIcons.home),
+    _NavItem(icon: LucideIcons.clipboardList, activeIcon: LucideIcons.clipboardList),
+    _NavItem(icon: LucideIcons.calendar, activeIcon: LucideIcons.calendar),
+    _NavItem(icon: LucideIcons.barChart3, activeIcon: LucideIcons.barChart3),
+    _NavItem(icon: LucideIcons.settings, activeIcon: LucideIcons.settings),
   ];
+
+  /// Localized labels with Indonesian fallback (tests run without delegates).
+  List<String> _labels(AppLocalizations? l10n) => [
+        l10n?.navHome ?? 'Beranda',
+        l10n?.navRecap ?? 'Rekap',
+        l10n?.navHistory ?? 'Riwayat',
+        l10n?.navReports ?? 'Laporan',
+        l10n?.navSettings ?? 'Setelan',
+      ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,6 +40,7 @@ class AppFloatingNavBar extends ConsumerWidget {
     }
 
     final currentIndex = activeIndex ?? ref.watch(currentTabProvider);
+    final labels = _labels(AppLocalizations.of(context));
 
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -86,7 +97,7 @@ class AppFloatingNavBar extends ConsumerWidget {
                     if (isActive) ...[
                       const SizedBox(width: 6),
                       Text(
-                        item.label,
+                        labels[index],
                         style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
@@ -108,11 +119,9 @@ class AppFloatingNavBar extends ConsumerWidget {
 class _NavItem {
   final IconData icon;
   final IconData activeIcon;
-  final String label;
 
   const _NavItem({
     required this.icon,
     required this.activeIcon,
-    required this.label,
   });
 }

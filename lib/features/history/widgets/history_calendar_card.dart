@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:table_calendar/table_calendar.dart';
+
 import '../../../core/theme/app_colors.dart';
-import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/calculation_utils.dart';
+import '../../../core/utils/currency_formatter.dart';
 import '../../../database/app_database.dart';
+import '../../../l10n/generated/app_localizations.dart';
 
 class HistoryCalendarCard extends StatelessWidget {
   final DateTime focusedDay;
@@ -31,6 +33,7 @@ class HistoryCalendarCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final activeSelectedDay = selectedDay ?? focusedDay;
     final selectedDateOnly = DateTime(
       activeSelectedDay.year,
@@ -145,11 +148,20 @@ class HistoryCalendarCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildLegend(AppColors.profit, 'Ada Rekap Untung'),
+              _buildLegend(
+                AppColors.profit,
+                l10n?.histLegendProfitRecap ?? 'Ada Rekap Untung',
+              ),
               const SizedBox(width: 16),
-              _buildLegend(AppColors.loss, 'Ada Rekap Rugi'),
+              _buildLegend(
+                AppColors.loss,
+                l10n?.histLegendLossRecap ?? 'Ada Rekap Rugi',
+              ),
               const SizedBox(width: 16),
-              _buildLegend(AppColors.primaryGreen, 'Hari Ini / Terpilih'),
+              _buildLegend(
+                AppColors.primaryGreen,
+                l10n?.histLegendTodaySelected ?? 'Hari Ini / Terpilih',
+              ),
             ],
           ),
         ),
@@ -189,6 +201,7 @@ class HistoryCalendarCard extends StatelessWidget {
     DateTime day,
     DailyRecord? record,
   ) {
+    final l10n = AppLocalizations.of(context);
     final dayName = DateFormat('EEEE', 'id_ID').format(day);
     final formattedDate = DateFormat('d MMMM yyyy', 'id_ID').format(day);
     final isFuture = day.isAfter(DateTime.now());
@@ -241,8 +254,10 @@ class HistoryCalendarCard extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         isFuture
-                            ? 'Tanggal belum berjalan'
-                            : 'Belum ada rekapan penjualan di tanggal ini',
+                            ? l10n?.histDateNotYetReached ??
+                                'Tanggal belum berjalan'
+                            : l10n?.histNoRecapOnDate ??
+                                'Belum ada rekapan penjualan di tanggal ini',
                         style: const TextStyle(
                           fontSize: 11,
                           color: AppColors.textSecondary,
@@ -261,9 +276,9 @@ class HistoryCalendarCard extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: () => onCreateRekap(day),
                   icon: const Icon(LucideIcons.plus, size: 16),
-                  label: const Text(
-                    'Buat Rekap Tanggal Ini',
-                    style: TextStyle(
+                  label: Text(
+                    l10n?.histCreateRecapToday ?? 'Buat Rekap Tanggal Ini',
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
                     ),
@@ -373,7 +388,7 @@ class HistoryCalendarCard extends StatelessWidget {
             children: [
               Expanded(
                 child: _buildMetricTile(
-                  label: 'Omzet',
+                  label: l10n?.histOmzet ?? 'Omzet',
                   value: CurrencyFormatter.formatRupiah(record.totalRevenue),
                   icon: LucideIcons.wallet,
                   color: const Color(0xFF2563EB),
@@ -382,7 +397,7 @@ class HistoryCalendarCard extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: _buildMetricTile(
-                  label: 'Modal',
+                  label: l10n?.histModal ?? 'Modal',
                   value: CurrencyFormatter.formatRupiah(record.totalCost),
                   icon: LucideIcons.shoppingBag,
                   color: const Color(0xFFEA580C),
@@ -391,7 +406,7 @@ class HistoryCalendarCard extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: _buildMetricTile(
-                  label: 'Margin',
+                  label: l10n?.histMargin ?? 'Margin',
                   value: '$margin%',
                   icon: LucideIcons.barChart3,
                   color: const Color(0xFF16A34A),

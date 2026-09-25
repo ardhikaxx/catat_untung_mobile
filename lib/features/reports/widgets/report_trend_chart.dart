@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
+import '../../../l10n/generated/app_localizations.dart';
 import '../reports_screen.dart';
 
 class ReportTrendChart extends StatelessWidget {
@@ -15,6 +17,7 @@ class ReportTrendChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     if (data.records.isEmpty) return const SizedBox.shrink();
 
     // Chronological order (oldest to newest)
@@ -54,19 +57,19 @@ class ReportTrendChart extends StatelessWidget {
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
-                    'Tren Laba Harian',
-                    style: TextStyle(
+                    l10n?.repsTrendTitle ?? 'Tren Laba Harian',
+                    style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textPrimary,
                     ),
                   ),
-                  SizedBox(height: 2),
+                  const SizedBox(height: 2),
                   Text(
-                    'Pergerakan laba bersih harian',
-                    style: TextStyle(
+                    l10n?.repsTrendSubtitle ?? 'Pergerakan laba bersih harian',
+                    style: const TextStyle(
                       fontSize: 11,
                       color: AppColors.textSecondary,
                     ),
@@ -75,9 +78,9 @@ class ReportTrendChart extends StatelessWidget {
               ),
               Row(
                 children: [
-                  _buildLegendDot(AppColors.profit, 'Untung'),
+                  _buildLegendDot(AppColors.profit, l10n?.repsProfit ?? 'Untung'),
                   const SizedBox(width: 10),
-                  _buildLegendDot(AppColors.loss, 'Rugi'),
+                  _buildLegendDot(AppColors.loss, l10n?.repsLoss ?? 'Rugi'),
                 ],
               ),
             ],
@@ -96,7 +99,7 @@ class ReportTrendChart extends StatelessWidget {
                 barTouchData: BarTouchData(
                   enabled: true,
                   touchTooltipData: BarTouchTooltipData(
-                    getTooltipColor: (group) => const Color(0xFF1E293B),
+                    getTooltipColor: (group) => AppColors.black,
                     tooltipRoundedRadius: 10,
                     tooltipPadding: const EdgeInsets.symmetric(
                       horizontal: 10,

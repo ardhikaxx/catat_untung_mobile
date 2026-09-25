@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import '../../core/theme/app_colors.dart';
+
 import '../../core/constants/app_constants.dart';
+import '../../core/theme/app_colors.dart';
+import '../../l10n/generated/app_localizations.dart';
+import '../../shared/widgets/app_back_button.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
 
 class QuickGuideScreen extends StatelessWidget {
@@ -10,6 +13,7 @@ class QuickGuideScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       extendBody: true,
@@ -17,29 +21,22 @@ class QuickGuideScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.surface,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: 20,
-            color: AppColors.textPrimary,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
+        leading: const AppBackButton(),
 
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Panduan Singkat',
-              style: TextStyle(
+            Text(
+              l10n?.guideAppBarTitle ?? 'Panduan Singkat',
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
               ),
             ),
             Text(
-              'Tips praktis & alur pembukuan UMKM',
-              style: TextStyle(
+              l10n?.guideAppBarSubtitle ?? 'Tips praktis & alur pembukuan UMKM',
+              style: const TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w400,
                 color: AppColors.textSecondary,
@@ -91,12 +88,12 @@ class QuickGuideScreen extends StatelessWidget {
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
-                              children: const [
-                                Icon(LucideIcons.bookOpen, size: 14, color: Colors.white),
-                                SizedBox(width: 6),
+                              children: [
+                                const Icon(LucideIcons.bookOpen, size: 14, color: Colors.white),
+                                const SizedBox(width: 6),
                                 Text(
-                                  'PANDUAN LENGKAP UMKM',
-                                  style: TextStyle(
+                                  l10n?.guideHeroBadge ?? 'PANDUAN LENGKAP UMKM',
+                                  style: const TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w700,
                                     color: Colors.white,
@@ -107,9 +104,9 @@ class QuickGuideScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 12),
-                          const Text(
-                            'Kuasai Pembukuan Toko\nDalam 4 Langkah Mudah',
-                            style: TextStyle(
+                          Text(
+                            l10n?.guideHeroHeadline ?? 'Kuasai Pembukuan Toko\nDalam 4 Langkah Mudah',
+                            style: const TextStyle(
                               fontSize: 19,
                               fontWeight: FontWeight.w800,
                               color: Colors.white,
@@ -147,7 +144,8 @@ class QuickGuideScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'Catat Untung dirancang agar Anda bisa merekap penjualan hanya dalam 1 menit setiap hari tanpa perlu ribet pakai buku kertas.',
+                  l10n?.guideHeroDescription ??
+                      'Catat Untung dirancang agar Anda bisa merekap penjualan hanya dalam 1 menit setiap hari tanpa perlu ribet pakai buku kertas.',
                   style: TextStyle(
                     fontSize: 12,
                     height: 1.45,
@@ -171,9 +169,9 @@ class QuickGuideScreen extends StatelessWidget {
                   color: AppColors.primaryGreen,
                 ),
                 const SizedBox(width: 8),
-                const Text(
-                  'ALUR KERJA HARIAN',
-                  style: TextStyle(
+                Text(
+                  l10n?.guideWorkflowTitle ?? 'ALUR KERJA HARIAN',
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.8,
@@ -189,44 +187,44 @@ class QuickGuideScreen extends StatelessWidget {
           _buildStepCard(
             context: context,
             stepNumber: '1',
-            title: 'Daftarkan Katalog & Modal HPP',
-            description:
+            title: l10n?.guideStep1Title ?? 'Daftarkan Katalog & Modal HPP',
+            description: l10n?.guideStep1Description ??
                 'Tambahkan produk yang Anda jual beserta harga jual dan modal HPP per unitnya. Jika belum tahu HPP, gunakan fitur Kalkulator HPP.',
             icon: LucideIcons.packagePlus,
-            actionLabel: 'Buka Katalog Produk',
+            actionLabel: l10n?.guideStep1Action ?? 'Buka Katalog Produk',
             onAction: () => context.push('/products'),
           ),
 
           _buildStepCard(
             context: context,
             stepNumber: '2',
-            title: 'Catat Rekap Penjualan Harian',
-            description:
+            title: l10n?.guideStep2Title ?? 'Catat Rekap Penjualan Harian',
+            description: l10n?.guideStep2Description ??
                 'Setiap sore atau saat toko tutup, buka menu Rekap Penjualan. Masukkan jumlah unit produk yang laku terjual hari ini.',
             icon: LucideIcons.edit,
-            actionLabel: 'Buka Rekap Penjualan',
+            actionLabel: l10n?.guideStep2Action ?? 'Buka Rekap Penjualan',
             onAction: () => context.push('/daily-rekap'),
           ),
 
           _buildStepCard(
             context: context,
             stepNumber: '3',
-            title: 'Pantau Omzet & Laba Bersih',
-            description:
+            title: l10n?.guideStep3Title ?? 'Pantau Omzet & Laba Bersih',
+            description: l10n?.guideStep3Description ??
                 'Lihat langsung di halaman Beranda berapa total uang masuk (omzet), total modal yang terpakai, dan keuntungan bersih yang Anda bawa pulang.',
             icon: LucideIcons.barChart3,
-            actionLabel: 'Lihat Beranda',
+            actionLabel: l10n?.guideStep3Action ?? 'Lihat Beranda',
             onAction: () => context.go('/'),
           ),
 
           _buildStepCard(
             context: context,
             stepNumber: '4',
-            title: 'Analisis Tren & Unduh Laporan',
-            description:
+            title: l10n?.guideStep4Title ?? 'Analisis Tren & Unduh Laporan',
+            description: l10n?.guideStep4Description ??
                 'Pelajari produk apa yang paling laris (Best Seller) dan tren omzet mingguan. Anda juga bisa mengekspor laporan bulanan ke format PDF / CSV.',
             icon: LucideIcons.fileUp,
-            actionLabel: 'Ekspor Laporan PDF',
+            actionLabel: l10n?.guideStep4Action ?? 'Ekspor Laporan PDF',
             onAction: () => context.push('/export'),
           ),
 
@@ -243,9 +241,9 @@ class QuickGuideScreen extends StatelessWidget {
                   color: AppColors.primaryGreen,
                 ),
                 const SizedBox(width: 8),
-                const Text(
-                  'TIPS KEUANGAN UMKM',
-                  style: TextStyle(
+                Text(
+                  l10n?.guideTipsTitle ?? 'TIPS KEUANGAN UMKM',
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.8,
@@ -261,8 +259,8 @@ class QuickGuideScreen extends StatelessWidget {
             icon: LucideIcons.wallet,
             iconColor: AppColors.primaryGreen,
             bgColor: AppColors.greenTint,
-            title: 'Pisahkan Dompet Pribadi & Kas Usaha',
-            description:
+            title: l10n?.guideTip1Title ?? 'Pisahkan Dompet Pribadi & Kas Usaha',
+            description: l10n?.guideTip1Description ??
                 'Hindari memakai uang kas jualan untuk jajan pribadi sebelum menghitung laba bersih bulanan agar modal usaha Anda tidak tergerus.',
           ),
 
@@ -270,8 +268,8 @@ class QuickGuideScreen extends StatelessWidget {
             icon: LucideIcons.calculator,
             iconColor: const Color(0xFFD97706),
             bgColor: const Color(0xFFFEF3C7),
-            title: 'Perhitungkan Kemasan & Gas LPG',
-            description:
+            title: l10n?.guideTip2Title ?? 'Perhitungkan Kemasan & Gas LPG',
+            description: l10n?.guideTip2Description ??
                 'Banyak pedagang lupa menghitung biaya kantong plastik, cup, dan gas LPG dalam HPP sehingga margin keuntungan menjadi lebih kecil dari perkiraan.',
           ),
 
@@ -279,8 +277,8 @@ class QuickGuideScreen extends StatelessWidget {
             icon: LucideIcons.shieldCheck,
             iconColor: const Color(0xFF2563EB),
             bgColor: const Color(0xFFDBEAFE),
-            title: 'Cadangkan Data Secara Berkala',
-            description:
+            title: l10n?.guideTip3Title ?? 'Cadangkan Data Secara Berkala',
+            description: l10n?.guideTip3Description ??
                 'Karena aplikasi ini 100% offline, lakukan backup data di menu Pengaturan > Backup setiap akhir minggu untuk menjaga riwayat transaksi Anda aman.',
           ),
 
@@ -297,9 +295,9 @@ class QuickGuideScreen extends StatelessWidget {
                   color: AppColors.primaryGreen,
                 ),
                 const SizedBox(width: 8),
-                const Text(
-                  'PERTANYAAN UMUM (FAQ)',
-                  style: TextStyle(
+                Text(
+                  l10n?.guideFaqTitle ?? 'PERTANYAAN UMUM (FAQ)',
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.8,
@@ -312,26 +310,28 @@ class QuickGuideScreen extends StatelessWidget {
           const SizedBox(height: 8),
 
           _buildFaqTile(
-            question: 'Apakah aplikasi membutuhkan internet?',
-            answer:
+            question: l10n?.guideFaq1Question ?? 'Apakah aplikasi membutuhkan internet?',
+            answer: l10n?.guideFaq1Answer ??
                 'Tidak sama sekali. Catat Untung beroperasi 100% secara offline. Data tersimpan di penyimpanan internal smartphone Anda sehingga Anda dapat mencatat di mana saja tanpa kuota internet.',
           ),
 
           _buildFaqTile(
-            question: 'Bagaimana memindahkan data saat ganti smartphone?',
-            answer:
+            question: l10n?.guideFaq2Question ??
+                'Bagaimana memindahkan data saat ganti smartphone?',
+            answer: l10n?.guideFaq2Answer ??
                 'Buka menu Pengaturan > Backup & Pemulihan. Pilih "Buat Cadangan Baru", simpan file hasil cadangan ke Google Drive atau kirim ke WhatsApp Anda. Pada smartphone baru, pasang aplikasi dan pilih "Pulihkan Data".',
           ),
 
           _buildFaqTile(
-            question: 'Bagaimana jika ada produk yang saya berikan gratis / tester?',
-            answer:
+            question: l10n?.guideFaq3Question ??
+                'Bagaimana jika ada produk yang saya berikan gratis / tester?',
+            answer: l10n?.guideFaq3Answer ??
                 'Anda tetap dapat mencatat jumlah modalnya di rekap harian atau menambahkan produk dengan harga jual Rp 0 agar modal tetap terhitung dalam pembukuan laba bersih Anda.',
           ),
 
           _buildFaqTile(
-            question: 'Bagaimana cara mencetak laporan untuk pemilik usaha?',
-            answer:
+            question: l10n?.guideFaq4Question ?? 'Bagaimana cara mencetak laporan untuk pemilik usaha?',
+            answer: l10n?.guideFaq4Answer ??
                 'Gunakan menu Pengaturan > Ekspor Laporan. Anda dapat memilih rentang tanggal tertentu dan mengunduh laporan berformat PDF rapi siap cetak atau format CSV untuk diolah di Microsoft Excel.',
           ),
 
@@ -354,9 +354,9 @@ class QuickGuideScreen extends StatelessWidget {
                   elevation: 2,
                 ),
                 icon: const Icon(LucideIcons.edit, size: 20),
-                label: const Text(
-                  'Mulai Catat Rekap Penjualan',
-                  style: TextStyle(
+                label: Text(
+                  l10n?.guideStartButton ?? 'Mulai Catat Rekap Penjualan',
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                   ),
@@ -461,7 +461,7 @@ class QuickGuideScreen extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             description,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
               height: 1.45,
               color: AppColors.textSecondary,
@@ -545,7 +545,7 @@ class QuickGuideScreen extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   description,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                     height: 1.4,
                     color: AppColors.textSecondary,
@@ -588,7 +588,7 @@ class QuickGuideScreen extends StatelessWidget {
           children: [
             Text(
               answer,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12,
                 height: 1.45,
                 color: AppColors.textSecondary,

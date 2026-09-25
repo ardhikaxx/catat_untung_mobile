@@ -1,7 +1,7 @@
+import 'package:catat_untung/features/about/about_screen.dart';
+import 'package:catat_untung/features/guide/quick_guide_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:catat_untung/features/guide/quick_guide_screen.dart';
-import 'package:catat_untung/features/about/about_screen.dart';
 
 void main() {
   group('QuickGuideScreen & AboutScreen Tests', () {

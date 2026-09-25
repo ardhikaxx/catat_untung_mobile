@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+
 import '../../core/theme/app_colors.dart';
 import '../../database/app_database.dart';
+import '../../l10n/generated/app_localizations.dart';
 import '../../providers/database_provider.dart';
-import '../../shared/widgets/loading_state.dart';
-import 'widgets/report_period_selector.dart';
-import 'widgets/report_hero_card.dart';
-import 'widgets/report_trend_chart.dart';
-import 'widgets/report_metrics_grid.dart';
-import 'widgets/report_top_products.dart';
+import '../../shared/widgets/app_back_button.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
+import '../../shared/widgets/loading_state.dart';
+import 'widgets/report_hero_card.dart';
+import 'widgets/report_metrics_grid.dart';
+import 'widgets/report_period_selector.dart';
+import 'widgets/report_top_products.dart';
+import 'widgets/report_trend_chart.dart';
 
 enum ReportPeriod { sevenDays, thisWeek, thisMonth, lastMonth, custom }
 
@@ -144,6 +147,7 @@ class ReportsScreen extends ConsumerWidget {
     final reportAsync = ref.watch(reportDataProvider);
     final canPop = Navigator.canPop(context);
     const bottomSpacing = AppFloatingNavBar.bottomSpacing;
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -154,26 +158,7 @@ class ReportsScreen extends ConsumerWidget {
         elevation: 0,
         centerTitle: false,
         leading: canPop
-            ? Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Material(
-                  color: Colors.white,
-                  shape: const CircleBorder(),
-                  elevation: 0.5,
-                  child: InkWell(
-                    customBorder: const CircleBorder(),
-                    onTap: () => Navigator.maybePop(context),
-                    child: const Center(
-                      child: Icon(
-                        Icons.arrow_back_ios_new_rounded,
-                        size: 18,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-
-                  ),
-                ),
-              )
+            ? const AppCircleBackButton()
             : Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Container(
@@ -188,9 +173,9 @@ class ReportsScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-        title: const Text(
-          'Laporan & Tren',
-          style: TextStyle(
+        title: Text(
+          l10n?.repsReportsTitle ?? 'Laporan & Tren',
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w800,
             color: AppColors.textPrimary,
@@ -199,7 +184,7 @@ class ReportsScreen extends ConsumerWidget {
         ),
         actions: [
           IconButton(
-            tooltip: 'Ekspor Laporan',
+            tooltip: l10n?.repsExportTooltip ?? 'Ekspor Laporan',
             icon: Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
@@ -232,9 +217,9 @@ class ReportsScreen extends ConsumerWidget {
 
             // 2. Report Content
             reportAsync.when(
-              loading: () => const SizedBox(
+              loading: () => SizedBox(
                 height: 350,
-                child: LoadingState(message: 'Memuat analisis laporan & tren...'),
+                child: LoadingState(message: l10n?.repsLoadingAnalysis ?? 'Memuat analisis laporan & tren...'),
               ),
               error: (e, s) => Container(
                 margin: const EdgeInsets.all(24),
@@ -248,9 +233,9 @@ class ReportsScreen extends ConsumerWidget {
                   children: [
                     const Icon(LucideIcons.alertTriangle, size: 40, color: AppColors.error),
                     const SizedBox(height: 12),
-                    const Text(
-                      'Gagal Memuat Laporan',
-                      style: TextStyle(
+                    Text(
+                      l10n?.repsLoadFailed ?? 'Gagal Memuat Laporan',
+                      style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
@@ -272,7 +257,7 @@ class ReportsScreen extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text('Coba Lagi'),
+                      child: Text(l10n?.commonRetry ?? 'Coba Lagi'),
                     ),
                   ],
                 ),
@@ -313,19 +298,20 @@ class ReportsScreen extends ConsumerWidget {
                           ),
                         ),
                         const SizedBox(height: 18),
-                        const Text(
-                          'Belum Ada Data Rekap',
-                          style: TextStyle(
+                        Text(
+                          l10n?.repsEmptyTitle ?? 'Belum Ada Data Rekap',
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w800,
                             color: AppColors.textPrimary,
                           ),
                         ),
                         const SizedBox(height: 6),
-                        const Text(
-                          'Tidak ada catatan penjualan pada rentang waktu ini. Silakan pilih rentang waktu lain atau rekap penjualan Anda hari ini.',
+                        Text(
+                          l10n?.repsEmptySubtitle ??
+                              'Tidak ada catatan penjualan pada rentang waktu ini. Silakan pilih rentang waktu lain atau rekap penjualan Anda hari ini.',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
                             color: AppColors.textSecondary,
                             height: 1.45,
@@ -337,9 +323,9 @@ class ReportsScreen extends ConsumerWidget {
                           child: ElevatedButton.icon(
                             onPressed: () => context.push('/daily-rekap'),
                             icon: const Icon(LucideIcons.plusCircle, size: 18),
-                            label: const Text(
-                              'Rekap Penjualan Sekarang',
-                              style: TextStyle(
+                            label: Text(
+                              l10n?.repsRecapNow ?? 'Rekap Penjualan Sekarang',
+                              style: const TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -382,7 +368,7 @@ class ReportsScreen extends ConsumerWidget {
             ),
 
             // Bottom clearance for floating navbar
-            SizedBox(height: bottomSpacing),
+            const SizedBox(height: bottomSpacing),
           ],
         ),
       ),

@@ -2,6 +2,14 @@ import 'package:drift/drift.dart';
 import 'daily_records_table.dart';
 import 'products_table.dart';
 
+@TableIndex(
+  name: 'idx_daily_record_items_record',
+  columns: {#dailyRecordId},
+)
+@TableIndex(
+  name: 'idx_daily_record_items_product',
+  columns: {#productId},
+)
 class DailyRecordItems extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get dailyRecordId => integer().references(DailyRecords, #id)();

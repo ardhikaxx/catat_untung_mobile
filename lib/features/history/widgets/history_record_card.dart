@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+
 import '../../../core/theme/app_colors.dart';
-import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/calculation_utils.dart';
+import '../../../core/utils/currency_formatter.dart';
 import '../../../database/app_database.dart';
 
 class HistoryRecordCard extends StatelessWidget {

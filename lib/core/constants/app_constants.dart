@@ -9,7 +9,6 @@ class AppConstants {
   static const String copyright = 'Copyright (c) 2026 Yanuar Ardhika Rahmadhani Ubaidillah';
 
   static const String dbName = 'catat_untung.db';
-  static const int dbVersion = 1;
 
   static const List<String> unitOptions = [
     'pcs',

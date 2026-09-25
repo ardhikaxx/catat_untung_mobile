@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../providers/product_provider.dart';
+import '../../../l10n/generated/app_localizations.dart';
 import '../../../providers/daily_record_provider.dart';
+import '../../../providers/product_provider.dart';
 
 class SettingsHeaderCard extends ConsumerWidget {
   const SettingsHeaderCard({super.key});
@@ -13,6 +15,7 @@ class SettingsHeaderCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final productCount = ref.watch(productCountProvider).valueOrNull ?? 0;
     final allRecords = ref.watch(allRecordsProvider).valueOrNull ?? [];
+    final l10n = AppLocalizations.of(context);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
@@ -71,9 +74,9 @@ class SettingsHeaderCard extends ConsumerWidget {
                   children: [
                     Row(
                       children: [
-                        Text(
+                        const Text(
                           AppConstants.appName,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
@@ -143,7 +146,7 @@ class SettingsHeaderCard extends ConsumerWidget {
               Expanded(
                 child: _buildInfoChip(
                   icon: LucideIcons.shieldCheck,
-                  label: 'Offline Safe',
+                  label: l10n?.setOfflineSafe ?? 'Offline Safe',
                 ),
               ),
             ],

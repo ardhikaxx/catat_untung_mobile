@@ -1745,13 +1745,15 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $DailyRecordItemsTable dailyRecordItems = $DailyRecordItemsTable(
     this,
   );
+  late final Index idxDailyRecordItemsRecord = Index(
+    'idx_daily_record_items_record',
+    'CREATE INDEX idx_daily_record_items_record ON daily_record_items (daily_record_id)',
+  );
+  late final Index idxDailyRecordItemsProduct = Index(
+    'idx_daily_record_items_product',
+    'CREATE INDEX idx_daily_record_items_product ON daily_record_items (product_id)',
+  );
   late final ProductsDao productsDao = ProductsDao(this as AppDatabase);
-  late final DailyRecordsDao dailyRecordsDao = DailyRecordsDao(
-    this as AppDatabase,
-  );
-  late final DailyRecordItemsDao dailyRecordItemsDao = DailyRecordItemsDao(
-    this as AppDatabase,
-  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1760,6 +1762,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     products,
     dailyRecords,
     dailyRecordItems,
+    idxDailyRecordItemsRecord,
+    idxDailyRecordItemsProduct,
   ];
 }
 

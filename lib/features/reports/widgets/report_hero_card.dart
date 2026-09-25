@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
+import '../../../l10n/generated/app_localizations.dart';
 import '../reports_screen.dart';
 
 class ReportHeroCard extends StatelessWidget {
@@ -17,6 +19,7 @@ class ReportHeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final isProfit = data.totalProfit >= 0;
     final startDateStr = DateFormat('d MMM yyyy', 'id_ID').format(dateRange.start);
     final endDateStr = DateFormat('d MMM yyyy', 'id_ID').format(dateRange.end);
@@ -124,7 +127,7 @@ class ReportHeroCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'TOTAL LABA BERSIH',
+                      l10n?.repsTotalNetProfit ?? 'TOTAL LABA BERSIH',
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
@@ -175,7 +178,7 @@ class ReportHeroCard extends StatelessWidget {
             children: [
               Expanded(
                 child: _buildSubStat(
-                  label: 'Total Omzet',
+                  label: l10n?.repsTotalOmzet ?? 'Total Omzet',
                   value: CurrencyFormatter.formatRupiah(data.totalRevenue),
                 ),
               ),
@@ -188,7 +191,7 @@ class ReportHeroCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: _buildSubStat(
-                    label: 'Total Modal',
+                    label: l10n?.repsTotalModal ?? 'Total Modal',
                     value: CurrencyFormatter.formatRupiah(data.totalCost),
                   ),
                 ),
@@ -202,7 +205,7 @@ class ReportHeroCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: _buildSubStat(
-                    label: 'Rata-rata / Hari',
+                    label: l10n?.repsAvgPerDay ?? 'Rata-rata / Hari',
                     value: CurrencyFormatter.formatRupiah(data.avgProfit),
                   ),
                 ),

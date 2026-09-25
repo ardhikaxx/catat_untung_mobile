@@ -1,8 +1,8 @@
+import 'package:catat_untung/features/home/home_screen.dart';
+import 'package:catat_untung/shared/widgets/app_floating_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:catat_untung/shared/widgets/app_floating_nav_bar.dart';
-import 'package:catat_untung/features/home/home_screen.dart';
 
 void main() {
   group('AppFloatingNavBar Widget Tests', () {

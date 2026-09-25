@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/generated/app_localizations.dart';
 import '../reports_screen.dart';
 
 class ReportPeriodSelector extends ConsumerWidget {
@@ -44,16 +46,17 @@ class ReportPeriodSelector extends ConsumerWidget {
     final currentPeriod = ref.watch(reportPeriodProvider);
     final customStart = ref.watch(customStartDateProvider);
     final customEnd = ref.watch(customEndDateProvider);
+    final l10n = AppLocalizations.of(context);
 
     final customLabel = currentPeriod == ReportPeriod.custom
         ? '${DateFormat('d MMM', 'id_ID').format(customStart)} - ${DateFormat('d MMM', 'id_ID').format(customEnd)}'
-        : 'Pilih Rentang';
+        : l10n?.repsPickRange ?? 'Pilih Rentang';
 
     final options = [
-      (period: ReportPeriod.sevenDays, label: '7 Hari Terakhir', icon: LucideIcons.clock),
-      (period: ReportPeriod.thisWeek, label: 'Minggu Ini', icon: LucideIcons.calendar),
-      (period: ReportPeriod.thisMonth, label: 'Bulan Ini', icon: LucideIcons.calendar),
-      (period: ReportPeriod.lastMonth, label: 'Bulan Lalu', icon: LucideIcons.calendarCheck),
+      (period: ReportPeriod.sevenDays, label: l10n?.repsLast7Days ?? '7 Hari Terakhir', icon: LucideIcons.clock),
+      (period: ReportPeriod.thisWeek, label: l10n?.repsThisWeek ?? 'Minggu Ini', icon: LucideIcons.calendar),
+      (period: ReportPeriod.thisMonth, label: l10n?.repsThisMonth ?? 'Bulan Ini', icon: LucideIcons.calendar),
+      (period: ReportPeriod.lastMonth, label: l10n?.repsLastMonth ?? 'Bulan Lalu', icon: LucideIcons.calendarCheck),
       (period: ReportPeriod.custom, label: customLabel, icon: LucideIcons.calendarSearch),
     ];
 

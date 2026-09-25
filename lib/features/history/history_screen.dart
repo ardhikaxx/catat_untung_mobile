@@ -3,15 +3,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:table_calendar/table_calendar.dart';
+
 import '../../core/theme/app_colors.dart';
 import '../../database/app_database.dart';
+import '../../l10n/generated/app_localizations.dart';
 import '../../providers/daily_record_provider.dart';
-import 'widgets/history_view_mode.dart';
-import 'widgets/history_month_hero_card.dart';
-import 'widgets/history_view_toggle.dart';
+import '../../shared/widgets/app_back_button.dart';
+import '../../shared/widgets/app_floating_nav_bar.dart';
 import 'widgets/history_calendar_card.dart';
 import 'widgets/history_list_view.dart';
-import '../../shared/widgets/app_floating_nav_bar.dart';
+import 'widgets/history_month_hero_card.dart';
+import 'widgets/history_view_mode.dart';
+import 'widgets/history_view_toggle.dart';
 
 class HistoryScreen extends ConsumerStatefulWidget {
   const HistoryScreen({super.key});
@@ -54,12 +57,13 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
   }
 
   void _createRekap(DateTime day) {
-    ref.read(selectedDateProvider.notifier).state = day;
-    context.push('/daily-rekap');
+    final dateOnly = DateTime(day.year, day.month, day.day);
+    context.push('/daily-rekap?date=${dateOnly.toIso8601String()}');
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final recordsAsync = ref.watch(allRecordsProvider);
     final canPop = Navigator.canPop(context);
     const bottomSpacing = AppFloatingNavBar.bottomSpacing;
@@ -77,26 +81,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
         elevation: 0,
         centerTitle: false,
         leading: canPop
-            ? Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Material(
-                  color: Colors.white,
-                  shape: const CircleBorder(),
-                  elevation: 0.5,
-                  child: InkWell(
-                    customBorder: const CircleBorder(),
-                    onTap: () => Navigator.maybePop(context),
-                    child: const Center(
-                      child: Icon(
-                        Icons.arrow_back_ios_new_rounded,
-                        size: 18,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-
-                  ),
-                ),
-              )
+            ? const AppCircleBackButton()
             : Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Container(
@@ -111,9 +96,9 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                   ),
                 ),
               ),
-        title: const Text(
-          'Riwayat Rekap',
-          style: TextStyle(
+        title: Text(
+          l10n?.histRecapHistory ?? 'Riwayat Rekap',
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w800,
             color: AppColors.textPrimary,
@@ -127,9 +112,9 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
               child: TextButton.icon(
                 onPressed: _jumpToToday,
                 icon: const Icon(LucideIcons.calendarCheck, size: 16),
-                label: const Text(
-                  'Bulan Ini',
-                  style: TextStyle(
+                label: Text(
+                  l10n?.histThisMonth ?? 'Bulan Ini',
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
                   ),
@@ -157,9 +142,9 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
             children: [
               const Icon(LucideIcons.alertTriangle, size: 40, color: AppColors.error),
               const SizedBox(height: 12),
-              const Text(
-                'Gagal memuat riwayat',
-                style: TextStyle(
+              Text(
+                l10n?.histLoadHistoryFailed ?? 'Gagal memuat riwayat',
+                style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                   color: AppColors.textPrimary,
@@ -168,7 +153,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
               const SizedBox(height: 6),
               TextButton(
                 onPressed: () => ref.invalidate(allRecordsProvider),
-                child: const Text('Coba Lagi'),
+                child: Text(l10n?.commonRetry ?? 'Coba Lagi'),
               ),
             ],
           ),
@@ -192,51 +177,57 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
             onRefresh: () async {
               ref.invalidate(allRecordsProvider);
             },
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
+            child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
                 // 1. Monthly Performance Hero Card
-                HistoryMonthHeroCard(
-                  focusedMonth: _focusedDay,
-                  recordsInMonth: recordsInMonth,
-                  onPreviousMonth: _onPreviousMonth,
-                  onNextMonth: _onNextMonth,
-                  canGoNext: canGoNext,
+                SliverToBoxAdapter(
+                  child: HistoryMonthHeroCard(
+                    focusedMonth: _focusedDay,
+                    recordsInMonth: recordsInMonth,
+                    onPreviousMonth: _onPreviousMonth,
+                    onNextMonth: _onNextMonth,
+                    canGoNext: canGoNext,
+                  ),
                 ),
 
-                const SizedBox(height: 4),
+                const SliverToBoxAdapter(child: SizedBox(height: 4)),
 
                 // 2. Segmented View Toggle (Kalender / Daftar Rekap)
-                HistoryViewToggle(
-                  currentMode: _currentMode,
-                  onModeChanged: (mode) {
-                    setState(() => _currentMode = mode);
-                  },
+                SliverToBoxAdapter(
+                  child: HistoryViewToggle(
+                    currentMode: _currentMode,
+                    onModeChanged: (mode) {
+                      setState(() => _currentMode = mode);
+                    },
+                  ),
                 ),
 
-                const SizedBox(height: 6),
+                const SliverToBoxAdapter(child: SizedBox(height: 6)),
 
                 // 3. Main Content based on Selected View Mode
                 if (_currentMode == HistoryViewMode.calendar)
-                  HistoryCalendarCard(
-                    focusedDay: _focusedDay,
-                    selectedDay: _selectedDay,
-                    calendarFormat: _calendarFormat,
-                    recordDates: recordDates,
-                    onDaySelected: (selectedDay, focusedDay) {
-                      setState(() {
-                        _selectedDay = selectedDay;
-                        _focusedDay = focusedDay;
-                      });
-                    },
-                    onPageChanged: (focusedDay) {
-                      setState(() {
-                        _focusedDay = focusedDay;
-                        _selectedDay = focusedDay;
-                      });
-                    },
-                    onOpenDetail: _openDetail,
-                    onCreateRekap: _createRekap,
+                  SliverToBoxAdapter(
+                    child: HistoryCalendarCard(
+                      focusedDay: _focusedDay,
+                      selectedDay: _selectedDay,
+                      calendarFormat: _calendarFormat,
+                      recordDates: recordDates,
+                      onDaySelected: (selectedDay, focusedDay) {
+                        setState(() {
+                          _selectedDay = selectedDay;
+                          _focusedDay = focusedDay;
+                        });
+                      },
+                      onPageChanged: (focusedDay) {
+                        setState(() {
+                          _focusedDay = focusedDay;
+                          _selectedDay = focusedDay;
+                        });
+                      },
+                      onOpenDetail: _openDetail,
+                      onCreateRekap: _createRekap,
+                    ),
                   )
                 else
                   HistoryListView(
@@ -246,7 +237,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                   ),
 
                 // 4. Bottom clearance for floating navbar
-                SizedBox(height: bottomSpacing),
+                const SliverToBoxAdapter(child: SizedBox(height: bottomSpacing)),
               ],
             ),
           );

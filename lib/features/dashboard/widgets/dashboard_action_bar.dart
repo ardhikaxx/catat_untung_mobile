@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/generated/app_localizations.dart';
 
 class DashboardActionBar extends StatelessWidget {
   final VoidCallback onRekap;
@@ -18,6 +19,7 @@ class DashboardActionBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
       decoration: BoxDecoration(
@@ -37,22 +39,22 @@ class DashboardActionBar extends StatelessWidget {
         children: [
           _ActionButton(
             icon: LucideIcons.send,
-            label: 'Rekap',
+            label: l10n?.dashRekap ?? 'Rekap',
             onTap: onRekap,
           ),
           _ActionButton(
             icon: LucideIcons.arrowDownLeft,
-            label: 'Riwayat',
+            label: l10n?.dashRiwayat ?? 'Riwayat',
             onTap: onRiwayat,
           ),
           _ActionButton(
             icon: LucideIcons.package,
-            label: 'Produk',
+            label: l10n?.dashProduk ?? 'Produk',
             onTap: onProduk,
           ),
           _ActionButton(
             icon: LucideIcons.calculator,
-            label: 'HPP',
+            label: l10n?.dashHpp ?? 'HPP',
             onTap: onKalkulator,
           ),
         ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
+import '../../../l10n/generated/app_localizations.dart';
 
 class HppTargetMarginCard extends StatelessWidget {
   final double hppPerUnit;
@@ -21,6 +22,7 @@ class HppTargetMarginCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final hasHpp = hppPerUnit > 0;
 
     // Selling price calculation: Harga Jual = HPP / (1 - Margin)
@@ -74,17 +76,17 @@ class HppTargetMarginCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Simulator Margin & Harga Jual',
-                      style: TextStyle(
+                    Text(
+                      l10n?.calcMarginSimulatorTitle ?? 'Simulator Margin & Harga Jual',
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
                       ),
                     ),
                     Text(
-                      'Pilih target keuntungan dari modal HPP',
-                      style: TextStyle(
+                      l10n?.calcMarginSimulatorSubtitle ?? 'Pilih target keuntungan dari modal HPP',
+                      style: const TextStyle(
                         fontSize: 11,
                         color: AppColors.textSecondary,
                       ),
@@ -99,8 +101,8 @@ class HppTargetMarginCard extends StatelessWidget {
 
           // Target Margin Chips
           Text(
-            'TARGET MARGIN KEUNTUNGAN',
-            style: TextStyle(
+            l10n?.calcTargetMarginHeading ?? 'TARGET MARGIN KEUNTUNGAN',
+            style: const TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.w700,
               letterSpacing: 0.8,
@@ -173,7 +175,7 @@ class HppTargetMarginCard extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(
-                                'Ideal',
+                                l10n?.calcIdealBadge ?? 'Ideal',
                                 style: TextStyle(
                                   fontSize: 9,
                                   fontWeight: FontWeight.w700,
@@ -212,8 +214,8 @@ class HppTargetMarginCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Rekomendasi Harga Jual',
-                          style: TextStyle(
+                          l10n?.calcRecommendedPriceLabel ?? 'Rekomendasi Harga Jual',
+                          style: const TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textSecondary,
@@ -247,8 +249,8 @@ class HppTargetMarginCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            'Untung / Unit',
-                            style: TextStyle(
+                            l10n?.calcProfitPerUnitLabel ?? 'Untung / Unit',
+                            style: const TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w600,
                               color: AppColors.primaryGreenDark,
@@ -271,22 +273,22 @@ class HppTargetMarginCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
-                Divider(height: 1, color: AppColors.divider),
+                const Divider(height: 1, color: AppColors.divider),
                 const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Markup Modal: ${hasHpp ? "${markupPct.toStringAsFixed(1)}%" : "0%"}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
                         color: AppColors.textSecondary,
                       ),
                     ),
                     Text(
-                      'Dibulatkan ke kelipatan Rp 500',
-                      style: TextStyle(
+                      l10n?.calcRoundedTo500Note ?? 'Dibulatkan ke kelipatan Rp 500',
+                      style: const TextStyle(
                         fontSize: 10,
                         fontStyle: FontStyle.italic,
                         color: AppColors.textHint,

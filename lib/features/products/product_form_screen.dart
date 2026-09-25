@@ -4,13 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import '../../core/theme/app_colors.dart';
+
 import '../../core/constants/app_constants.dart';
+import '../../core/theme/app_colors.dart';
+import '../../database/app_database.dart';
+import '../../l10n/generated/app_localizations.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/product_provider.dart';
-import '../../database/app_database.dart';
-import 'widgets/product_live_preview_card.dart';
+import '../../shared/widgets/app_back_button.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
+import 'widgets/product_live_preview_card.dart';
 
 class ProductFormScreen extends ConsumerStatefulWidget {
   final int? productId;
@@ -92,6 +95,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
   }
 
   Future<void> _save() async {
+    final l10n = AppLocalizations.of(context);
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
@@ -138,8 +142,9 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                 const Icon(LucideIcons.checkCircle2, color: Colors.white, size: 18),
                 const SizedBox(width: 8),
                 Text(_isEdit
-                    ? 'Produk berhasil diperbarui'
-                    : 'Produk baru berhasil ditambahkan'),
+                    ? l10n?.prodUpdateSuccess ?? 'Produk berhasil diperbarui'
+                    : l10n?.prodCreateSuccess ??
+                        'Produk baru berhasil ditambahkan'),
               ],
             ),
             behavior: SnackBarBehavior.floating,
@@ -154,7 +159,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Gagal menyimpan: $e'),
+            content: Text(l10n?.prodSaveFailed(e) ?? 'Gagal menyimpan: $e'),
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -165,17 +170,18 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
   }
 
   Future<void> _confirmDelete() async {
+    final l10n = AppLocalizations.of(context);
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Row(
-          children: const [
-            Icon(LucideIcons.trash2, color: AppColors.loss, size: 22),
-            SizedBox(width: 10),
+          children: [
+            const Icon(LucideIcons.trash2, color: AppColors.loss, size: 22),
+            const SizedBox(width: 10),
             Text(
-              'Hapus Produk?',
-              style: TextStyle(
+              l10n?.prodDeleteDialogTitle ?? 'Hapus Produk?',
+              style: const TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w800,
                 color: AppColors.loss,
@@ -190,7 +196,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Batal'),
+            child: Text(l10n?.commonCancel ?? 'Batal'),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx, true),
@@ -202,7 +208,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text('Hapus Produk'),
+            child: Text(l10n?.prodDeleteProduct ?? 'Hapus Produk'),
           ),
         ],
       ),
@@ -221,7 +227,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: const Text('Produk berhasil dihapus'),
+              content: Text(l10n?.prodDeleteSuccess ?? 'Produk berhasil dihapus'),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -233,7 +239,9 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Gagal menghapus produk: $e')),
+            SnackBar(
+                content: Text(
+                    l10n?.prodDeleteFailed(e) ?? 'Gagal menghapus produk: $e')),
           );
         }
       } finally {
@@ -247,6 +255,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
     final currentHpp = int.tryParse(_hppController.text) ?? 0;
     final currentSellingPrice =
         int.tryParse(_sellingPriceController.text) ?? 0;
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -256,31 +265,11 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 14),
-          child: Center(
-            child: InkWell(
-              onTap: () => Navigator.pop(context),
-              borderRadius: BorderRadius.circular(12),
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: AppColors.greyBg,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.greyBorder),
-                ),
-                child: const Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  size: 18,
-                  color: AppColors.textPrimary,
-                ),
-
-              ),
-            ),
-          ),
-        ),
+        leading: const AppSquareBackButton(),
         title: Text(
-          _isEdit ? 'Edit Data Produk' : 'Tambah Produk Baru',
+          _isEdit
+              ? l10n?.prodEditProductTitle ?? 'Edit Data Produk'
+              : l10n?.prodAddProductTitle ?? 'Tambah Produk Baru',
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w800,
@@ -291,7 +280,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
         actions: [
           if (_isEdit)
             IconButton(
-              tooltip: 'Hapus Produk',
+              tooltip: l10n?.prodDeleteProduct ?? 'Hapus Produk',
               icon: Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
@@ -326,8 +315,9 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
 
             // 2. Section: Product Identity
             _buildSectionContainer(
-              title: 'Identitas Barang',
-              subtitle: 'Nama dan kemasan penjualan produk',
+              title: l10n?.prodIdentityTitle ?? 'Identitas Barang',
+              subtitle:
+                  l10n?.prodIdentitySubtitle ?? 'Nama dan kemasan penjualan produk',
               icon: LucideIcons.package,
               children: [
                 // Nama Produk
@@ -341,8 +331,9 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                     color: AppColors.textPrimary,
                   ),
                   decoration: InputDecoration(
-                    labelText: 'Nama Produk / Menu *',
-                    hintText: 'Contoh: Es Kopi Susu Aren, Nasi Goreng Spesial',
+                    labelText: l10n?.prodNameLabel ?? 'Nama Produk / Menu *',
+                    hintText: l10n?.prodNameHint ??
+                        'Contoh: Es Kopi Susu Aren, Nasi Goreng Spesial',
                     prefixIcon: const Icon(LucideIcons.tag, size: 20),
                     filled: true,
                     fillColor: AppColors.greyBg,
@@ -364,7 +355,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                   ),
                   validator: (val) {
                     if (val == null || val.trim().isEmpty) {
-                      return 'Nama produk wajib diisi';
+                      return l10n?.prodNameRequired ?? 'Nama produk wajib diisi';
                     }
                     return null;
                   },
@@ -373,9 +364,9 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                 const SizedBox(height: 14),
 
                 // Satuan Selection with Chips & Dropdown
-                const Text(
-                  'Satuan Penjualan *',
-                  style: TextStyle(
+                Text(
+                  l10n?.prodUnitLabel ?? 'Satuan Penjualan *',
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textSecondary,
@@ -434,7 +425,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                       ? _selectedUnit
                       : AppConstants.unitOptions.first,
                   decoration: InputDecoration(
-                    labelText: 'Pilih Satuan Lainnya',
+                    labelText: l10n?.prodSelectOtherUnit ?? 'Pilih Satuan Lainnya',
                     prefixIcon: const Icon(LucideIcons.ruler, size: 20),
                     filled: true,
                     fillColor: AppColors.greyBg,
@@ -464,8 +455,9 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
 
             // 3. Section: Financials (HPP & Selling Price)
             _buildSectionContainer(
-              title: 'Harga Modal & Penjualan',
-              subtitle: 'Dasar penghitungan laba bersih harian',
+              title: l10n?.prodPriceSectionTitle ?? 'Harga Modal & Penjualan',
+              subtitle: l10n?.prodPriceSectionSubtitle ??
+                  'Dasar penghitungan laba bersih harian',
               icon: LucideIcons.wallet,
               children: [
                 // Modal HPP
@@ -480,14 +472,16 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                     color: AppColors.textPrimary,
                   ),
                   decoration: InputDecoration(
-                    labelText: 'Harga Modal / HPP per Unit *',
+                    labelText:
+                        l10n?.prodHppLabel ?? 'Harga Modal / HPP per Unit *',
                     hintText: '0',
                     prefixText: 'Rp ',
                     prefixStyle: const TextStyle(
                       fontWeight: FontWeight.w700,
                       color: AppColors.textPrimary,
                     ),
-                    helperText: 'Biaya pokok bahan & pembuatan satu unit produk',
+                    helperText: l10n?.prodHppHelper ??
+                        'Biaya pokok bahan & pembuatan satu unit produk',
                     prefixIcon: const Icon(LucideIcons.shoppingBag, size: 20),
                     filled: true,
                     fillColor: AppColors.greyBg,
@@ -509,11 +503,13 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                   ),
                   validator: (val) {
                     if (val == null || val.isEmpty) {
-                      return 'Harga modal (HPP) wajib diisi';
+                      return l10n?.prodHppRequired ??
+                          'Harga modal (HPP) wajib diisi';
                     }
                     final num = int.tryParse(val);
                     if (num == null || num < 0) {
-                      return 'Harga modal harus berupa angka valid';
+                      return l10n?.prodHppInvalidNumber ??
+                          'Harga modal harus berupa angka valid';
                     }
                     return null;
                   },
@@ -533,14 +529,16 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                     color: AppColors.textPrimary,
                   ),
                   decoration: InputDecoration(
-                    labelText: 'Harga Jual Standar per Unit *',
+                    labelText: l10n?.prodSellingPriceLabel ??
+                        'Harga Jual Standar per Unit *',
                     hintText: '0',
                     prefixText: 'Rp ',
                     prefixStyle: const TextStyle(
                       fontWeight: FontWeight.w700,
                       color: AppColors.textPrimary,
                     ),
-                    helperText: 'Harga normal yang ditawarkan kepada pelanggan',
+                    helperText: l10n?.prodSellingPriceHelper ??
+                        'Harga normal yang ditawarkan kepada pelanggan',
                     prefixIcon: const Icon(LucideIcons.coins, size: 20),
                     filled: true,
                     fillColor: AppColors.greyBg,
@@ -562,11 +560,13 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                   ),
                   validator: (val) {
                     if (val == null || val.isEmpty) {
-                      return 'Harga jual wajib diisi';
+                      return l10n?.prodSellingPriceRequired ??
+                          'Harga jual wajib diisi';
                     }
                     final num = int.tryParse(val);
                     if (num == null || num < 0) {
-                      return 'Harga jual harus berupa angka valid';
+                      return l10n?.prodSellingPriceInvalidNumber ??
+                          'Harga jual harus berupa angka valid';
                     }
                     return null;
                   },
@@ -593,9 +593,9 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
               ),
               child: SwitchListTile(
                 contentPadding: EdgeInsets.zero,
-                title: const Text(
-                  'Status Produk Aktif',
-                  style: TextStyle(
+                title: Text(
+                  l10n?.prodActiveStatusTitle ?? 'Status Produk Aktif',
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
@@ -603,8 +603,10 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                 ),
                 subtitle: Text(
                   _isActive
-                      ? 'Produk tampil di daftar saat rekap penjualan harian'
-                      : 'Produk disembunyikan dari pilihan rekap harian',
+                      ? l10n?.prodActiveStatusOn ??
+                          'Produk tampil di daftar saat rekap penjualan harian'
+                      : l10n?.prodActiveStatusOff ??
+                          'Produk disembunyikan dari pilihan rekap harian',
                   style: TextStyle(
                     fontSize: 11,
                     color: _isActive
@@ -637,7 +639,9 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                       )
                     : const Icon(LucideIcons.checkCircle2, size: 20),
                 label: Text(
-                  _isEdit ? 'Simpan Perubahan' : 'Tambah ke Katalog Produk',
+                  _isEdit
+                      ? l10n?.prodSaveChanges ?? 'Simpan Perubahan'
+                      : l10n?.prodAddToCatalog ?? 'Tambah ke Katalog Produk',
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
+import '../../../l10n/generated/app_localizations.dart';
 import '../reports_screen.dart';
 
 class ReportMetricsGrid extends StatelessWidget {
@@ -14,6 +15,7 @@ class ReportMetricsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
       child: Column(
@@ -26,13 +28,13 @@ class ReportMetricsGrid extends StatelessWidget {
                   icon: LucideIcons.percent,
                   iconColor: const Color(0xFF16A34A),
                   iconBg: const Color(0xFFDCFCE7),
-                  label: 'Margin Rata-rata',
+                  label: l10n?.repsAvgMargin ?? 'Margin Rata-rata',
                   value: '${data.margin}%',
                   subtitle: data.margin >= 30
-                      ? 'Margin Sehat'
+                      ? l10n?.repsHealthyMargin ?? 'Margin Sehat'
                       : data.margin > 0
-                          ? 'Perlu Ditingkatkan'
-                          : 'Rugi',
+                          ? l10n?.repsNeedsImprovement ?? 'Perlu Ditingkatkan'
+                          : l10n?.repsLoss ?? 'Rugi',
                   subtitleColor: data.margin >= 30
                       ? const Color(0xFF16A34A)
                       : const Color(0xFFEA580C),
@@ -45,7 +47,7 @@ class ReportMetricsGrid extends StatelessWidget {
                   icon: LucideIcons.package,
                   iconColor: AppColors.primaryGreen,
                   iconBg: AppColors.greenTint,
-                  label: 'Total Terjual',
+                  label: l10n?.repsTotalSold ?? 'Total Terjual',
                   value: '${data.totalQuantity} Unit',
                   subtitle: '${data.topProducts.length} Variasi Produk',
                   subtitleColor: AppColors.textSecondary,
@@ -62,9 +64,9 @@ class ReportMetricsGrid extends StatelessWidget {
                   icon: LucideIcons.calendarCheck,
                   iconColor: const Color(0xFF2563EB),
                   iconBg: const Color(0xFFDBEAFE),
-                  label: 'Rata-rata Laba',
+                  label: l10n?.repsAvgProfit ?? 'Rata-rata Laba',
                   value: CurrencyFormatter.formatRupiah(data.avgProfit),
-                  subtitle: 'Per hari jualan',
+                  subtitle: l10n?.repsPerDaySales ?? 'Per hari jualan',
                   subtitleColor: const Color(0xFF64748B),
                 ),
               ),
@@ -75,9 +77,9 @@ class ReportMetricsGrid extends StatelessWidget {
                   icon: LucideIcons.trendingUp,
                   iconColor: const Color(0xFFD97706),
                   iconBg: const Color(0xFFFEF3C7),
-                  label: 'Hari Aktif Rekap',
+                  label: l10n?.repsActiveDays ?? 'Hari Aktif Rekap',
                   value: '${data.records.length} Hari',
-                  subtitle: 'Tercatat di sistem',
+                  subtitle: l10n?.repsRecordedInSystem ?? 'Tercatat di sistem',
                   subtitleColor: const Color(0xFF64748B),
                 ),
               ),

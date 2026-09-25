@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:intl/intl.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+
 import '../../core/theme/app_colors.dart';
-import '../../shared/widgets/app_floating_nav_bar.dart';
+import '../../core/utils/app_logger.dart';
+import '../../data/repositories/daily_record_repository.dart';
+import '../../database/app_database.dart';
+import '../../l10n/generated/app_localizations.dart';
+import '../../providers/daily_record_provider.dart';
 import '../../providers/database_provider.dart';
 import '../../providers/product_provider.dart';
-import '../../database/app_database.dart';
-import '../../data/repositories/daily_record_repository.dart';
-import 'widgets/rekap_date_selector.dart';
-import 'widgets/rekap_live_summary_card.dart';
-import 'widgets/rekap_item_tile.dart';
-import 'widgets/rekap_product_selector_modal.dart';
+import '../../shared/widgets/app_back_button.dart';
+import '../../shared/widgets/app_floating_nav_bar.dart';
 import 'widgets/rekap_bottom_action_panel.dart';
+import 'widgets/rekap_date_selector.dart';
+import 'widgets/rekap_item_tile.dart';
+import 'widgets/rekap_live_summary_card.dart';
+import 'widgets/rekap_product_selector_modal.dart';
 import 'widgets/rekap_saved_view.dart';
 
 class RekapItem {
@@ -40,62 +45,79 @@ class RekapItem {
 final rekapItemsProvider = StateProvider<List<RekapItem>>((ref) => []);
 
 class DailyRekapScreen extends ConsumerStatefulWidget {
-  const DailyRekapScreen({super.key});
+  final DateTime? initialDate;
+
+  const DailyRekapScreen({super.key, this.initialDate});
 
   @override
   ConsumerState<DailyRekapScreen> createState() => _DailyRekapScreenState();
 }
 
 class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
-  DateTime _selectedDate = DateTime.now();
+  static DateTime _dateOnly(DateTime date) =>
+      DateTime(date.year, date.month, date.day);
+
+  static bool _isSameDay(DateTime a, DateTime b) =>
+      a.year == b.year && a.month == b.month && a.day == b.day;
+
+  late DateTime _selectedDate;
   bool _isLoading = false;
   bool _isEditing = false;
   DailyRecord? _existingRecord;
   List<DailyRecordItem> _existingItems = [];
+  int _loadSequence = 0;
 
   @override
   void initState() {
     super.initState();
+    _selectedDate = _dateOnly(widget.initialDate ?? DateTime.now());
     _loadExistingRecord();
   }
 
-  bool get _isToday {
-    final now = DateTime.now();
-    return _selectedDate.year == now.year &&
-        _selectedDate.month == now.month &&
-        _selectedDate.day == now.day;
-  }
+  bool get _isToday => _isSameDay(_selectedDate, DateTime.now());
 
   Future<void> _loadExistingRecord() async {
+    // Guard against stale responses when the date changes rapidly
+    final sequence = ++_loadSequence;
     setState(() => _isLoading = true);
     try {
       final repo = ref.read(dailyRecordRepositoryProvider);
       final record = await repo.getRecordByDate(_selectedDate);
-      if (record != null) {
-        final items = await repo.getItemsByRecordId(record.id);
-        if (mounted) {
-          setState(() {
-            _existingRecord = record;
-            _existingItems = items;
-            _isEditing = false;
-            _isLoading = false;
-          });
-          ref.read(rekapItemsProvider.notifier).state = [];
-        }
-      } else {
-        if (mounted) {
-          setState(() {
-            _existingRecord = null;
-            _existingItems = [];
-            _isEditing = true;
-            _isLoading = false;
-          });
-          ref.read(rekapItemsProvider.notifier).state = [];
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() => _isLoading = false);
+      if (!mounted || sequence != _loadSequence) return;
+
+      final matchesSelectedDate =
+          record != null && _isSameDay(record.date, _selectedDate);
+      final items = matchesSelectedDate
+          ? await repo.getItemsByRecordId(record.id)
+          : <DailyRecordItem>[];
+      if (!mounted || sequence != _loadSequence) return;
+
+      setState(() {
+        _existingRecord = matchesSelectedDate ? record : null;
+        _existingItems = matchesSelectedDate ? items : [];
+        _isEditing = !matchesSelectedDate;
+        _isLoading = false;
+      });
+      ref.read(rekapItemsProvider.notifier).state = [];
+    } catch (e, s) {
+      AppLogger.record('DailyRekap.load', e, s);
+      if (mounted && sequence == _loadSequence) {
+        setState(() {
+          _existingRecord = null;
+          _existingItems = [];
+          _isEditing = true;
+          _isLoading = false;
+        });
+        ref.read(rekapItemsProvider.notifier).state = [];
+        final l10n = AppLocalizations.of(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              l10n?.rekapLoadFailed ??
+                  'Gagal memuat rekap tanggal ini. Silakan coba lagi.',
+            ),
+          ),
+        );
       }
     }
   }
@@ -143,24 +165,30 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
   }
 
   Future<void> _handleDateChange(DateTime newDate) async {
+    final l10n = AppLocalizations.of(context);
+    final normalized = _dateOnly(newDate);
+    if (_isSameDay(normalized, _selectedDate)) return;
+
     final items = ref.read(rekapItemsProvider);
     if (items.isNotEmpty && _isEditing) {
       final confirm = await showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-          title: const Text('Ganti Tanggal?'),
-          content: const Text(
-            'Perubahan rekap yang belum disimpan pada tanggal ini akan hilang jika berpindah tanggal.',
+          title: Text(l10n?.rekapChangeDateTitle ?? 'Ganti Tanggal?'),
+          content: Text(
+            l10n?.rekapChangeDateContent ??
+                'Perubahan rekap yang belum disimpan pada tanggal ini akan hilang jika berpindah tanggal.',
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('Batal'),
+              child: Text(l10n?.commonCancel ?? 'Batal'),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: const Text('Pindah', style: TextStyle(color: AppColors.error)),
+              child: Text(l10n?.rekapMoveDate ?? 'Pindah',
+                  style: const TextStyle(color: AppColors.error)),
             ),
           ],
         ),
@@ -168,7 +196,8 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
       if (confirm != true) return;
     }
 
-    setState(() => _selectedDate = newDate);
+    setState(() => _selectedDate = normalized);
+    ref.read(selectedDateProvider.notifier).state = normalized;
     await _loadExistingRecord();
   }
 
@@ -231,11 +260,12 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
   }
 
   Future<void> _saveRekap() async {
+    final l10n = AppLocalizations.of(context);
     final items = ref.read(rekapItemsProvider);
     if (items.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Tambahkan minimal satu produk'),
+          content: Text(l10n?.rekapAddMinProduct ?? 'Tambahkan minimal satu produk'),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
@@ -247,7 +277,10 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
     if (hasZeroQty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Jumlah terjual tidak boleh 0. Sesuaikan terlebih dahulu.'),
+          content: Text(
+            l10n?.rekapZeroQuantity ??
+                'Jumlah terjual tidak boleh 0. Sesuaikan terlebih dahulu.',
+          ),
           backgroundColor: AppColors.warning,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -338,6 +371,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
     ref.watch(activeProductsProvider);
     final items = ref.watch(rekapItemsProvider);
     final canPop = Navigator.canPop(context);
+    final l10n = AppLocalizations.of(context);
 
     return PopScope(
       canPop: false,
@@ -350,14 +384,15 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18),
               ),
-              title: const Text('Perubahan belum disimpan'),
-              content: const Text(
-                'Apakah kamu yakin ingin keluar? Perubahan yang belum disimpan akan hilang.',
+              title: Text(l10n?.rekapUnsavedTitle ?? 'Perubahan belum disimpan'),
+              content: Text(
+                l10n?.rekapUnsavedContent ??
+                    'Apakah kamu yakin ingin keluar? Perubahan yang belum disimpan akan hilang.',
               ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('Batal'),
+                  child: Text(l10n?.commonCancel ?? 'Batal'),
                 ),
                 TextButton(
                   onPressed: () {
@@ -365,7 +400,8 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                     ref.read(rekapItemsProvider.notifier).state = [];
                     context.pop();
                   },
-                  child: const Text('Keluar', style: TextStyle(color: AppColors.error)),
+                  child: Text(l10n?.rekapExit ?? 'Keluar',
+                      style: const TextStyle(color: AppColors.error)),
                 ),
               ],
             ),
@@ -382,26 +418,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
           backgroundColor: AppColors.background,
           elevation: 0,
           leading: canPop
-              ? Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Material(
-                    color: Colors.white,
-                    shape: const CircleBorder(),
-                    elevation: 0.5,
-                    child: InkWell(
-                      customBorder: const CircleBorder(),
-                      onTap: () => Navigator.maybePop(context),
-                      child: const Center(
-                        child: Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          size: 18,
-                          color: AppColors.textPrimary,
-                        ),
-
-                      ),
-                    ),
-                  ),
-                )
+              ? const AppCircleBackButton()
               : Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Container(
@@ -416,9 +433,9 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                     ),
                   ),
                 ),
-          title: const Text(
-            'Rekap Penjualan',
-            style: TextStyle(
+          title: Text(
+            l10n?.rekapTitle ?? 'Rekap Penjualan',
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w800,
               color: AppColors.textPrimary,
@@ -432,9 +449,9 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                 child: TextButton.icon(
                   onPressed: () => _handleDateChange(DateTime.now()),
                   icon: const Icon(LucideIcons.calendarCheck, size: 16),
-                  label: const Text(
-                    'Hari Ini',
-                    style: TextStyle(
+                  label: Text(
+                    l10n?.rekapToday ?? 'Hari Ini',
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
                     ),
@@ -452,7 +469,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
             IconButton(
               icon: const Icon(LucideIcons.calendar, size: 20),
               color: AppColors.textPrimary,
-              tooltip: 'Pilih Tanggal',
+              tooltip: l10n?.rekapPickDate ?? 'Pilih Tanggal',
               onPressed: _selectDate,
             ),
             const SizedBox(width: 8),
@@ -493,6 +510,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
   }
 
   Widget _buildFormView(List<RekapItem> items, bool canPop) {
+    final l10n = AppLocalizations.of(context);
     const bottomSpacing = AppFloatingNavBar.bottomSpacing;
 
     if (items.isEmpty) {
@@ -520,9 +538,9 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Item Terjual',
-                      style: TextStyle(
+                    Text(
+                      l10n?.rekapSoldItems ?? 'Item Terjual',
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
@@ -584,6 +602,7 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
   }
 
   Widget _buildEmptyState(double bottomSpacing) {
+    final l10n = AppLocalizations.of(context);
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
@@ -638,19 +657,27 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                             ),
                           ),
                           const SizedBox(height: 18),
-                          const Text(
-                            'Belum Ada Rekap Hari Ini',
-                            style: TextStyle(
+                          Text(
+                            _isToday
+                                ? l10n?.rekapEmptyTodayTitle ??
+                                    'Belum Ada Rekap Hari Ini'
+                                : 'Belum Ada Rekap Tanggal ${DateFormat('d MMM yyyy', 'id_ID').format(_selectedDate)}',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w800,
                               color: AppColors.textPrimary,
                             ),
                           ),
                           const SizedBox(height: 8),
-                          const Text(
-                            'Pilih produk dari katalog Anda dan masukkan jumlah yang terjual hari ini untuk menghitung omzet dan laba bersih otomatis.',
+                          Text(
+                            _isToday
+                                ? l10n?.rekapEmptyTodaySubtitle ??
+                                    'Pilih produk dari katalog Anda dan masukkan jumlah yang terjual hari ini untuk menghitung omzet dan laba bersih otomatis.'
+                                : l10n?.rekapEmptyDateSubtitle ??
+                                    'Belum ada rekap yang tersimpan pada tanggal ini. Pilih produk dari katalog Anda untuk membuat rekap dan menghitung omzet serta laba bersih otomatis.',
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 13,
                               color: AppColors.textSecondary,
                               height: 1.45,
@@ -663,9 +690,10 @@ class _DailyRekapScreenState extends ConsumerState<DailyRekapScreen> {
                             child: ElevatedButton.icon(
                               onPressed: _showProductSelector,
                               icon: const Icon(LucideIcons.plusCircle, size: 20),
-                              label: const Text(
-                                'Tambah Produk Terjual',
-                                style: TextStyle(
+                              label: Text(
+                                l10n?.rekapAddSoldProduct ??
+                                    'Tambah Produk Terjual',
+                                style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700,
                                 ),

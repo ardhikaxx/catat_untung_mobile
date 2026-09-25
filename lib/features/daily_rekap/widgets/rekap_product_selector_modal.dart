@@ -5,6 +5,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../database/app_database.dart';
+import '../../../l10n/generated/app_localizations.dart';
 import '../../../providers/product_provider.dart';
 
 class RekapProductSelectorModal extends ConsumerStatefulWidget {
@@ -65,6 +66,7 @@ class _RekapProductSelectorModalState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     // Watch active products in real-time to avoid any sync race conditions
     final productsAsync = ref.watch(activeProductsProvider);
     final products = productsAsync.valueOrNull ?? widget.products ?? [];
@@ -110,9 +112,9 @@ class _RekapProductSelectorModalState
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Pilih Produk Terjual',
-                          style: TextStyle(
+                        Text(
+                          l10n?.rekapSelectProduct ?? 'Pilih Produk Terjual',
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
                             color: AppColors.textPrimary,
@@ -121,7 +123,7 @@ class _RekapProductSelectorModalState
                         const SizedBox(height: 2),
                         Text(
                           isLoading
-                              ? 'Memuat produk...'
+                              ? l10n?.rekapLoadingProducts ?? 'Memuat produk...'
                               : '${products.length} produk tersedia di katalog',
                           style: const TextStyle(
                             fontSize: 12,
@@ -150,7 +152,7 @@ class _RekapProductSelectorModalState
                   child: TextField(
                     controller: _searchController,
                     decoration: InputDecoration(
-                      hintText: 'Cari nama produk...',
+                      hintText: l10n?.rekapSearchHint ?? 'Cari nama produk...',
                       hintStyle: const TextStyle(
                         fontSize: 13,
                         color: Color(0xFF94A3B8),
@@ -163,7 +165,7 @@ class _RekapProductSelectorModalState
                       suffixIcon: _searchQuery.isNotEmpty
                           ? IconButton(
                               icon: const Icon(LucideIcons.xCircle, size: 16),
-                              onPressed: () => _searchController.clear(),
+                              onPressed: _searchController.clear,
                             )
                           : null,
                       border: InputBorder.none,
@@ -284,9 +286,10 @@ class _RekapProductSelectorModalState
                                                 borderRadius:
                                                     BorderRadius.circular(12),
                                               ),
-                                              child: const Text(
-                                                'Sudah Ada',
-                                                style: TextStyle(
+                                              child: Text(
+                                                l10n?.rekapAlreadyAdded ??
+                                                    'Sudah Ada',
+                                                style: const TextStyle(
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.w600,
                                                   color: Color(0xFF64748B),
@@ -331,6 +334,7 @@ class _RekapProductSelectorModalState
   }
 
   Widget _buildEmptyCatalog(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -351,19 +355,20 @@ class _RekapProductSelectorModalState
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Belum Ada Produk di Katalog',
-              style: TextStyle(
+            Text(
+              l10n?.rekapEmptyCatalogTitle ?? 'Belum Ada Produk di Katalog',
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
               ),
             ),
             const SizedBox(height: 6),
-            const Text(
-              'Tambahkan produk terlebih dahulu agar bisa memilihnya dalam rekap harian.',
+            Text(
+              l10n?.rekapEmptyCatalogSubtitle ??
+                  'Tambahkan produk terlebih dahulu agar bisa memilihnya dalam rekap harian.',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 13,
                 color: AppColors.textSecondary,
               ),
@@ -375,7 +380,7 @@ class _RekapProductSelectorModalState
                 context.push('/products/add');
               },
               icon: const Icon(LucideIcons.plus, size: 18),
-              label: const Text('Buat Produk Sekarang'),
+              label: Text(l10n?.rekapCreateProduct ?? 'Buat Produk Sekarang'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF00AA13),
                 foregroundColor: Colors.white,
@@ -392,6 +397,7 @@ class _RekapProductSelectorModalState
   }
 
   Widget _buildNoSearchResults() {
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -404,9 +410,9 @@ class _RekapProductSelectorModalState
               color: Color(0xFF94A3B8),
             ),
             const SizedBox(height: 12),
-            const Text(
-              'Produk Tidak Ditemukan',
-              style: TextStyle(
+            Text(
+              l10n?.rekapProductNotFound ?? 'Produk Tidak Ditemukan',
+              style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,

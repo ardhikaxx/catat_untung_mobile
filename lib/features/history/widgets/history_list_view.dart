@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../database/app_database.dart';
+import '../../../l10n/generated/app_localizations.dart';
 import 'history_record_card.dart';
 
 enum RecordFilter {
@@ -43,48 +44,55 @@ class _HistoryListViewState extends State<HistoryListView> {
     // Sort descending by date (latest first)
     filteredRecords.sort((a, b) => b.date.compareTo(a.date));
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+    // Returns a sliver so the host can keep the record list lazy.
+    return SliverMainAxisGroup(
+      slivers: [
         // Filter Chips Row
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
-          child: Row(
-            children: [
-              _buildFilterChip(
-                label: 'Semua (${widget.records.length})',
-                filter: RecordFilter.all,
-                color: AppColors.primaryGreen,
-              ),
-              const SizedBox(width: 8),
-              _buildFilterChip(
-                label: 'Untung ($profitCount)',
-                filter: RecordFilter.profit,
-                color: AppColors.profit,
-              ),
-              const SizedBox(width: 8),
-              _buildFilterChip(
-                label: 'Rugi ($lossCount)',
-                filter: RecordFilter.loss,
-                color: AppColors.loss,
-              ),
-            ],
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
+            child: Row(
+              children: [
+                _buildFilterChip(
+                  label: 'Semua (${widget.records.length})',
+                  filter: RecordFilter.all,
+                  color: AppColors.primaryGreen,
+                ),
+                const SizedBox(width: 8),
+                _buildFilterChip(
+                  label: 'Untung ($profitCount)',
+                  filter: RecordFilter.profit,
+                  color: AppColors.profit,
+                ),
+                const SizedBox(width: 8),
+                _buildFilterChip(
+                  label: 'Rugi ($lossCount)',
+                  filter: RecordFilter.loss,
+                  color: AppColors.loss,
+                ),
+              ],
+            ),
           ),
         ),
 
-        const SizedBox(height: 4),
+        const SliverToBoxAdapter(child: SizedBox(height: 4)),
 
-        // List of Records
+        // Lazy list of records
         if (filteredRecords.isEmpty)
-          _buildEmptyState()
+          SliverToBoxAdapter(child: _buildEmptyState(context))
         else
-          ...List.generate(filteredRecords.length, (index) {
-            final record = filteredRecords[index];
-            return HistoryRecordCard(
-              record: record,
-              onTap: () => widget.onOpenDetail(record.date),
-            );
-          }),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final record = filteredRecords[index];
+                return HistoryRecordCard(
+                  record: record,
+                  onTap: () => widget.onOpenDetail(record.date),
+                );
+              },
+              childCount: filteredRecords.length,
+            ),
+          ),
       ],
     );
   }
@@ -118,7 +126,8 @@ class _HistoryListViewState extends State<HistoryListView> {
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 24),
       padding: const EdgeInsets.all(24),
@@ -154,9 +163,9 @@ class _HistoryListViewState extends State<HistoryListView> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Tidak Ada Rekap',
-              style: TextStyle(
+            Text(
+              l10n?.histNoRecap ?? 'Tidak Ada Rekap',
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
@@ -165,8 +174,10 @@ class _HistoryListViewState extends State<HistoryListView> {
             const SizedBox(height: 6),
             Text(
               _selectedFilter == RecordFilter.all
-                  ? 'Belum ada catatan penjualan yang tersimpan.'
-                  : 'Tidak ada catatan rekap pada filter yang dipilih.',
+                  ? l10n?.histEmptyNoSales ??
+                      'Belum ada catatan penjualan yang tersimpan.'
+                  : l10n?.histEmptyFiltered ??
+                      'Tidak ada catatan rekap pada filter yang dipilih.',
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 12,
@@ -179,7 +190,7 @@ class _HistoryListViewState extends State<HistoryListView> {
               ElevatedButton.icon(
                 onPressed: widget.onCreateRekap,
                 icon: const Icon(LucideIcons.plus, size: 16),
-                label: const Text('Buat Rekap Sekarang'),
+                label: Text(l10n?.histCreateRecapNow ?? 'Buat Rekap Sekarang'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryGreen,
                   foregroundColor: Colors.white,

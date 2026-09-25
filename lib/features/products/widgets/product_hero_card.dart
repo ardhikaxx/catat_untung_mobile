@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../database/app_database.dart';
+import '../../../l10n/generated/app_localizations.dart';
 
 class ProductHeroCard extends StatelessWidget {
   final List<Product> allProducts;
@@ -13,6 +14,7 @@ class ProductHeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final totalCount = allProducts.length;
     final activeCount = allProducts.where((p) => p.isActive).length;
     final inactiveCount = totalCount - activeCount;
@@ -67,16 +69,16 @@ class ProductHeroCard extends StatelessWidget {
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(
+                  children: [
+                    const Icon(
                       LucideIcons.package,
                       size: 14,
                       color: Colors.white,
                     ),
-                    SizedBox(width: 6),
+                    const SizedBox(width: 6),
                     Text(
-                      'KATALOG MASTER PRODUK',
-                      style: TextStyle(
+                      l10n?.prodHeroCatalogBadge ?? 'KATALOG MASTER PRODUK',
+                      style: const TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
@@ -119,7 +121,7 @@ class ProductHeroCard extends StatelessWidget {
 
           // Total Products Hero Stat
           Text(
-            'TOTAL DAFTAR PRODUK',
+            l10n?.prodHeroTotalLabel ?? 'TOTAL DAFTAR PRODUK',
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w600,
@@ -143,7 +145,7 @@ class ProductHeroCard extends StatelessWidget {
               ),
               const SizedBox(width: 6),
               Text(
-                'Barang Dagangan Terdaftar',
+                l10n?.prodHeroRegisteredLabel ?? 'Barang Dagangan Terdaftar',
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
@@ -165,8 +167,8 @@ class ProductHeroCard extends StatelessWidget {
             children: [
               Expanded(
                 child: _buildSubStat(
-                  label: 'Produk Aktif',
-                  value: '$activeCount Item',
+                  label: l10n?.prodHeroActiveLabel ?? 'Produk Aktif',
+                  value: l10n?.prodItemCount(activeCount) ?? '$activeCount Item',
                   icon: LucideIcons.checkCircle2,
                 ),
               ),
@@ -179,8 +181,9 @@ class ProductHeroCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: _buildSubStat(
-                    label: 'Nonaktif',
-                    value: '$inactiveCount Item',
+                    label: l10n?.prodStatusInactive ?? 'Nonaktif',
+                    value: l10n?.prodItemCount(inactiveCount) ??
+                        '$inactiveCount Item',
                     icon: LucideIcons.minusCircle,
                   ),
                 ),
@@ -194,7 +197,7 @@ class ProductHeroCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: _buildSubStat(
-                    label: 'Siap Jual',
+                    label: l10n?.prodHeroReadyLabel ?? 'Siap Jual',
                     value: '${totalCount > 0 ? ((activeCount / totalCount) * 100).round() : 0}%',
                     icon: LucideIcons.shoppingBag,
                   ),

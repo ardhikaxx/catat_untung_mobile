@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
+import '../../../l10n/generated/app_localizations.dart';
 import '../reports_screen.dart';
 
 class ReportTopProducts extends StatelessWidget {
@@ -16,6 +17,7 @@ class ReportTopProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     if (topProducts.isEmpty) return const SizedBox.shrink();
 
     final displayedProducts = topProducts.take(10).toList();
@@ -59,18 +61,19 @@ class ReportTopProducts extends StatelessWidget {
                   const SizedBox(width: 10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
-                        'Produk Paling Laris',
-                        style: TextStyle(
+                        l10n?.repsTopProductsTitle ?? 'Produk Paling Laris',
+                        style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
                           color: AppColors.textPrimary,
                         ),
                       ),
                       Text(
-                        'Peringkat penjualan & kontribusi laba',
-                        style: TextStyle(
+                        l10n?.repsTopProductsSubtitle ??
+                            'Peringkat penjualan & kontribusi laba',
+                        style: const TextStyle(
                           fontSize: 11,
                           color: AppColors.textSecondary,
                         ),

@@ -3,6 +3,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/date_formatter.dart';
+import '../../../l10n/generated/app_localizations.dart';
 
 class DashboardHeader extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback onMenuTap;
@@ -17,6 +18,7 @@ class DashboardHeader extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return AppBar(
       backgroundColor: AppColors.background,
       surfaceTintColor: Colors.transparent,
@@ -65,9 +67,10 @@ class DashboardHeader extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ),
                 const SizedBox(height: 2),
-                const Text(
-                  'Pantau omzet & keuntungan usaha hari ini.',
-                  style: TextStyle(
+                Text(
+                  l10n?.dashHeaderTagline ??
+                      'Pantau omzet & keuntungan usaha hari ini.',
+                  style: const TextStyle(
                     fontSize: 11,
                     color: AppColors.textSecondary,
                     fontWeight: FontWeight.w400,

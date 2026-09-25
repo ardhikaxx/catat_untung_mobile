@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+
 import '../../core/theme/app_colors.dart';
-import '../../providers/database_provider.dart';
+import '../../core/utils/app_logger.dart';
 import '../../database/app_database.dart';
+import '../../l10n/generated/app_localizations.dart';
+import '../../providers/product_provider.dart';
+import '../../shared/widgets/app_back_button.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
+import 'widgets/product_card.dart';
 import 'widgets/product_hero_card.dart';
 import 'widgets/product_search_filter_bar.dart';
-import 'widgets/product_card.dart';
 
 // State providers for search, filter status, and sorting
 final productSearchTextProvider = StateProvider<String>((ref) => '');
@@ -40,17 +44,14 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
         ProductFilterStatus.all;
     ref.read(productSortOptionProvider.notifier).state =
         ProductSortOption.nameAsc;
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final repo = ref.watch(productRepositoryProvider);
-    final allProductsStream = repo.watchAllProducts();
-
     final searchQuery = ref.watch(productSearchTextProvider);
     final statusFilter = ref.watch(productStatusFilterProvider);
     final sortOption = ref.watch(productSortOptionProvider);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -60,45 +61,24 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 14),
-          child: Center(
-            child: InkWell(
-              onTap: () => Navigator.pop(context),
-              borderRadius: BorderRadius.circular(12),
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: AppColors.greyBg,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.greyBorder),
-                ),
-                child: const Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  size: 18,
-                  color: AppColors.textPrimary,
-                ),
-
-              ),
-            ),
-          ),
-        ),
+        leading: const AppSquareBackButton(),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
-              'Master Produk',
-              style: TextStyle(
+              l10n?.prodMasterTitle ?? 'Master Produk',
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
                 color: AppColors.textPrimary,
                 letterSpacing: -0.3,
               ),
             ),
-            SizedBox(height: 2),
+            const SizedBox(height: 2),
             Text(
-              'Katalog harga jual, modal HPP & margin',
-              style: TextStyle(
+              l10n?.prodMasterSubtitle ??
+                  'Katalog harga jual, modal HPP & margin',
+              style: const TextStyle(
                 fontSize: 11,
                 color: AppColors.textSecondary,
                 fontWeight: FontWeight.w400,
@@ -108,7 +88,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
         ),
         actions: [
           IconButton(
-            tooltip: 'Tambah Produk',
+            tooltip: l10n?.prodAddProduct ?? 'Tambah Produk',
             icon: Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
@@ -126,53 +106,52 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
           const SizedBox(width: 8),
         ],
       ),
-      body: StreamBuilder<List<Product>>(
-        stream: allProductsStream,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting &&
-              !snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(color: AppColors.primaryGreen),
-            );
-          }
-
-          if (snapshot.hasError) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      LucideIcons.alertTriangle,
-                      size: 40,
-                      color: AppColors.error,
+      body: ref.watch(allProductsProvider).when(
+        loading: () => const Center(
+          child: CircularProgressIndicator(color: AppColors.primaryGreen),
+        ),
+        error: (error, stackTrace) {
+          AppLogger.record('Products.load', error, stackTrace);
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    LucideIcons.alertTriangle,
+                    size: 40,
+                    color: AppColors.error,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    l10n?.prodLoadFailedTitle ?? 'Gagal Memuat Produk',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
                     ),
-                    const SizedBox(height: 12),
-                    const Text(
-                      'Gagal Memuat Produk',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
-                      ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    '$error',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
                     ),
-                    const SizedBox(height: 6),
-                    Text(
-                      '${snapshot.error}',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 16),
+                  OutlinedButton(
+                    onPressed: () => ref.invalidate(allProductsProvider),
+                    child: Text(l10n?.commonRetry ?? 'Coba Lagi'),
+                  ),
+                ],
               ),
-            );
-          }
-
-          final allProducts = snapshot.data ?? [];
+            ),
+          );
+        },
+        data: (allProducts) {
           final activeCount = allProducts.where((p) => p.isActive).length;
           final inactiveCount = allProducts.length - activeCount;
 
@@ -228,7 +207,6 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                     searchController: _searchController,
                     onSearchChanged: (val) {
                       ref.read(productSearchTextProvider.notifier).state = val;
-                      setState(() {});
                     },
                     currentFilter: statusFilter,
                     onFilterChanged: (status) {
@@ -291,9 +269,9 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
           borderRadius: BorderRadius.circular(16),
         ),
         icon: const Icon(LucideIcons.plus, size: 20),
-        label: const Text(
-          'Tambah Produk',
-          style: TextStyle(
+        label: Text(
+          l10n?.prodAddProduct ?? 'Tambah Produk',
+          style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w700,
             letterSpacing: -0.2,
@@ -304,6 +282,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
   }
 
   Widget _buildEmptyKatalogState(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(28.0),
@@ -326,19 +305,20 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Belum Ada Produk Terdaftar',
-              style: TextStyle(
+            Text(
+              l10n?.prodEmptyCatalogTitle ?? 'Belum Ada Produk Terdaftar',
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
                 color: AppColors.textPrimary,
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Tambahkan produk daganganmu beserta modal HPP dan harga jual agar sistem dapat menghitung keuntungan otomatis setiap hari.',
+            Text(
+              l10n?.prodEmptyCatalogDesc ??
+                  'Tambahkan produk daganganmu beserta modal HPP dan harga jual agar sistem dapat menghitung keuntungan otomatis setiap hari.',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 13,
                 color: AppColors.textSecondary,
                 height: 1.45,
@@ -348,9 +328,9 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
             ElevatedButton.icon(
               onPressed: () => context.push('/products/add'),
               icon: const Icon(LucideIcons.plusCircle, size: 18),
-              label: const Text(
-                'Tambah Produk Pertama',
-                style: TextStyle(
+              label: Text(
+                l10n?.prodAddFirstProduct ?? 'Tambah Produk Pertama',
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                 ),
@@ -375,6 +355,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
   }
 
   Widget _buildEmptySearchResultState() {
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(28.0),
@@ -384,7 +365,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
             Container(
               width: 72,
               height: 72,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.greyBg,
                 shape: BoxShape.circle,
               ),
@@ -395,19 +376,20 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
               ),
             ),
             const SizedBox(height: 18),
-            const Text(
-              'Produk Tidak Ditemukan',
-              style: TextStyle(
+            Text(
+              l10n?.prodSearchEmptyTitle ?? 'Produk Tidak Ditemukan',
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w800,
                 color: AppColors.textPrimary,
               ),
             ),
             const SizedBox(height: 6),
-            const Text(
-              'Tidak ada produk yang cocok dengan kata kunci atau filter status yang dipilih.',
+            Text(
+              l10n?.prodSearchEmptyDesc ??
+                  'Tidak ada produk yang cocok dengan kata kunci atau filter status yang dipilih.',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12,
                 color: AppColors.textSecondary,
               ),
@@ -416,9 +398,9 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
             OutlinedButton.icon(
               onPressed: _resetSearchAndFilter,
               icon: const Icon(LucideIcons.rotateCcw, size: 16),
-              label: const Text(
-                'Reset Pencarian & Filter',
-                style: TextStyle(
+              label: Text(
+                l10n?.prodResetSearchFilter ?? 'Reset Pencarian & Filter',
+                style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                 ),

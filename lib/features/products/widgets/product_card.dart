@@ -3,6 +3,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../database/app_database.dart';
+import '../../../l10n/generated/app_localizations.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -16,6 +17,7 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final profitPerUnit = product.sellingPrice - product.hpp;
     final isProfit = profitPerUnit >= 0;
     final marginPercent = product.sellingPrice > 0
@@ -146,7 +148,9 @@ class ProductCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            product.isActive ? 'Aktif' : 'Nonaktif',
+                            product.isActive
+                                ? l10n?.prodStatusActive ?? 'Aktif'
+                                : l10n?.prodStatusInactive ?? 'Nonaktif',
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
@@ -181,9 +185,9 @@ class ProductCard extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Modal HPP',
-                              style: TextStyle(
+                            Text(
+                              l10n?.prodModalHpp ?? 'Modal HPP',
+                              style: const TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.textSecondary,
@@ -217,9 +221,9 @@ class ProductCard extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'Harga Jual',
-                                style: TextStyle(
+                              Text(
+                                l10n?.prodSellingPrice ?? 'Harga Jual',
+                                style: const TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.textSecondary,
@@ -255,7 +259,8 @@ class ProductCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Laba ($marginPercent%)',
+                                l10n?.prodCardProfitMargin(marginPercent) ??
+                                    'Laba ($marginPercent%)',
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w600,
@@ -290,17 +295,17 @@ class ProductCard extends StatelessWidget {
                 // Footer hint row
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [
+                  children: [
                     Text(
-                      'Ubah data',
-                      style: TextStyle(
+                      l10n?.prodEditData ?? 'Ubah data',
+                      style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
                         color: AppColors.textSecondary,
                       ),
                     ),
-                    SizedBox(width: 3),
-                    Icon(
+                    const SizedBox(width: 3),
+                    const Icon(
                       LucideIcons.chevronRight,
                       size: 11,
                       color: AppColors.textSecondary,

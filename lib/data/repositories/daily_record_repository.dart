@@ -10,7 +10,10 @@ class DailyRecordRepository {
     final dateOnly = DateTime(date.year, date.month, date.day);
     final nextDay = dateOnly.add(const Duration(days: 1));
     final records = await (_db.select(_db.dailyRecords)
-          ..where((t) => t.date.isBetweenValues(dateOnly, nextDay))
+          ..where((t) =>
+              t.date.isBiggerOrEqualValue(dateOnly) &
+              t.date.isSmallerThanValue(nextDay))
+          ..orderBy([(t) => OrderingTerm.asc(t.date)])
           ..limit(1))
         .get();
     return records.isNotEmpty ? records.first : null;
@@ -20,7 +23,10 @@ class DailyRecordRepository {
     final dateOnly = DateTime(date.year, date.month, date.day);
     final nextDay = dateOnly.add(const Duration(days: 1));
     return (_db.select(_db.dailyRecords)
-          ..where((t) => t.date.isBetweenValues(dateOnly, nextDay))
+          ..where((t) =>
+              t.date.isBiggerOrEqualValue(dateOnly) &
+              t.date.isSmallerThanValue(nextDay))
+          ..orderBy([(t) => OrderingTerm.asc(t.date)])
           ..limit(1))
         .watch()
         .map((rows) => rows.isNotEmpty ? rows.first : null);
@@ -37,18 +43,11 @@ class DailyRecordRepository {
     final startDay = DateTime(start.year, start.month, start.day);
     final endDay = DateTime(end.year, end.month, end.day).add(const Duration(days: 1));
     return (_db.select(_db.dailyRecords)
-          ..where((t) => t.date.isBetweenValues(startDay, endDay))
+          ..where((t) =>
+              t.date.isBiggerOrEqualValue(startDay) &
+              t.date.isSmallerThanValue(endDay))
           ..orderBy([(t) => OrderingTerm.asc(t.date)]))
         .get();
-  }
-
-  Stream<List<DailyRecord>> watchRecordsBetween(DateTime start, DateTime end) {
-    final startDay = DateTime(start.year, start.month, start.day);
-    final endDay = DateTime(end.year, end.month, end.day).add(const Duration(days: 1));
-    return (_db.select(_db.dailyRecords)
-          ..where((t) => t.date.isBetweenValues(startDay, endDay))
-          ..orderBy([(t) => OrderingTerm.asc(t.date)]))
-        .watch();
   }
 
   Future<List<DailyRecordItem>> getItemsByRecordId(int recordId) =>
@@ -142,7 +141,8 @@ class DailyRecordRepository {
     final query = _db.select(_db.dailyRecordItems).join([
       innerJoin(_db.dailyRecords, _db.dailyRecords.id.equalsExp(_db.dailyRecordItems.dailyRecordId)),
     ])
-      ..where(_db.dailyRecords.date.isBetweenValues(startDay, endDay));
+      ..where(_db.dailyRecords.date.isBiggerOrEqualValue(startDay) &
+          _db.dailyRecords.date.isSmallerThanValue(endDay));
     final results = await query.get();
     return results.map((row) => row.readTable(_db.dailyRecordItems)).toList();
   }

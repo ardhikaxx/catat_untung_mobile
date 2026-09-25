@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_colors.dart';
+import '../../l10n/generated/app_localizations.dart';
+import '../../shared/widgets/app_back_button.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -11,6 +13,7 @@ class AboutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       extendBody: true,
@@ -18,29 +21,22 @@ class AboutScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.surface,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: 20,
-            color: AppColors.textPrimary,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
+        leading: const AppBackButton(),
 
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Tentang Aplikasi',
-              style: TextStyle(
+            Text(
+              l10n?.aboutAppBarTitle ?? 'Tentang Aplikasi',
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
               ),
             ),
             Text(
-              'Informasi, visi & spesifikasi aplikasi',
-              style: TextStyle(
+              l10n?.aboutAppBarSubtitle ?? 'Informasi, visi & spesifikasi aplikasi',
+              style: const TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w400,
                 color: AppColors.textSecondary,
@@ -114,7 +110,7 @@ class AboutScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Aplikasi Kasir & Rekap Harian UMKM',
+                  l10n?.aboutTagline ?? 'Aplikasi Kasir & Rekap Harian UMKM',
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
@@ -133,9 +129,9 @@ class AboutScreen extends StatelessWidget {
                         color: Colors.white.withAlpha(25),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Text(
+                      child: const Text(
                         'v${AppConstants.appVersion}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
@@ -151,16 +147,16 @@ class AboutScreen extends StatelessWidget {
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(
+                        children: [
+                          const Icon(
                             LucideIcons.checkCircle2,
                             size: 12,
                             color: AppColors.primaryGreen,
                           ),
-                          SizedBox(width: 4),
+                          const SizedBox(width: 4),
                           Text(
-                            '100% Offline Safe',
-                            style: TextStyle(
+                            l10n?.aboutOfflineBadge ?? '100% Offline Safe',
+                            style: const TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
                               color: AppColors.primaryGreen,
@@ -212,9 +208,9 @@ class AboutScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    const Text(
-                      'Filosofi & Misi Kami',
-                      style: TextStyle(
+                    Text(
+                      l10n?.aboutPhilosophyTitle ?? 'Filosofi & Misi Kami',
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
@@ -224,8 +220,9 @@ class AboutScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'Catat Untung diciptakan khusus bagi para pemilik warung, pengusaha kuliner, kedai kopi, dan pelaku UMKM Indonesia yang membutuhkan solusi pembukuan yang praktis, cepat, dan tanpa biaya langganan bulanan.',
-                  style: TextStyle(
+                  l10n?.aboutPhilosophyBody1 ??
+                      'Catat Untung diciptakan khusus bagi para pemilik warung, pengusaha kuliner, kedai kopi, dan pelaku UMKM Indonesia yang membutuhkan solusi pembukuan yang praktis, cepat, dan tanpa biaya langganan bulanan.',
+                  style: const TextStyle(
                     fontSize: 12,
                     height: 1.5,
                     color: AppColors.textSecondary,
@@ -233,8 +230,9 @@ class AboutScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Kami percaya bahwa setiap pedagang berhak mengetahui keuntungan bersih usahanya secara jelas dan transparan tanpa harus repot menghitung kalkulator manual setiap malam.',
-                  style: TextStyle(
+                  l10n?.aboutPhilosophyBody2 ??
+                      'Kami percaya bahwa setiap pedagang berhak mengetahui keuntungan bersih usahanya secara jelas dan transparan tanpa harus repot menghitung kalkulator manual setiap malam.',
+                  style: const TextStyle(
                     fontSize: 12,
                     height: 1.5,
                     color: AppColors.textSecondary,
@@ -257,9 +255,9 @@ class AboutScreen extends StatelessWidget {
                   color: AppColors.primaryGreen,
                 ),
                 const SizedBox(width: 8),
-                const Text(
-                  'KEUNGGULAN UTAMA',
-                  style: TextStyle(
+                Text(
+                  l10n?.aboutAdvantagesTitle ?? 'KEUNGGULAN UTAMA',
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.8,
@@ -275,8 +273,8 @@ class AboutScreen extends StatelessWidget {
             icon: LucideIcons.shieldCheck,
             iconColor: AppColors.primaryGreen,
             bgColor: AppColors.greenTint,
-            title: 'Privasi & Bebas Kuota Internet',
-            description:
+            title: l10n?.aboutPillar1Title ?? 'Privasi & Bebas Kuota Internet',
+            description: l10n?.aboutPillar1Description ??
                 '100% data bisnis Anda tersimpan eksklusif di dalam perangkat. Tidak ada data yang diunggah ke server luar, menjaga privasi dapur usaha Anda.',
           ),
 
@@ -284,8 +282,8 @@ class AboutScreen extends StatelessWidget {
             icon: LucideIcons.zap,
             iconColor: const Color(0xFFD97706),
             bgColor: const Color(0xFFFEF3C7),
-            title: 'Desain Cepat untuk Jam Sibuk',
-            description:
+            title: l10n?.aboutPillar2Title ?? 'Desain Cepat untuk Jam Sibuk',
+            description: l10n?.aboutPillar2Description ??
                 'Antarmuka modern bergaya Gojek yang ringan dan intuitif memungkinkan Anda mencatat rekap penjualan dalam hitungan 30 detik.',
           ),
 
@@ -293,8 +291,8 @@ class AboutScreen extends StatelessWidget {
             icon: LucideIcons.calculator,
             iconColor: const Color(0xFF2563EB),
             bgColor: const Color(0xFFDBEAFE),
-            title: 'Kalkulasi HPP & Laba Akurat',
-            description:
+            title: l10n?.aboutPillar3Title ?? 'Kalkulasi HPP & Laba Akurat',
+            description: l10n?.aboutPillar3Description ??
                 'Formula otomatis yang membedakan omzet kotor, modal bahan, kemasan, hingga laba bersih yang siap Anda tabung.',
           ),
 
@@ -328,9 +326,9 @@ class AboutScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    const Text(
-                      'Spesifikasi Sistem',
-                      style: TextStyle(
+                    Text(
+                      l10n?.aboutSpecsTitle ?? 'Spesifikasi Sistem',
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
@@ -339,15 +337,30 @@ class AboutScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 14),
-                _buildSpecRow('Framework', 'Flutter 3.x (Multi-platform)'),
+                _buildSpecRow(
+                  l10n?.aboutSpecFrameworkLabel ?? 'Framework',
+                  l10n?.aboutSpecFrameworkValue ?? 'Flutter 3.x (Multi-platform)',
+                ),
                 const Divider(height: 16),
-                _buildSpecRow('Mesin Database', 'SQLite Engine via Drift ORM'),
+                _buildSpecRow(
+                  l10n?.aboutSpecDatabaseLabel ?? 'Mesin Database',
+                  l10n?.aboutSpecDatabaseValue ?? 'SQLite Engine via Drift ORM',
+                ),
                 const Divider(height: 16),
-                _buildSpecRow('Manajemen State', 'Riverpod 2.x Architecture'),
+                _buildSpecRow(
+                  l10n?.aboutSpecStateLabel ?? 'Manajemen State',
+                  l10n?.aboutSpecStateValue ?? 'Riverpod 2.x Architecture',
+                ),
                 const Divider(height: 16),
-                _buildSpecRow('Format Ekspor', 'PDF Document & CSV Spreadsheet'),
+                _buildSpecRow(
+                  l10n?.aboutSpecExportLabel ?? 'Format Ekspor',
+                  l10n?.aboutSpecExportValue ?? 'PDF Document & CSV Spreadsheet',
+                ),
                 const Divider(height: 16),
-                _buildSpecRow('Penyimpanan', 'Offline Local Storage'),
+                _buildSpecRow(
+                  l10n?.aboutSpecStorageLabel ?? 'Penyimpanan',
+                  l10n?.aboutSpecStorageValue ?? 'Offline Local Storage',
+                ),
               ],
             ),
           ),
@@ -381,9 +394,9 @@ class AboutScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Text(
-                  '🇮🇩 Bangga Buatan Indonesia',
-                  style: TextStyle(
+                Text(
+                  l10n?.aboutMadeInIndonesia ?? '🇮🇩 Bangga Buatan Indonesia',
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
@@ -401,9 +414,10 @@ class AboutScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Dibuat dengan dedikasi untuk mendukung jutaan wirausahawan dan pejuang UMKM di seluruh Nusantara.',
+                  l10n?.aboutDevMotto ??
+                      'Dibuat dengan dedikasi untuk mendukung jutaan wirausahawan dan pejuang UMKM di seluruh Nusantara.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                     height: 1.45,
                     color: AppColors.textSecondary,
@@ -422,7 +436,10 @@ class AboutScreen extends StatelessWidget {
                           );
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: const Text('Info aplikasi & hak cipta berhasil disalin ke clipboard'),
+                              content: Text(
+                                l10n?.aboutCopySuccess ??
+                                    'Info aplikasi & hak cipta berhasil disalin ke clipboard',
+                              ),
                               behavior: SnackBarBehavior.floating,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -433,16 +450,16 @@ class AboutScreen extends StatelessWidget {
 
                         style: OutlinedButton.styleFrom(
                           foregroundColor: AppColors.textPrimary,
-                          side: BorderSide(color: AppColors.divider),
+                          side: const BorderSide(color: AppColors.divider),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 12),
                         ),
                         icon: const Icon(LucideIcons.copy, size: 16),
-                        label: const Text(
-                          'Salin Info',
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                        label: Text(
+                          l10n?.aboutCopyInfo ?? 'Salin Info',
+                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                         ),
                       ),
                     ),
@@ -460,9 +477,9 @@ class AboutScreen extends StatelessWidget {
                           elevation: 1,
                         ),
                         icon: const Icon(LucideIcons.bookOpen, size: 16),
-                        label: const Text(
-                          'Buka Panduan',
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                        label: Text(
+                          l10n?.aboutOpenGuide ?? 'Buka Panduan',
+                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                         ),
                       ),
                     ),
@@ -502,9 +519,9 @@ class AboutScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    const Text(
-                      '💖 Dukungan & Donasi',
-                      style: TextStyle(
+                    Text(
+                      l10n?.aboutDonationTitle ?? '💖 Dukungan & Donasi',
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
@@ -514,8 +531,9 @@ class AboutScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'Catat Untung 100% gratis, bebas kuota, dan tanpa biaya langganan. Jika aplikasi ini bermanfaat untuk operasional usaha Anda, tunjukkan apresiasi dengan mentraktir kopi pengembang melalui QRIS.',
-                  style: TextStyle(
+                  l10n?.aboutDonationBody ??
+                      'Catat Untung 100% gratis, bebas kuota, dan tanpa biaya langganan. Jika aplikasi ini bermanfaat untuk operasional usaha Anda, tunjukkan apresiasi dengan mentraktir kopi pengembang melalui QRIS.',
+                  style: const TextStyle(
                     fontSize: 12,
                     height: 1.45,
                     color: AppColors.textSecondary,
@@ -536,9 +554,9 @@ class AboutScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
                     icon: const Icon(LucideIcons.heart, size: 16),
-                    label: const Text(
-                      'Traktir Kopi (Scan QRIS)',
-                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
+                    label: Text(
+                      l10n?.aboutDonateButton ?? 'Traktir Kopi (Scan QRIS)',
+                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
                     ),
                   ),
                 ),
@@ -563,7 +581,7 @@ class AboutScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  'Hak Cipta Dilindungi Undang-Undang.',
+                  l10n?.aboutCopyrightNotice ?? 'Hak Cipta Dilindungi Undang-Undang.',
                   style: TextStyle(
                     fontSize: 10,
                     color: AppColors.textSecondary.withAlpha(140),
@@ -624,7 +642,7 @@ class AboutScreen extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   description,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                     height: 1.4,
                     color: AppColors.textSecondary,
@@ -644,7 +662,7 @@ class AboutScreen extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 12,
             color: AppColors.textSecondary,
             fontWeight: FontWeight.w500,
@@ -663,6 +681,7 @@ class AboutScreen extends StatelessWidget {
   }
 
   void _showQrisModal(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -688,19 +707,20 @@ class AboutScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'Dukungan & Donasi QRIS',
-                  style: TextStyle(
+                Text(
+                  l10n?.aboutQrisTitle ?? 'Dukungan & Donasi QRIS',
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
                     color: AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 6),
-                const Text(
-                  'Scan kode QRIS di bawah melalui aplikasi e-wallet atau mobile banking apa saja (BCA, Mandiri, BRI, GoPay, OVO, ShopeePay, Dana, dll).',
+                Text(
+                  l10n?.aboutQrisInstructions ??
+                      'Scan kode QRIS di bawah melalui aplikasi e-wallet atau mobile banking apa saja (BCA, Mandiri, BRI, GoPay, OVO, ShopeePay, Dana, dll).',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                     color: AppColors.textSecondary,
                     height: 1.4,
@@ -731,18 +751,18 @@ class AboutScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 14),
-                const Text(
-                  'YANUAR ARDHIKA ID, DIGITAL & KREATIF',
-                  style: TextStyle(
+                Text(
+                  l10n?.aboutQrisPayee ?? 'YANUAR ARDHIKA ID, DIGITAL & KREATIF',
+                  style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 2),
-                const Text(
-                  'NMID: ID1026473928582',
-                  style: TextStyle(
+                Text(
+                  l10n?.aboutQrisNmid ?? 'NMID: ID1026473928582',
+                  style: const TextStyle(
                     fontSize: 11,
                     color: AppColors.textSecondary,
                     fontWeight: FontWeight.w500,
@@ -759,7 +779,7 @@ class AboutScreen extends StatelessWidget {
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
-                    child: const Text('Tutup'),
+                    child: Text(l10n?.commonClose ?? 'Tutup'),
                   ),
                 ),
               ],

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+
 import '../../../core/theme/app_colors.dart';
-import '../../../core/utils/currency_formatter.dart';
 import '../../../core/utils/calculation_utils.dart';
+import '../../../core/utils/currency_formatter.dart';
+import '../../../l10n/generated/app_localizations.dart';
 import '../daily_rekap_screen.dart';
 
 class RekapItemTile extends StatefulWidget {
@@ -68,6 +70,7 @@ class _RekapItemTileState extends State<RekapItemTile> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final item = widget.item;
     final profit = item.subtotalProfit;
     final isProfitPositive = profit > 0;
@@ -171,7 +174,7 @@ class _RekapItemTileState extends State<RekapItemTile> {
                   color: const Color(0xFF94A3B8),
                   hoverColor: const Color(0xFFFEE2E2),
                   splashRadius: 20,
-                  tooltip: 'Hapus Item',
+                  tooltip: l10n?.rekapRemoveItem ?? 'Hapus Item',
                   onPressed: widget.onRemove,
                 ),
               ],
@@ -191,9 +194,9 @@ class _RekapItemTileState extends State<RekapItemTile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Jumlah Terjual',
-                        style: TextStyle(
+                      Text(
+                        l10n?.rekapQuantitySold ?? 'Jumlah Terjual',
+                        style: const TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w600,
                           color: Color(0xFF64748B),
@@ -289,9 +292,9 @@ class _RekapItemTileState extends State<RekapItemTile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Harga Jual Satuan',
-                        style: TextStyle(
+                      Text(
+                        l10n?.rekapUnitPrice ?? 'Harga Jual Satuan',
+                        style: const TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w600,
                           color: Color(0xFF64748B),
@@ -364,9 +367,9 @@ class _RekapItemTileState extends State<RekapItemTile> {
                 // Subtotal Omzet
                 Row(
                   children: [
-                    const Text(
-                      'Subtotal: ',
-                      style: TextStyle(
+                    Text(
+                      l10n?.rekapSubtotalLabel ?? 'Subtotal: ',
+                      style: const TextStyle(
                         fontSize: 12,
                         color: Color(0xFF64748B),
                       ),
@@ -386,7 +389,7 @@ class _RekapItemTileState extends State<RekapItemTile> {
                 Row(
                   children: [
                     Text(
-                      'Laba: ',
+                      l10n?.rekapLabaLabel ?? 'Laba: ',
                       style: TextStyle(
                         fontSize: 12,
                         color: isProfitPositive

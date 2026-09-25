@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/generated/app_localizations.dart';
 
 enum ProductFilterStatus {
   all('Semua'),
@@ -48,6 +49,7 @@ class ProductSearchFilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -81,7 +83,7 @@ class ProductSearchFilterBar extends StatelessWidget {
                       color: AppColors.textPrimary,
                     ),
                     decoration: InputDecoration(
-                      hintText: 'Cari produk atau satuan...',
+                      hintText: l10n?.prodSearchHint ?? 'Cari produk atau satuan...',
                       hintStyle: const TextStyle(
                         fontSize: 13,
                         color: AppColors.textHint,
@@ -167,8 +169,8 @@ class ProductSearchFilterBar extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Row(
-                    children: const [
+                  child: const Row(
+                    children: [
                       Icon(
                         LucideIcons.arrowUpDown,
                         size: 18,
@@ -195,17 +197,20 @@ class ProductSearchFilterBar extends StatelessWidget {
           child: Row(
             children: [
               _buildFilterChip(
-                label: 'Semua ($totalCount)',
+                label: l10n?.prodFilterAllCount(totalCount) ??
+                    'Semua ($totalCount)',
                 status: ProductFilterStatus.all,
               ),
               const SizedBox(width: 8),
               _buildFilterChip(
-                label: 'Aktif ($activeCount)',
+                label: l10n?.prodFilterActiveCount(activeCount) ??
+                    'Aktif ($activeCount)',
                 status: ProductFilterStatus.active,
               ),
               const SizedBox(width: 8),
               _buildFilterChip(
-                label: 'Nonaktif ($inactiveCount)',
+                label: l10n?.prodFilterInactiveCount(inactiveCount) ??
+                    'Nonaktif ($inactiveCount)',
                 status: ProductFilterStatus.inactive,
               ),
             ],

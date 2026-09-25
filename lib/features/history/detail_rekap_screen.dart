@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+
 import '../../core/theme/app_colors.dart';
+import '../../core/utils/calculation_utils.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/date_formatter.dart';
-import '../../core/utils/calculation_utils.dart';
-import '../../providers/database_provider.dart';
-import '../../providers/daily_record_provider.dart';
 import '../../database/app_database.dart';
+import '../../l10n/generated/app_localizations.dart';
+import '../../providers/daily_record_provider.dart';
+import '../../providers/database_provider.dart';
+import '../../shared/widgets/app_back_button.dart';
 import '../../shared/widgets/app_floating_nav_bar.dart';
 
 class DetailRekapScreen extends ConsumerWidget {
@@ -18,6 +21,7 @@ class DetailRekapScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final date = DateTime.parse(dateStr);
     final dateOnly = DateTime(date.year, date.month, date.day);
     final recordAsync = ref.watch(recordByDateProvider(dateOnly));
@@ -31,26 +35,7 @@ class DetailRekapScreen extends ConsumerWidget {
         backgroundColor: AppColors.background,
         elevation: 0,
         leading: canPop
-            ? Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Material(
-                  color: Colors.white,
-                  shape: const CircleBorder(),
-                  elevation: 0.5,
-                  child: InkWell(
-                    customBorder: const CircleBorder(),
-                    onTap: () => Navigator.maybePop(context),
-                    child: const Center(
-                      child: Icon(
-                        Icons.arrow_back_ios_new_rounded,
-                        size: 18,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-
-                  ),
-                ),
-              )
+            ? const AppCircleBackButton()
             : null,
         title: Text(
           DateFormatter.formatFull(dateOnly),
@@ -69,7 +54,7 @@ class DetailRekapScreen extends ConsumerWidget {
                     children: [
                       // Edit Button
                       IconButton(
-                        tooltip: 'Edit Rekap',
+                        tooltip: l10n?.histEditRecap ?? 'Edit Rekap',
                         icon: Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
@@ -83,13 +68,13 @@ class DetailRekapScreen extends ConsumerWidget {
                           ),
                         ),
                         onPressed: () {
-                          ref.read(selectedDateProvider.notifier).state = dateOnly;
-                          context.push('/daily-rekap');
+                          context.push(
+                              '/daily-rekap?date=${dateOnly.toIso8601String()}');
                         },
                       ),
                       // Delete Button
                       IconButton(
-                        tooltip: 'Hapus Rekap',
+                        tooltip: l10n?.histDeleteRecap ?? 'Hapus Rekap',
                         icon: Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
@@ -121,10 +106,10 @@ class DetailRekapScreen extends ConsumerWidget {
         ),
         data: (record) {
           if (record == null) {
-            return const Center(
+            return Center(
               child: Text(
-                'Data rekap tidak ditemukan',
-                style: TextStyle(color: AppColors.textSecondary),
+                l10n?.histRecapDataNotFound ?? 'Data rekap tidak ditemukan',
+                style: const TextStyle(color: AppColors.textSecondary),
               ),
             );
           }
@@ -173,7 +158,8 @@ class DetailRekapScreen extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'STATUS HASIL PENJUALAN',
+                          l10n?.histSalesResultStatus ??
+                              'STATUS HASIL PENJUALAN',
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
@@ -224,10 +210,10 @@ class DetailRekapScreen extends ConsumerWidget {
                     Row(
                       children: [
                         Expanded(
-                          child: _buildHeroStat(
-                            label: 'Total Omzet',
-                            value: CurrencyFormatter.formatRupiah(record.totalRevenue),
-                          ),
+                            child: _buildHeroStat(
+                              label: l10n?.histTotalOmzet ?? 'Total Omzet',
+                              value: CurrencyFormatter.formatRupiah(record.totalRevenue),
+                            ),
                         ),
                         Container(
                           width: 1,
@@ -238,7 +224,7 @@ class DetailRekapScreen extends ConsumerWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 12),
                             child: _buildHeroStat(
-                              label: 'Total Modal',
+                              label: l10n?.histTotalModal ?? 'Total Modal',
                               value: CurrencyFormatter.formatRupiah(record.totalCost),
                             ),
                           ),
@@ -252,7 +238,7 @@ class DetailRekapScreen extends ConsumerWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 12),
                             child: _buildHeroStat(
-                              label: 'Total Terjual',
+                              label: l10n?.histTotalSold ?? 'Total Terjual',
                               value: '${record.totalQuantity} unit',
                             ),
                           ),
@@ -269,9 +255,9 @@ class DetailRekapScreen extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Daftar Menu Terjual',
-                    style: TextStyle(
+                  Text(
+                    l10n?.histSoldMenuList ?? 'Daftar Menu Terjual',
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textPrimary,
@@ -301,12 +287,15 @@ class DetailRekapScreen extends ConsumerWidget {
                 error: (e, s) => Text('Gagal memuat item: $e'),
                 data: (items) {
                   if (items.isEmpty) {
-                    return const Center(
+                    return Center(
                       child: Padding(
-                        padding: EdgeInsets.all(24),
+                        padding: const EdgeInsets.all(24),
                         child: Text(
-                          'Tidak ada produk dalam rekap ini',
-                          style: TextStyle(color: AppColors.textSecondary),
+                          l10n?.histNoProductsInRecap ??
+                              'Tidak ada produk dalam rekap ini',
+                          style: const TextStyle(
+                            color: AppColors.textSecondary,
+                          ),
                         ),
                       ),
                     );
@@ -488,18 +477,20 @@ class DetailRekapScreen extends ConsumerWidget {
     WidgetRef ref,
     DailyRecord record,
   ) {
+    final l10n = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Hapus Rekap Penjualan?'),
-        content: const Text(
-          'Semua data rekapan pada tanggal ini akan dihapus permanen dari riwayat.',
+        title: Text(l10n?.histDeleteRecapTitle ?? 'Hapus Rekap Penjualan?'),
+        content: Text(
+          l10n?.histDeleteRecapMessage ??
+              'Semua data rekapan pada tanggal ini akan dihapus permanen dari riwayat.',
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Batal'),
+            child: Text(l10n?.commonCancel ?? 'Batal'),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -521,7 +512,9 @@ class DetailRekapScreen extends ConsumerWidget {
                 context.pop();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: const Text('Rekap berhasil dihapus'),
+                    content: Text(
+                      l10n?.histRecapDeleted ?? 'Rekap berhasil dihapus',
+                    ),
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -530,7 +523,7 @@ class DetailRekapScreen extends ConsumerWidget {
                 );
               }
             },
-            child: const Text('Hapus'),
+            child: Text(l10n?.commonDelete ?? 'Hapus'),
           ),
         ],
       ),
