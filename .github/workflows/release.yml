@@ -36,6 +36,27 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: flutter build apk --release
+      - name: Normalize APK filename
+        id: apk
+        run: |
+          set -euo pipefail
+          version="$(sed -nE 's/^version:[[:space:]]*([0-9]+\.[0-9]+\.[0-9]+).*/\1/p' pubspec.yaml | head -n1)"
+          dir="build/app/outputs/flutter-apk"
+          target="$dir/Catat_Untung_v${version}.apk"
+          for apk in "$dir"/*release*.apk; do
+            [ -e "$apk" ] || continue
+            mv -f "$apk" "$target"
+            rm -f "$dir/app-release.apk.sha1" "$target.sha1"
+          done
+          test -f "$target"
+          echo "path=$target" >> "$GITHUB_OUTPUT"
+          ls -l "$target"
+      - name: Remove legacy asset name
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ inputs.tag_name || github.ref_name }}
+        run: |
+          gh release delete-asset "$TAG_NAME" app-release.apk --yes --repo "${{ github.repository }}" || true
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
@@ -65,11 +86,11 @@ jobs:
 
             ## 📥 Unduh & Instal APK
 
-            [**Unduh Catat Untung v1.0.1 (APK)**](https://github.com/ardhikaxx/catat_untung_mobile/releases/download/v1.0.1/app-release.apk)
+            [**Unduh Catat Untung v1.0.1 (APK)**](https://github.com/ardhikaxx/catat_untung_mobile/releases/download/v1.0.1/Catat_Untung_v1.0.1.apk)
 
             Setelah diunduh, buka APK di perangkat Android. Jika diminta, izinkan instalasi aplikasi dari sumber ini, lalu lanjutkan pemasangan.
 
             ---
             Dikembangkan oleh **Yanuar Ardhika Rahmadhani Ubaidillah** · Copyright © 2026.
-           files: build/app/outputs/flutter-apk/Catat_Untung_v${{ inputs.tag_name || github.ref_name }}.apk
+          files: ${{ steps.apk.outputs.path }}
           overwrite_files: true
