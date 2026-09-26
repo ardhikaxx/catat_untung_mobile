@@ -944,6 +944,24 @@ abstract class AppLocalizations {
   /// **'Penjualan \"{product}\" ({quantity} {unit}) berhasil dicatat!'**
   String quickEntrySaved(String product, int quantity, String unit);
 
+  /// No description provided for @quickEntryProductLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih Produk'**
+  String get quickEntryProductLabel;
+
+  /// No description provided for @quickEntryProductHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Ketuk untuk memilih produk'**
+  String get quickEntryProductHint;
+
+  /// No description provided for @quickEntryProductRequired.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih produk terlebih dahulu'**
+  String get quickEntryProductRequired;
+
   /// No description provided for @rekapChangeDateTitle.
   ///
   /// In id, this message translates to:

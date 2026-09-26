@@ -148,6 +148,9 @@
         "unit":  { "type": "String" }
       }
     },
+    "quickEntryProductLabel":  "Pilih Produk",
+    "quickEntryProductHint":  "Ketuk untuk memilih produk",
+    "quickEntryProductRequired":  "Pilih produk terlebih dahulu",
     "rekapChangeDateTitle":  "Ganti Tanggal?",
     "rekapChangeDateContent":  "Perubahan rekap yang belum disimpan pada tanggal ini akan hilang jika berpindah tanggal.",
     "rekapMoveDate":  "Pindah",

@@ -463,6 +463,15 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get quickEntryProductLabel => 'Pilih Produk';
+
+  @override
+  String get quickEntryProductHint => 'Ketuk untuk memilih produk';
+
+  @override
+  String get quickEntryProductRequired => 'Pilih produk terlebih dahulu';
+
+  @override
   String get rekapChangeDateTitle => 'Ganti Tanggal?';
 
   @override

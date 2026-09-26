@@ -462,6 +462,15 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get quickEntryProductLabel => 'Select Product';
+
+  @override
+  String get quickEntryProductHint => 'Tap to choose a product';
+
+  @override
+  String get quickEntryProductRequired => 'Please select a product first';
+
+  @override
   String get rekapChangeDateTitle => 'Change Date?';
 
   @override
