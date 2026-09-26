@@ -114,6 +114,8 @@ dart run build_runner build --delete-conflicting-outputs
 dart run flutter_launcher_icons
 ```
 
+> **Catatan CI**: Pada workflow CI/CD, langkah `dart run build_runner build` dijalankan otomatis sebelum membangun APK release untuk memastikan kode generik selalu up‑to‑date.
+
 ### 4. Jalankan Aplikasi di Perangkat / Emulator
 ```bash
 flutter run
