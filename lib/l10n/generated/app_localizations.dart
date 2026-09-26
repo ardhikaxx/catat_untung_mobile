@@ -914,54 +914,6 @@ abstract class AppLocalizations {
   /// **'Gagal memuat rekap tanggal ini. Silakan coba lagi.'**
   String get rekapLoadFailed;
 
-  /// No description provided for @quickEntryTitle.
-  ///
-  /// In id, this message translates to:
-  /// **'Catat Penjualan Cepat'**
-  String get quickEntryTitle;
-
-  /// No description provided for @quickEntryQuantity.
-  ///
-  /// In id, this message translates to:
-  /// **'Jumlah'**
-  String get quickEntryQuantity;
-
-  /// No description provided for @quickEntryValidQty.
-  ///
-  /// In id, this message translates to:
-  /// **'Masukkan jumlah yang valid'**
-  String get quickEntryValidQty;
-
-  /// No description provided for @quickEntrySave.
-  ///
-  /// In id, this message translates to:
-  /// **'Simpan'**
-  String get quickEntrySave;
-
-  /// No description provided for @quickEntrySaved.
-  ///
-  /// In id, this message translates to:
-  /// **'Penjualan \"{product}\" ({quantity} {unit}) berhasil dicatat!'**
-  String quickEntrySaved(String product, int quantity, String unit);
-
-  /// No description provided for @quickEntryProductLabel.
-  ///
-  /// In id, this message translates to:
-  /// **'Pilih Produk'**
-  String get quickEntryProductLabel;
-
-  /// No description provided for @quickEntryProductHint.
-  ///
-  /// In id, this message translates to:
-  /// **'Ketuk untuk memilih produk'**
-  String get quickEntryProductHint;
-
-  /// No description provided for @quickEntryProductRequired.
-  ///
-  /// In id, this message translates to:
-  /// **'Pilih produk terlebih dahulu'**
-  String get quickEntryProductRequired;
-
   /// No description provided for @rekapChangeDateTitle.
   ///
   /// In id, this message translates to:

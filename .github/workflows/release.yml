@@ -141,7 +141,6 @@ jobs:
             - 📦 **Katalog Produk & HPP** — Kelola produk, satuan, harga jual, dan modal per unit; lihat margin secara otomatis.
             - 🧮 **Kalkulator HPP** — Hitung biaya bahan, kemasan, dan operasional, lalu simulasikan harga jual berdasarkan target margin.
             - 📝 **Rekap Penjualan Harian** — Catat jumlah produk terjual dan lihat estimasi omzet serta laba.
-            - ⚡ **Catat Penjualan Cepat** — Pilih produk, isi jumlah, dan penjualan langsung tercatat ke rekap hari ini.
             - 📊 **Dashboard Keuangan** — Pantau omzet, modal, laba bersih, produk terjual, dan tren laba 7 hari.
             - 📅 **Riwayat & Kalender** — Telusukan rekap per tanggal, lihat detail transaksi, dan ringkasan bulanan.
             - 📈 **Laporan** — Lihat produk terlaris, metrik penjualan, dan laporan berdasarkan periode.
@@ -150,11 +149,9 @@ jobs:
 
             ## 🆕 Pembaruan di v${{ env.VERSION }}
 
-            - 🎯 **Tombol pindah ke kanan** — Tombol Catat Penjualan Cepat kini di sisi kanan layar, lebih nyaman dijangkau satu tangan.
-            - 🛒 **Pilih produk dulu** — Dialog penjualan cepat kini meminta Anda memilih produk dari katalog (dengan pencarian), seperti pada Rekap Harian; tidak lagi otomatis memakai produk pertama.
-            - 🔢 **Detail produk sebagai konfirmasi** — Satuan dan harga jual produk terpilih ditampilkan sebelum disimpan.
-            - 🧮 **Tidak menimpa rekap** — Penjualan cepat tetap menambahkan item ke rekap tanggal tersebut tanpa menghapus entri yang sudah ada.
-            - 🌐 **Ikut bahasa aplikasi** — Seluruh teks dialog penjualan cepat tersedia dalam Bahasa Indonesia dan English.
+            - 🧹 **Beranda lebih bersih** — Tombol mengapung "Catat Penjualan Cepat" beserta dialognya dihapus karena pencatatan penjualan sudah tersedia lewat tombol **Rekap** di Beranda.
+            - 🗂️ **Satu alur pencatatan** — Semua penjualan harian dicatat melalui halaman Rekap Penjualan, sehingga tidak ada entri ganda maupun data yang tertimpa.
+            - 🌐 **Bersih-bersih terjemahan** — Teks dialog yang tidak dipakai lagi dihapus dari berkas bahasa Indonesia dan English.
 
             ## 📥 Unduh & Instal APK
 

@@ -136,21 +136,6 @@
     "calcProfitPerUnitLabel":  "Untung / Unit",
     "calcRoundedTo500Note":  "Dibulatkan ke kelipatan Rp 500",
     "rekapLoadFailed":  "Gagal memuat rekap tanggal ini. Silakan coba lagi.",
-    "quickEntryTitle":  "Catat Penjualan Cepat",
-    "quickEntryQuantity":  "Jumlah",
-    "quickEntryValidQty":  "Masukkan jumlah yang valid",
-    "quickEntrySave":  "Simpan",
-    "quickEntrySaved":  "Penjualan \"{product}\" ({quantity} {unit}) berhasil dicatat!",
-    "@quickEntrySaved":  {
-      "placeholders":  {
-        "product":  { "type": "String" },
-        "quantity":  { "type": "int" },
-        "unit":  { "type": "String" }
-      }
-    },
-    "quickEntryProductLabel":  "Pilih Produk",
-    "quickEntryProductHint":  "Ketuk untuk memilih produk",
-    "quickEntryProductRequired":  "Pilih produk terlebih dahulu",
     "rekapChangeDateTitle":  "Ganti Tanggal?",
     "rekapChangeDateContent":  "Perubahan rekap yang belum disimpan pada tanggal ini akan hilang jika berpindah tanggal.",
     "rekapMoveDate":  "Pindah",

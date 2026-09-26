@@ -445,32 +445,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Failed to load the recap for this date. Please try again.';
 
   @override
-  String get quickEntryTitle => 'Quick Sale';
-
-  @override
-  String get quickEntryQuantity => 'Quantity';
-
-  @override
-  String get quickEntryValidQty => 'Enter a valid quantity';
-
-  @override
-  String get quickEntrySave => 'Save';
-
-  @override
-  String quickEntrySaved(String product, int quantity, String unit) {
-    return 'Sale of \"$product\" ($quantity $unit) recorded successfully!';
-  }
-
-  @override
-  String get quickEntryProductLabel => 'Select Product';
-
-  @override
-  String get quickEntryProductHint => 'Tap to choose a product';
-
-  @override
-  String get quickEntryProductRequired => 'Please select a product first';
-
-  @override
   String get rekapChangeDateTitle => 'Change Date?';
 
   @override

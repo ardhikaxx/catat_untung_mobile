@@ -446,32 +446,6 @@ class AppLocalizationsId extends AppLocalizations {
       'Gagal memuat rekap tanggal ini. Silakan coba lagi.';
 
   @override
-  String get quickEntryTitle => 'Catat Penjualan Cepat';
-
-  @override
-  String get quickEntryQuantity => 'Jumlah';
-
-  @override
-  String get quickEntryValidQty => 'Masukkan jumlah yang valid';
-
-  @override
-  String get quickEntrySave => 'Simpan';
-
-  @override
-  String quickEntrySaved(String product, int quantity, String unit) {
-    return 'Penjualan \"$product\" ($quantity $unit) berhasil dicatat!';
-  }
-
-  @override
-  String get quickEntryProductLabel => 'Pilih Produk';
-
-  @override
-  String get quickEntryProductHint => 'Ketuk untuk memilih produk';
-
-  @override
-  String get quickEntryProductRequired => 'Pilih produk terlebih dahulu';
-
-  @override
   String get rekapChangeDateTitle => 'Ganti Tanggal?';
 
   @override
